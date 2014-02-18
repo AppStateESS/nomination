@@ -30,6 +30,8 @@ PHPWS_Core::initModClass('nomination', 'NominationEmail.php');
 
 PHPWS_Core::initModClass('nomination', 'Period.php');
 
+PHPWS_CORE::initCoreClass('Captcha.php');
+
 class CreateNomination extends Command
 {
     public function getRequestVars()
@@ -46,6 +48,9 @@ class CreateNomination extends Command
                     'nominee_phone',
                     'nominee_gpa',
                     'nominee_class',
+                    'reference_first_name',
+                    'reference_last_name',
+                    'reference_phone',
 				    'nominator_first_name',
 				    'nominator_last_name',
 				    'nominator_email',
@@ -62,10 +67,12 @@ class CreateNomination extends Command
         $vis = new NominationFieldVisibility();
 
         $required = array();
-        foreach($required as $field) {
-            if($vis->isVisible($field)) $required[] = $field;
+        foreach(self::$requiredFields as $field) {
+            if($vis->isVisible($field))
+            {
+            	$required[] = $field;
+            }
         }
-
         /*****************
          * Check  fields *
         *****************/

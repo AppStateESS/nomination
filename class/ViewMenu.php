@@ -15,7 +15,7 @@ abstract class ViewMenu extends OmNomView
         $this->addView($text, $viewObj);
     }
 
-    public function addView($text, View $view)
+    public function addView($text, $view)
     {
         $this->views[] = $view->getLink($text);
     }
