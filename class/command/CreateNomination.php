@@ -81,16 +81,12 @@ class CreateNomination extends Command
 				
         // Check for missing required fields
         foreach($required as $key=>$value){
-        	//var_dump($context->getContainer());
-        	//exit;
             if(!isset($context[$value]) || $context[$value] == ""){// || $context[$value[0]] == ""){
                 $missing[] = $value;
             } else {
                 $entered[$key] = $context[$value];
             }
         }
-        //var_dump($missing);
-        //exit;
 
         // Check for a "statement" file upload, if required
         if($vis->isVisible('statement')) {
@@ -116,10 +112,6 @@ class CreateNomination extends Command
         if(!empty($missing) || !Captcha::verify()){
             // Notify the user that they must reselect their file
             $missing[] = 'statement';
-
-			//var_dump(Captcha::verify());
-			//var_dump($missing);
-			//exit;
 			
             $context['after'] = 'NominationForm';// Set after view to the form
             $context['missing'] = $missing;// Add missing fields to context
