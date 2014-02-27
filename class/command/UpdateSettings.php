@@ -22,6 +22,8 @@ class UpdateSettings extends Command {
     {
         return array('nominee_asubox',
                      'nominee_position',
+                     'nominee_first_name',
+				     'nominee_last_name',
                      'nominee_department_major',
                      'nominee_years',
                      'nominee_responsibility',
@@ -104,7 +106,7 @@ class UpdateSettings extends Command {
                 PHPWS_Settings::set('nomination', $key, $value);
             }
             $result = PHPWS_Settings::save('nomination');
-
+            
             if(!is_null($result)){
                 throw new Exception('Something bad happened when settings were being saved.');
             }

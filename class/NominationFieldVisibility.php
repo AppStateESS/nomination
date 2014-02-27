@@ -41,6 +41,9 @@ class NominationFieldVisibility
     protected function createFields()
     {
         return array('nominee_asubox',
+        			 'nominee_first_name',
+        			 'nominee_last_name',
+        			 'nominee_email',
                      'nominee_position',
                      'nominee_department_major',
                      'nominee_years',

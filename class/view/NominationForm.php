@@ -311,8 +311,7 @@ class NominationForm extends OmNomView
         ***********/
         
 //        $tpl = $refForm->getTemplate();
-//        $tpl['CAPTCHA_IMAGE'] = Captcha::get();
-		
+        $tpl['CAPTCHA_IMAGE'] = Captcha::get();
 		
         // Check if we were redirected back to this
         // form because some fields were not entered
