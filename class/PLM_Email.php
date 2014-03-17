@@ -27,6 +27,7 @@ define('NOMCPL', 'Nominators with complete nomination');
 define('NOMINC', 'Nominators with incomplete nomination');
 define('REFNON', 'References that need to upload');
 define('NOMINE', 'Nominees with complete nominations');
+define('ALLREFS', 'All References');
 
 
 class PLM_Email {
@@ -147,6 +148,8 @@ class PLM_Email {
             return REFNON;
         case 'NOMINE':
             return NOMINE;
+        case 'ALLREFS':
+            return ALLREFS;
         default:
             return null;
         }
@@ -175,6 +178,7 @@ class PLM_Email {
         $lists['NOMINC'] = NOMINC;
         $lists['REFNON'] = REFNON;
         $lists['NOMINE'] = NOMINE;
+        $lists['ALLREFS'] = ALLREFS;
         
         return $lists;
     }
@@ -217,6 +221,12 @@ class PLM_Email {
             $db->addWhere('plm_nomination.nominee_id', 'plm_nominee.id');
             $db->addWhere('plm_nomination.completed', 1);
             $results = $db->getObjects('Nominee');
+            break;
+        case 'ALLREFS':
+            PHPWS_Core::initModClass('plm', 'Reference.php');
+            $db = new PHPWS_DB('plm_reference');
+            $db->addWhere('doc_id', NULL, '!=');
+            $results = $db->getObjects('Reference');
             break;
         }
 
