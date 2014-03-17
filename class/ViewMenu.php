@@ -1,8 +1,8 @@
 <?php
 
-PHPWS_Core::initModClass('nomination', 'View.php');
+PHPWS_Core::initModClass('plm', 'View.php');
 
-abstract class ViewMenu extends OmNomView
+abstract class ViewMenu extends PlemmView
 {
     private $views = array();
 
@@ -38,7 +38,7 @@ abstract class ViewMenu extends OmNomView
     public function display(Context $context)
     {
         $tpl = $this->buildTemplate();
-        return PHPWS_Template::process($tpl, 'nomination', 'admin/menu.tpl');
+        return PHPWS_Template::process($tpl, 'plm', 'admin/menu.tpl');
     }
 }
 

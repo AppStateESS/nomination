@@ -1,53 +1,62 @@
-BEGIN;
+CREATE TABLE plm_nominee (
+       id           INT NOT NULL DEFAULT 1,
+       first_name   VARCHAR(64) NOT NULL ,
+       middle_name  VARCHAR(64) ,
+       last_name    VARCHAR(64) NOT NULL ,
+       email        VARCHAR(255) NOT NULL,
+       position     VARCHAR(255) ,
+       major        VARCHAR(64) , 
+       years        SMALLINT default 0,
+       PRIMARY KEY (id)
+);
 
-CREATE TABLE nomination_nomination (
+CREATE TABLE plm_nominator (
+       id           INT NOT NULL DEFAULT 1 ,
+       first_name   VARCHAR(64) NOT NULL ,
+       middle_name  VARCHAR(64) ,
+       last_name    VARCHAR(64) NOT NULL ,
+       email        VARCHAR(255) NOT NULL ,
+       phone        VARCHAR(32) NOT NULL ,
+       address      VARCHAR(255) ,
+       unique_id    VARCHAR(32) ,
+       doc_id       INT NULL REFERENCES plm_doc(id),
+       PRIMARY KEY (id)
+);
+
+CREATE TABLE plm_nomination (
        id               INT NOT NULL DEFAULT 1,
-       banner_id        INT,
-       first_name       VARCHAR(64) NOT NULL,
-       middle_name      VARCHAR(64),
-       last_name        VARCHAR(64) NOT NULL,
-       email            VARCHAR(255) NOT NULL,
-       asubox           VARCHAR(10),
-       position         VARCHAR(255),
-       department_major VARCHAR(64), 
-       years_at_asu     SMALLINT,
-       phone            VARCHAR(16),
-       gpa              VARCHAR(8),
-       class            VARCHAR(255),
-       responsibility   SMALLINT,
-       category         INT,
-       nominator_first_name     VARCHAR(255),
-       nominator_middle_name    VARCHAR(255),
-       nominator_last_name      VARCHAR(255),
-       nominator_email          VARCHAR(255),
-       nominator_phone          VARCHAR(32),
-       nominator_address        VARCHAR(255),
-       nominator_unique_id      VARCHAR(32),
-       nominator_doc_id         INT NULL REFERENCES nomination_doc(id),
-       nominator_relation       VARCHAR(255),
-       complete                 SMALLINT DEFAULT 0,
-       period                   SMALLINT NOT NULL,
-       added_on                 INT NOT NULL,
-       updated_on               INT NOT NULL,
+       nominee_id       INT NOT NULL ,
+       nominator_id     INT NOT NULL ,
+       reference_id_1   INT NULL ,
+       reference_id_2   INT NULL ,
+       reference_id_3   INT NULL ,
+       category         INT NOT NULL ,
+       nominator_relationship   VARCHAR(255) NOT NULL ,
+       reference_relationship_1 VARCHAR(255) NULL ,
+       reference_relationship_2 VARCHAR(255) NULL ,
+       reference_relationship_3 VARCHAR(255) NULL ,
+       completed                SMALLINT DEFAULT 0,
+       period                   SMALLINT NOT NULL ,
+       added_on                 INT NOT NULL ,
+       updated_on               INT NOT NULL ,
        winner                   SMALLINT DEFAULT NULL,
        PRIMARY KEY (id)
 );
 
-CREATE TABLE nomination_reference (
-       id               INT NOT NULL DEFAULT 1,
-       nomination_id    INT NOT NULL REFERENCES nomination_nomination(id),
-       first_name       VARCHAR(64) NOT NULL,
-       last_name        VARCHAR(64) NOT NULL,
-       email            VARCHAR(255),
-       phone            VARCHAR(32),
-       department       VARCHAR(64),
-       relationship     VARCHAR(255),
-       unique_id        VARCHAR(32),
-       doc_id           INT NULL REFERENCES nomination_doc(id),
+CREATE TABLE plm_reference (
+       id           INT NOT NULL DEFAULT 1,
+       first_name   VARCHAR(64) NOT NULL ,
+       middle_name  VARCHAR(64) ,
+       last_name    VARCHAR(64) NOT NULL ,
+       department   VARCHAR(64) ,
+       email        VARCHAR(255),
+       phone        VARCHAR(32) ,
+       unique_id    VARCHAR(32) ,
+       doc_id       INT NULL REFERENCES plm_doc(id),
        PRIMARY KEY (id)
 );
  
-CREATE TABLE nomination_period (
+CREATE TABLE plm_period (
        id         INT NOT NULL DEFAULT 1,
        year       SMALLINT NOT NULL, 
        start_date INT,
@@ -55,19 +64,13 @@ CREATE TABLE nomination_period (
        PRIMARY KEY (id)
 );
 
-CREATE TABLE nomination_document (
-       id               INT NOT NULL,
-       nomination_id    INT NOT NULL REFERENCES nomination_nomination(id),
-       uploaded_by      VARCHAR(255),
-       description      VARCHAR(255),
-       file_path        VARCHAR(1024),
-       file_name        VARCHAR(1024),
-       orig_file_name   VARCHAR(1024),
-       mime_type        VARCHAR(1024),
+CREATE TABLE plm_doc (
+       id         INT NOT NULL,
+       name       VARCHAR(255) NOT NULL,
        PRIMARY KEY(id)
 );
 
-CREATE TABLE nomination_email_log (
+CREATE TABLE plm_email_log (
        id            INT NOT NULL DEFAULT 1,
        nominee_id    INT NOT NULL,
        message       TEXT,
@@ -79,8 +82,7 @@ CREATE TABLE nomination_email_log (
        PRIMARY KEY(id)
 );
 
-CREATE TABLE nomination_cancel_queue (
-       nomination INTEGER NOT NULL REFERENCES nomination_nomination(id),
+CREATE TABLE plm_cancel_queue (
+       nomination INTEGER NOT NULL REFERENCES plm_nomination(id),
        PRIMARY KEY(nomination)
 );
-COMMIT;

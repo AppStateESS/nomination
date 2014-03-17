@@ -3,14 +3,14 @@
   /**
    * Null
    *
-   * This was the first View for Nomination.
+   * This was the first View for PLM.
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
-PHPWS_Core::initModClass('nomination', 'View.php');
+PHPWS_Core::initModClass('plm', 'View.php');
 
-class Null extends OmNomView
+class Null extends PlemmView
 {
     public function getRequestVars()
     {

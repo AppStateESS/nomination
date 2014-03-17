@@ -5,7 +5,7 @@
   <div id="nomination-list">
       <!-- BEGIN nominations -->
       <div class="nom-toggle-header" >
-        <span class="nom-toggle" id="nom-toggle-{NUM}"><img src="mod/nomination/img/arrow_down.png" /> Nomination {NUM}</span>
+        <span class="nom-toggle" id="nom-toggle-{NUM}"><img src="mod/plm/img/arrow_down.png" /> Nomination {NUM}</span>
       </div>
       <div class="nomination" id="{NUM}">{CONTENT}
       </div>

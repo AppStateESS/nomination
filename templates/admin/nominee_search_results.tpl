@@ -1,4 +1,3 @@
-{CSV_REPORT}
 <table>
 <tr>
   <th class="name-sort">Name <br />
@@ -6,11 +5,19 @@
   </th>
   <th>Email
   </th>
+  <th>Major
+  </th>
+  <th>Years
+  </th>
 </tr>
 <!-- BEGIN listrows -->
 <tr>
-  <td>{NOMINEE_LINK}</td>
-  <td> {EMAIL}@appstate.edu
+  <td>{LINK}</td>
+  <td> {EMAIL}
+  </td>
+  <td>{MAJOR}
+  </td>
+  <td>{YEARS}
   </td>
 </tr>
 <!-- END listrows -->

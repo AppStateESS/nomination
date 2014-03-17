@@ -6,22 +6,22 @@
  *   Actually send emails.
  *
  * @author Daniel West <dwest at tux dot appstate dot edu>
- * @package nomination
+ * @package plm
  */
 
-PHPWS_Core::initModClass('nomination', 'Command.php');
-PHPWS_Core::initModClass('nomination', 'NominationEmail.php');
+PHPWS_Core::initModClass('plm', 'Command.php');
+PHPWS_Core::initModClass('plm', 'PLM_Email.php');
 
 class DoEmail extends Command {
     public $from;
     public $list;
     public $subject;
     public $message;
-
+    
     public function getRequestVars()
     {
         $vars = array('action'=>'DoEmail');
-
+        
         if(isset($this->from)){
             $vars['from'] = $this->from;
         }
@@ -43,14 +43,14 @@ class DoEmail extends Command {
         if(!UserStatus::isAdmin()){
             throw new PermissionException('You are not allowed to do this!');
         }
-        
+
         try{
             $msgType = $context['list'];
-            $mail = new NominationEmail(NominationEmail::getListMembers($msgType), $context['subject'], $context['message'], $msgType);
+            $mail = new PLM_Email(PLM_Email::getListMembers($msgType), $context['subject'], $context['message'], $msgType);
             $mail->send();
-            NQ::simple('nomination', NOMINATION_SUCCESS, 'Emails sent');
+            NQ::simple('plm', PLM_SUCCESS, 'Emails sent');
         } catch(DatabaseException $e){
-            NQ::simple('nomination', NOMINATION_ERROR, $e->getMessage());
+            NQ::simple('plm', PLM_ERROR, $e->getMessage());
         }
     }
 }

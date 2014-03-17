@@ -1,5 +1,13 @@
 <?xml version="1.0"?>
 <dependency>
+  <module>
+    <title>othermenu</title>
+    <properName>Other Menu</properName>
+    <version>0.0.4</version>
+    <url>http://github.com/bostrt/othermenu/</url>
+  </module>
+</dependency>
+<dependency>
 	<module>
 		<title>pulse</title>
 		<properName>Pulse</properName>

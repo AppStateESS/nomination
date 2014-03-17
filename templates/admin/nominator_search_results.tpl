@@ -1,17 +1,25 @@
-{CSV_REPORT}
 <table>
 <tr>
   <th class="name-sort">Name <br />
     {FIRST_NAME_SORT} {MIDDLE_NAME_SORT} {LAST_NAME_SORT}
   </th>
-  <th>Email</th>
-  <th>Nominated</th>
+  <th>Email
+  </th>
+  <th>{ADDED_ON_SORT}
+  </th>
+  <th>Nominated
+  </th>
 </tr>
 <!-- BEGIN listrows -->
 <tr>
-  <td>{NOMINATOR_LINK}</td>
-  <td>{NOMINATOR_EMAIL}@appstate.edu</td>
-  <td>{NOMINEE_LINK}</td>
+  <td>{LINK}
+  </td>
+  <td>{EMAIL}
+  </td>
+   <td>{ADDED_ON}
+  </td>
+   <td>{NOMINEE_LINK}
+     </td>
 </tr>
 <!-- END listrows -->
 <!-- BEGIN EMPTY_MESSAGE -->
@@ -22,9 +30,7 @@
 </table>
 
 <div align="center">
-  <b>{PAGE_LABEL}</b>
-  <br />
-  {PAGES}
-  <br />
-  {LIMITS}
+<b>{PAGE_LABEL}</b><br />
+{PAGES}<br />
+{LIMITS}
 </div>

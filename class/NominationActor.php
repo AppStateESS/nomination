@@ -9,9 +9,9 @@
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
-PHPWS_Core::initModClass('nomination', 'Nomination_Model.php');
+PHPWS_Core::initModClass('plm', 'PLM_Model.php');
 
-abstract class NominationActor extends Nomination_Model
+abstract class NominationActor extends PLM_Model
 {
     public $first_name;
     public $middle_name;
@@ -30,10 +30,8 @@ abstract class NominationActor extends Nomination_Model
     }
 
     // Get MailTo link for email
-    // Assumes email address is stored without domain,
-    // and all addresses belong to the @appstate.edu domain
     public function getEmailLink(){
-        $email = $this->getEmail() . "@appstate.edu";
+        $email = $this->getEmail();
         return "<a href='mailto:$email'>$email</a>";
     }
 
@@ -49,7 +47,7 @@ abstract class NominationActor extends Nomination_Model
         $uniqueId = md5(uniqid($username));
 
         if(self::uniqueIdExists($uniqueId)){
-            PHPWS_Core::initModClass('nomination', 'exception/UniqueIdException.php');
+            PHPWS_Core::initModClass('plm', 'exception/UniqueIdException.php');
             throw new UniqueIdException('Problem occured while generating unique ID.');
         }
         
@@ -63,8 +61,8 @@ abstract class NominationActor extends Nomination_Model
      */
     private static function uniqueIdExists($id)
     {
-        PHPWS_Core::initModClass('nomination', 'Nominator.php');
-        PHPWS_Core::initModClass('nomination', 'Reference.php');
+        PHPWS_Core::initModClass('plm', 'Nominator.php');
+        PHPWS_Core::initModClass('plm', 'Reference.php');
 
         $nom_db = Nominator::getDb();
         $ref_db = Reference::getDb();

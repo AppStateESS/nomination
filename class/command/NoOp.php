@@ -8,7 +8,7 @@
  * etc.  Does nothing basically, and lets the controller handle showing the next view.
  *
  * @author Daniel West <dwest at tux dot appstate dot edu>
- * @package nomination
+ * @package plm
  */
 
 class NoOp extends Command {

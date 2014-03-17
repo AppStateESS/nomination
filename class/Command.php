@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Nomination Command
+ * PLM Command
  * @author Jeff Tickle <jtickle at tux dot appstate dot edu>
  */
 
@@ -31,7 +31,7 @@ abstract class Command
 	{
  		$moduleElement = $form->get('module');
  		if(PEAR::isError($moduleElement)){
-			$form->addHidden('module', 'nomination');
+			$form->addHidden('module', 'plm');
 		}
 		 
 		foreach($this->getRequestVars() as $key=>$val) {
@@ -70,7 +70,7 @@ abstract class Command
 	 * @see redirect
 	 */
 	function getURI(){
-		$uri = $_SERVER['SCRIPT_NAME'] . "?module=nomination";
+		$uri = $_SERVER['SCRIPT_NAME'] . "?module=plm";
 
 		foreach($this->getRequestVars() as $key=>$val) {
 			if(is_array($val)){
@@ -107,7 +107,7 @@ abstract class Command
 	 */
 	public function getLink($text, $target = NULL, $cssClass = NULL, $title = NULL)
 	{
-		return PHPWS_Text::moduleLink(dgettext('nomination', $text), 'nomination', $this->getRequestVars(), $target, $title, $cssClass);
+		return PHPWS_Text::moduleLink(dgettext('plm', $text), 'plm', $this->getRequestVars(), $target, $title, $cssClass);
 	}
 
 	/**

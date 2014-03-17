@@ -3,16 +3,22 @@
 
 <table>
   <tr>
-    <th>Email</th>
-    <td>{EMAIL}</td>
+    <th>Email
+    </th>
+    <td>{EMAIL}
+    </td>
   </tr>
   <tr>
-    <th>Phone</th>
-    <td>{PHONE}</td>
+    <th>Phone
+    </th>
+    <td>{PHONE}
+    </td>
   </tr>
   <tr>
-    <th>Address</th>
-    <td>{ADDRESS}</td>
+    <th>Address
+    </th>
+    <td>{ADDRESS}
+    </td>
   </tr>
 </table>
 </span>

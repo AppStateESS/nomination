@@ -1,4 +1,4 @@
-<script type="text/javascript" src="{PHPWS_SOURCE_HTTP}mod/nomination/javascript/nomWinner/nom.js"></script>
+<script type="text/javascript" src="{PHPWS_SOURCE_HTTP}mod/plm/javascript/nomWinner/nom.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
     var noms = {noms};

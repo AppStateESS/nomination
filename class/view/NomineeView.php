@@ -8,13 +8,13 @@
    * An administrator can set a nomination's winning status in this view.
    */
 
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'Context.php');
-PHPWS_Core::initModClass('nomination', 'Nominee.php');
-PHPWS_Core::initModClass('nomination', 'Nomination.php');
+PHPWS_Core::initModClass('plm', 'View.php');
+PHPWS_Core::initModClass('plm', 'Context.php');
+PHPWS_Core::initModClass('plm', 'Nominee.php');
+PHPWS_Core::initModClass('plm', 'Nomination.php');
 
-class NomineeView extends OmNomView {
-    public $nominationId;
+class NomineeView extends PlemmView {
+    public $nomineeId;
 
     public function display(Context $context)
     {
@@ -24,50 +24,44 @@ class NomineeView extends OmNomView {
         
         $tpl = array();
 
-	PHPWS_Core::initModClass('nomination', 'NominationFactory.php');
-
-	$factory = new NominationFactory;
-	$nominee = $factory::getNominationById($context['id']);
+        $nominee = new Nominee;
+        $nominee->id = $context['id'];
+        $nominee->load();
 
         $tpl['NAME']        = $nominee->getFullName();
-        $tpl['MAJOR']       = $nominee->getDeptMajor();
-        $tpl['YEARS']       = $nominee->getYearsAtASU();
+        $tpl['MAJOR']       = $nominee->getMajor();
+        $tpl['YEARS']       = $nominee->getYears();
         $tpl['EMAIL']       = $nominee->getEmailLink();
 
-	/*        $db = new PHPWS_DB('nomination_nomination');
-        $db->addWhere('id', $nominee->id);
+        $db = Nomination::getDb();
+        $db->addWhere('nominee_id', $nominee->id);
         $db->addOrder('winner desc');
-	//	test($db->select(),1);
-	$results = $db->getObjects('DBNomination');
-	
+        $results = $db->getObjects('Nomination');
         
         if(PHPWS_Error::logIfError($results)){
-            PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
+            PHPWS_Core::initModClass('plm', 'exception/DatabaseException.php');
             throw new DatabaseException('Database asploded');
         } 
         if(is_null($results) || empty($results)){
-            PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
+            PHPWS_Core::initModClass('plm', 'exception/DatabaseException.php');
             throw new DatabaseException('Invalid Nominee ID');
         }
-	*/
+
         $num = 0;
         $jsVars = array();
         $nomIsWinner = False;
-	//        foreach($results as $nomination){
-	//	foreach($nominee as $nomination){
+        foreach($results as $nomination){
             $num++;
-	    //            $context['id'] = $nomination->getId();
-	    $context['id'] = $nominee->getId();
-            PHPWS_Core::initModClass('nomination', 'view/NominationView.php');
+            $context['id'] = $nomination->getId();
             $nominationView = new NominationView();
 
-            $nomination_is_winner = $nominee->isWinner();
+            $nomination_is_winner = $nomination->isWinner();
             if($nomination_is_winner)$nomIsWinner = True;
             
             if(UserStatus::isAdmin()){
-                $icon = $nominee->isWinner() ? 'mod/nomination/img/tango/actions/list-remove-red.png':
-                    'mod/nomination/img/tango/actions/list-add-green.png';
-                $award_icon = 'mod/nomination/img/tango/mimetypes/application-certificate.png';
+                $icon = $nomination->isWinner() ? 'mod/plm/img/tango/actions/list-remove-red.png':
+                    'mod/plm/img/tango/actions/list-add-green.png';
+                $award_icon = 'mod/plm/img/tango/mimetypes/application-certificate.png';
             } else {
                 // Don't show if nomination is winner to committee members
                 $icon = 'images/icons/blank.png';
@@ -77,18 +71,17 @@ class NomineeView extends OmNomView {
                                           'NUM' => $num,
                                           'ICON' => PHPWS_SOURCE_HTTP.$icon,
                                           'AWARD_ICON' => PHPWS_SOURCE_HTTP.$award_icon,
-                                          'DOWN_PNG_HACK' => PHPWS_SOURCE_HTTP."mod/nomination/img/arrow_down.png");
+                                          'DOWN_PNG_HACK' => PHPWS_SOURCE_HTTP."mod/plm/img/arrow_down.png");
 
-	    
             // pass this to javascript
-            $jsVars['collapse'][] = array('NUM' => $num, 'ID' => $nominee->getId());
-            $jsVars['winner'][] = array('NUM' => $num, 'ID' => $nominee->getId(), 'WINNER' => $nominee->isWinner());
-	    // }
+            $jsVars['collapse'][] = array('NUM' => $num, 'ID' => $nomination->getId());
+            $jsVars['winner'][] = array('NUM' => $num, 'ID' => $nomination->getId(), 'WINNER' => $nomination->isWinner());
+        }
 
 
         javascript('jquery');
         // JS Collapse; Admin and Committee
-        javascriptMod('nomination', 'nomCollapse', 
+        javascriptMod('plm', 'nomCollapse', 
                       array('noms' => json_encode($jsVars['collapse']),
                             'PHPWS_SOURCE_HTTP' => PHPWS_SOURCE_HTTP));
         // Full path is needed for images
@@ -98,27 +91,22 @@ class NomineeView extends OmNomView {
 
         if(UserStatus::isAdmin()){
             // JS set winner; Admin only
-            javascriptMod('nomination', 'nomWinner', array('noms' => json_encode($jsVars['winner']),
+            javascriptMod('plm', 'nomWinner', array('noms' => json_encode($jsVars['winner']),
                                                     'PHPWS_SOURCE_HTTP' => PHPWS_SOURCE_HTTP));
             // If nomination is winner then set the winner flag beside the
             // nominee's name in big letters
             if($nomIsWinner) $tpl['WINNER'] = '(Winner)';
             
-            return PHPWS_Template::process($tpl, 'nomination', 'admin/nominee.tpl');
+            return PHPWS_Template::process($tpl, 'plm', 'admin/nominee.tpl');
         }
-        return PHPWS_Template::process($tpl, 'nomination', 'committee/nominee.tpl');
+        return PHPWS_Template::process($tpl, 'plm', 'committee/nominee.tpl');
     }
 
     public function getRequestVars(){
-        $vars = array('id'   => $this->nominationId,
+        $vars = array('id'   => $this->nomineeId,
                       'view' => 'NomineeView');
 
         return $vars;
     }
-    
-    public function setNominationId($id){
-      $this->nominationId = $id;
-    }
-    
 }
 ?>

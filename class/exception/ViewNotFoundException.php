@@ -1,6 +1,6 @@
 <?php
 
-PHPWS_Core::initModClass('nomination', 'exception/ViewException.php');
+PHPWS_Core::initModClass('plm', 'exception/ViewException.php');
 
 class ViewNotFoundException extends ViewException {
     

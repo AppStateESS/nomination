@@ -1,8 +1,8 @@
 <?php
 
-PHPWS_Core::initModClass('nomination', 'View.php');
+PHPWS_Core::initModClass('plm', 'View.php');
 
-class ThankYouNominator extends OmNomView
+class ThankYouNominator extends PlemmView
 {
 
     public function getRequestVars()

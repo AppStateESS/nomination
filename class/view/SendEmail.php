@@ -3,18 +3,18 @@
 /**
  * SendEmail
  *
- *   Admin interface for sending email messages to different groups of individuals of interest in Nomination.
+ *   Admin interface for sending email messages to different groups of individuals of interest in PLM.
  *
  * @author Daniel West <dwest at tux dot appstate dot edu>
- * @package nomination
+ * @package plm
  */
 
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'Context.php');
-PHPWS_Core::initModClass('nomination', 'NominationEmail.php');
-PHPWS_Core::initModClass('nomination', 'CommandFactory.php');
+PHPWS_Core::initModClass('plm', 'View.php');
+PHPWS_Core::initModClass('plm', 'Context.php');
+PHPWS_Core::initModClass('plm', 'PLM_Email.php');
+PHPWS_Core::initModClass('plm', 'CommandFactory.php');
 
-class SendEmail extends OmNomView {
+class SendEmail extends PlemmView {
 
     public function getRequestVars()
     {
@@ -35,7 +35,7 @@ class SendEmail extends OmNomView {
         $form = new PHPWS_Form('email');
         $cmd->initForm($form);
 
-        $form->addDropBox('list', NominationEmail::getLists());
+        $form->addDropBox('list', PLM_Email::getLists());
         $form->setLabel('list', 'Recipients');
         $form->addText('subject');
         $form->setLabel('subject', 'Subject');
@@ -50,7 +50,7 @@ class SendEmail extends OmNomView {
 
         Layout::addPageTitle('Send Email');
 
-        return PHPWS_Template::process($form->getTemplate(), 'nomination', 'admin/email_form.tpl');
+        return PHPWS_Template::process($form->getTemplate(), 'plm', 'admin/email_form.tpl');
     }
 }
 ?>

@@ -1,4 +1,4 @@
-<div class="nomination-sidemenu">
+<div class="plm-sidemenu">
 <ul>
 
 <!-- BEGIN view_links -->

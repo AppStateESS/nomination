@@ -1,4 +1,4 @@
-<script type="text/javascript" src="{PHPWS_SOURCE_HTTP}mod/nomination/javascript/details/view.js"></script>
+<script type="text/javascript" src="{PHPWS_SOURCE_HTTP}mod/plm/javascript/details/view.js"></script>
 <script type='text/javascript'>
     $(document).ready(function(){
         $('.view-pending-nom').click(function(){
@@ -12,7 +12,7 @@
 
             // Fetch nomination details from server
             var id = $(this).attr('id');
-            $.get('index.php', {'module':'nomination','view':'NominationView', 'id':id, ajax:true},
+            $.get('index.php', {'module':'plm','view':'NominationView', 'id':id, ajax:true},
                    function(data){
                        // Slide details up, set the new data, slide back down
                        $('#nomination-view').fadeOut('fast', function(){

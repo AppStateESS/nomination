@@ -8,17 +8,15 @@
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'Context.php');
-PHPWS_Core::initModClass('nomination', 'Nominee.php');
-PHPWS_Core::initModClass('nomination', 'Nominator.php');
-PHPWS_Core::initModClass('nomination', 'Nomination.php');
-PHPWS_Core::initModClass('nomination', 'NominationDocument.php');
-PHPWS_Core::initModClass('nomination', 'ReferenceFactory.php');
-PHPWS_Core::initModClass('nomination', 'DocumentFactory.php');
+PHPWS_Core::initModClass('plm', 'View.php');
+PHPWS_Core::initModClass('plm', 'Context.php');
+PHPWS_Core::initModClass('plm', 'Nominee.php');
+PHPWS_Core::initModClass('plm', 'Nominator.php');
+PHPWS_Core::initModClass('plm', 'Nomination.php');
+PHPWS_Core::initModClass('plm', 'PLM_Doc.php');
 PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
 
-class NominationView extends OmNomView {
+class NominationView extends PlemmView {
     public $nominationId;
 
     public function getRequestVars(){
@@ -30,83 +28,64 @@ class NominationView extends OmNomView {
 
 
     public function display(Context $context){
-	    PHPWS_Core::initModClass('nomination', 'NominationFactory.php');
-
         $tpl = array();
-	    $factory = new NominationFactory;
-	    $nomination = $factory::getNominationById($context['id']);
 
-        $tpl['NOMINEE'] = $nomination->getNomineeLink();
-        $tpl['NOMINATOR'] = $nomination->getNominatorLink();
-        $tpl['NOMINATOR_RELATION'] = ($nomination->getNominatorRelation() == null ? "No relation given" : $nomination->getNominatorRelation());
+        $nomination = new Nomination;
+        $nomination->id = $context['id'];
+        $nomination->load();
+        $doc = new PLM_Doc($nomination);
 
-        // Get the download link for the nominator statement
-        $db = new PHPWS_DB('nomination_document');
-        $db->addColumn('id');
-        $db->addWhere('nomination_id', $context['id']);
-        $db->addWhere('description', 'statement');
-        $nominatorDocId = $db->select('row');
+        $nominee = new Nominee;
+        $nominee->id = $nomination->nominee_id;
+        $nominee->load();
         
-        if(PHPWS_Error::logIfError($nominatorDocId)) {
-            throw new DatabaseException('Database is broken, please try again');
-    	}
-        
-        $doc = new DocumentFactory();
-        $doc = $doc->getDocumentById($nominatorDocId);
-        $tpl['NOMINATOR_STATEMENT'] = $doc->getDownloadLink($nominatorDocId, 'Download Statement');
+        $nominator = new Nominator;
+        $nominator->id = $nomination->nominator_id;
+        $nominator->load();
 
-        // Get the references from the DB
-	    $references = array();
-        $db->reset();   // we recycle 'round here
-        $db->setTable('nomination_reference');
-    	$db->addWhere('nomination_id', $nomination->id);
-        $result = $db->select();
-	    
-        if(PHPWS_Error::logIfError($result) || sizeof($result) == 0){
-            throw new DatabaseException('Database is broken, please try again');
-    	}
-	    
-        // Fill the references array with references
-        $numRefs = PHPWS_Settings::get('nomination', 'num_references_req');
-    	for($i = 0; $i < $numRefs; $i++){
-	        $ref = new ReferenceFactory();
-	        $reference = $ref->getByUniqueId($result[$i]['unique_id']);
-    	    $references[] = $reference;
-    	}
+        $tpl['NOMINEE'] = $nominee->getLink();
+        $tpl['NOMINATOR'] = $nominator->getFullName();
+        $tpl['NOMINATOR_ID'] = $nominator->getId();
+        $tpl['NOMINATOR_RELATION'] = $nominator->getRelationship();
+
+        $nominator = new Nominator;
+        $nominator->id = $nomination->nominator_id;
+        $nominator->load();
+
+        //this should not happen, but it's not a db error...
+        if(is_null($nominator->doc_id))
+            $tpl['STATEMENT'] = 'No file uploaded';
+        else 
+            $tpl['STATEMENT'] = $doc->getDownloadLink($nominator->unique_id, 'Statement');
 
         $tpl['CATEGORY'] = $nomination->getCategory();
         $tpl['ADDED_ON'] = $nomination->getReadableAddedOn();
         $tpl['UPDATED_ON'] = $nomination->getReadableUpdatedOn();
+        
+        // Reference info
+        for($i = 1; $i <= REFERENCE_COUNT; $i++){
+            $ref_id = 'reference_id_'.$i;
 
-        // Fill the repeating reference slots with data from the references array
-        for($i = 0; $i < $numRefs; $i++){
-            $refArray = array();
-            $refArray['REFERENCE_NUMBER'] = "Reference " . ($i+1);
-	        $refArray['REFERENCE_ID'] = $references[$i]->getId();
-    	    $refArray['REFERENCE_NAME'] = $references[$i]->getFullName();
-    	    $refArray['REFERENCE_RELATION'] = $references[$i]->getRelationship();
-    	    
-            if(is_null($references[$i]->getDocId())) {
-    	        $refArray['REFERENCE_DOWNLOAD'] = 'No file uploaded';
-            } else {
-                $doc = new DocumentFactory();
-                $doc = $doc->getDocumentById($references[$i]->getDocId());
-                $refArray['REFERENCE_DOWNLOAD'] = $doc->getDownloadLink($references[$i]->getDocId(), 'Download Statement');
-            }
-            
-            $tpl['references'][] = $refArray;
+            $ref = new Reference($nomination->$ref_id);
+            $tpl['ID_'.$i] = $ref->getId();
+            $tpl['REFERENCE_'.$i] = $ref->getFullName();
+            $tpl['REFERENCE_RELATION_'.$i] = $ref->getRelationship();
+            if(is_null($ref->doc_id))
+                $tpl['REFERENCE_DOWNLOAD_'.$i] = 'No file uploaded';
+            else
+                $tpl['REFERENCE_DOWNLOAD_'.$i] = $doc->getDownloadLink($ref->unique_id);
         }
-
-        $tpl['COMPLETED'] = $nomination->getComplete() != 0 ? 'Complete' : 'Incomplete';
+        
+        $tpl['COMPLETED'] = $nomination->completed != 0 ? 'Complete' : 'Incomplete';
 
         javascript('jquery');
-        javascriptMod('nomination', 'details', array('PHPWS_SOURCE_HTTP' => PHPWS_SOURCE_HTTP));
-
+        javascriptMod('plm', 'details', array('PHPWS_SOURCE_HTTP' => PHPWS_SOURCE_HTTP));
+        
         if(isset($context['ajax'])){
-            echo PHPWS_Template::processTemplate($tpl, 'nomination', 'admin/nomination.tpl');
+            echo PHPWS_Template::processTemplate($tpl, 'plm', 'admin/nomination.tpl');
             exit();
         } else {
-            return PHPWS_Template::processTemplate($tpl, 'nomination', 'admin/nomination.tpl');
+            return PHPWS_Template::processTemplate($tpl, 'plm', 'admin/nomination.tpl'); 
         }
     }
 }

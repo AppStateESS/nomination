@@ -10,5 +10,5 @@ edit your nomination form.  Follow this link to edit the nomination:
 
 Sincerely,
 
-{SIGNATURE}
-{SIG_POSITION}
+Dino DiBernardi, Chair
+W. H. Plemmons Leadership Medallion Committee

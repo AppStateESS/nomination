@@ -7,18 +7,18 @@
  * but which are still awaiting administrator approval.
  *
  * @author Daniel West <dwest at tux dot appstate dot edu>
- * @package nomination
+ * @package plm
  */
 
-PHPWS_Core::initModClass('nomination', 'Nomination.php');
-PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
+PHPWS_Core::initModClass('plm', 'Nomination.php');
+PHPWS_Core::initModClass('plm', 'exception/DatabaseException.php');
 
 class CancelQueue {
     public $nomination;
 
     public static function add(Nomination $n)
     {
-        $db = new PHPWS_DB('nomination_cancel_queue');
+        $db = new PHPWS_DB('plm_cancel_queue');
         $db->addValue('nomination', $n->id);
         $result = $db->insert();
 
@@ -45,7 +45,7 @@ class CancelQueue {
 
     public static function remove(Nomination $n)
     {
-        $db = new PHPWS_DB('nomination_cancel_queue');
+        $db = new PHPWS_DB('plm_cancel_queue');
         $db->addWhere('nomination', $n->id);
         $result = $db->delete();
 
@@ -58,7 +58,7 @@ class CancelQueue {
 
     public function rowTags()
     {
-        PHPWS_Core::initModClass('nomination', 'CommandFactory.php');
+        PHPWS_Core::initModClass('plm', 'CommandFactory.php');
 
         $tpl = array();
 
@@ -99,7 +99,7 @@ class CancelQueue {
     }
 
     public function contains($id){
-        $db = new PHPWS_DB('nomination_cancel_queue');
+        $db = new PHPWS_DB('plm_cancel_queue');
         $db->addWhere('nomination', $id);
         $result = $db->select();
 

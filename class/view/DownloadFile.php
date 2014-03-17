@@ -3,19 +3,17 @@
 /**
  * DownloadFile
  *
- *   Sends a file to the client... special thanks to Jeremy for the
+ *   Sends a file to the client... special thanks to Jeremy for the 
  * download examples.
  *
  * @author Daniel West <dwest at tux dot appstate dot edu>
- * @package nomination
+ * @package plm
  */
 
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'NominationDocument.php');
-PHPWS_Core::initModClass('nomination', 'NominationFactory.php');
-PHPWS_Core::initModClass('nomination', 'DocumentFactory.php');
+PHPWS_Core::initModClass('plm', 'View.php');
+PHPWS_Core::initModClass('plm', 'PLM_Doc.php');
 
-class DownloadFile extends OmNomView {
+class DownloadFile extends PlemmView {
     public $unique_id;
     public $nomination;
 
@@ -36,17 +34,12 @@ class DownloadFile extends OmNomView {
 
     public function display(Context $context)
     {
-        //$omnom = new Nomination;
-        //$omnom->id = $context['nomination'];
-        //$omnom->load();
+        $omnom = new Nomination;
+        $omnom->id = $context['nomination'];
+        $omnom->load();
 
-        $omnom = new NominationFactory();
-        $omnom = $omnom->getNominationbyId($context['nomination']);
-
-        //$doc = new NominationDocument($omnom);
-        $doc = new DocumentFactory();
-        $doc = $doc->getDocumentById($context['unique_id']);
-        $doc->newSendFile($context['unique_id']);
+        $doc = new PLM_Doc($omnom);
+        $doc->sendFile($context['unique_id']);
     }
 }
 ?>

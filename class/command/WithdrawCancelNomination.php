@@ -9,9 +9,9 @@
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */ 
 
-PHPWS_Core::initModClass('nomination', 'Command.php');
-PHPWS_Core::initModClass('nomination', 'CancelQueue.php');
-PHPWS_Core::initModClass('nomination', 'Nomination.php');
+PHPWS_Core::initModClass('plm', 'Command.php');
+PHPWS_Core::initModClass('plm', 'CancelQueue.php');
+PHPWS_Core::initModClass('plm', 'Nomination.php');
 
 class WithdrawCancelNomination extends Command
 {

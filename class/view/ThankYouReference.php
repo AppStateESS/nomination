@@ -8,9 +8,9 @@
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
-PHPWS_Core::initModClass('nomination', 'View.php');
+PHPWS_Core::initModClass('plm', 'View.php');
 
-class ThankYouReference extends OmNomView
+class ThankYouReference extends PlemmView
 {
 
     public function getRequestVars()

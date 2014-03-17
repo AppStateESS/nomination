@@ -4,8 +4,8 @@
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
-$proper_name = 'Nomination Module';
-$version     = '0.0.23';
+$proper_name = 'Plemmons Leadership Medallion';
+$version     = '0.0.19';
 $register     = FALSE;
 $unregister   = FALSE;
 $import_sql   = TRUE;

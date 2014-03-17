@@ -1,6 +1,6 @@
 <?php
 
-PHPWS_Core::initModClass("nomination", "View.php");
+PHPWS_Core::initModClass("plm", "View.php");
 
 /**
  * EmailView
@@ -10,7 +10,7 @@ PHPWS_Core::initModClass("nomination", "View.php");
  * @author Robert Bost <bostrt at tux dot appstate dot edu>
  */
 
-class EmailView extends OmNomView
+class EmailView extends PlemmView
 {
     public function getRequestVars()
     {
@@ -21,17 +21,17 @@ class EmailView extends OmNomView
     {
         // Admins only
         if(!UserStatus::isAdmin()){
-            PHPWS_Core::initModClass('nomination', 'exception/PermissionException.php');
+            PHPWS_Core::initModClass('plm', 'exception/PermissionException.php');
             throw new PermissionException('You are not allowed to see that!');
         }
 
         // ID must be set
         if(!isset($context['id'])){
-            PHPWS_Core::initModClass('nomination', 'exception/ContextException.php');
+            PHPWS_Core::initModClass('plm', 'exception/ContextException.php');
             throw new ContextException('ID required');
         }
 
-        PHPWS_Core::initModClass('nomination', 'EmailMessage.php');
+        PHPWS_Core::initModClass('plm', 'EmailMessage.php');
 
         // Get DB and select where id = ...
         $db = EmailMessage::getDb();
@@ -42,7 +42,7 @@ class EmailView extends OmNomView
         $result = $db->select();
 
         if(PHPWS_Error::logIfError($result)){
-            PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
+            PHPWS_Core::initModClass('plm', 'exception/DatabaseException.php');
             throw new DatabaseException($result->toString());
         }
 

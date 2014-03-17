@@ -9,11 +9,11 @@
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */ 
 
-PHPWS_Core::initModClass('nomination', 'Command.php');
-PHPWS_Core::initModClass('nomination', 'Context.php');
-PHPWS_Core::initModClass('nomination', 'view/AjaxMessageView.php');
-PHPWS_Core::initModClass('nomination', 'PLM_Email.php');
-PHPWS_Core::initModClass('nomination', 'EmailMessage.php');
+PHPWS_Core::initModClass('plm', 'Command.php');
+PHPWS_Core::initModClass('plm', 'Context.php');
+PHPWS_Core::initModClass('plm', 'view/AjaxMessageView.php');
+PHPWS_Core::initModClass('plm', 'PLM_Email.php');
+PHPWS_Core::initModClass('plm', 'EmailMessage.php');
 
 class AdminResendEmail extends Command
 {
@@ -32,7 +32,7 @@ class AdminResendEmail extends Command
         }
         
         if(!isset($context['id'])){
-            PHPWS_Core::initModClass('nomination', 'exception/ContextException.php');
+            PHPWS_Core::initModClass('plm', 'exception/ContextException.php');
             throw new ContextException('ID expected.');
         }
 
@@ -40,7 +40,7 @@ class AdminResendEmail extends Command
         $message = new EmailMessage($context['id']);
         
         if($message->id == 0 || $message == null){
-            PHPWS_Core::initModClass('nomination', 'expcetion/DatabaseException.php');
+            PHPWS_Core::initModClass('plm', 'expcetion/DatabaseException.php');
             throw new DatabaseException('Error occured loading email message from database.');
         }
         
@@ -52,7 +52,7 @@ class AdminResendEmail extends Command
             $context['after']->setMessage(true);
         }
         
-        NQ::simple('nomination', NOMINATION_SUCCESS, 'Email sent.');
+        NQ::simple('plm', PLM_SUCCESS, 'Email sent.');
     }
 }
 ?>

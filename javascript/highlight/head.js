@@ -1,4 +1,4 @@
-<script type="text/javascript" src="{PHPWS_SOURCE_HTTP}mod/nomination/javascript/highlight/highlight_fields.js">
+<script type="text/javascript" src="{PHPWS_SOURCE_HTTP}mod/plm/javascript/highlight/highlight_fields.js">
 </script>
 <script type="text/javascript">
     $(document).ready(function(){

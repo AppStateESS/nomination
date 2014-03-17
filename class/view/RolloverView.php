@@ -8,10 +8,10 @@
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'Period.php');
+PHPWS_Core::initModClass('plm', 'View.php');
+PHPWS_Core::initModClass('plm', 'Period.php');
 
-class RolloverView extends OmNomView
+class RolloverView extends PlemmView
 {
     public function getRequestVars()
     {
@@ -20,12 +20,12 @@ class RolloverView extends OmNomView
 
     public function display(Context $context)
     {
-        if(!UserStatus::isAdmin() && Current_User::allow('nomination', 'rollover_period')){
+        if(!UserStatus::isAdmin() && Current_User::allow('plm', 'rollover_period')){
             throw new PermissionException('You are not allowed to see that!');
         }
 
         PHPWS_Core::initCoreClass('Form.php');
-        PHPWS_Core::initModClass('nomination', 'CommandFactory.php');
+        PHPWS_Core::initModClass('plm', 'CommandFactory.php');
 
         $form = new PHPWS_Form('rollover');
         
@@ -47,7 +47,7 @@ class RolloverView extends OmNomView
 
         Layout::addPageTitle('Rollover');
         
-        return PHPWS_Template::process($tpl, 'nomination', 'admin/rollover.tpl');
+        return PHPWS_Template::process($tpl, 'plm', 'admin/rollover.tpl');
     }
 }
 ?>

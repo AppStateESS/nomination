@@ -1,15 +1,7 @@
 <?php
 
-/**
- * UpdatePeriod - Controller class to handle updating/saving a period's settings/attributes.
- *
- * @author bost?
- * @author Jeremy Booker
- * @package nomination
- */
-
-PHPWS_Core::initModClass('nomination', 'Command.php');
-PHPWS_Core::initModClass('nomination', 'exception/InvalidSettingsException.php');
+PHPWS_Core::initModClass('plm', 'Command.php');
+PHPWS_Core::initModClass('plm', 'exception/InvalidSettingsException.php');
 
 class UpdatePeriod extends Command
 {
@@ -25,7 +17,7 @@ class UpdatePeriod extends Command
         }
 
         $settingsMap = array();
-
+        
         try{
             /**
              * Update start/end dates for nomination period
@@ -61,37 +53,28 @@ class UpdatePeriod extends Command
             //
             // Save nomination period settings
             //
-            PHPWS_Core::initModClass('nomination', 'Period.php');
-            $period = Period::getCurrentPeriod();
-            if(is_null($period)){
-                // A period doesn't exist yet, so we need to create it
-                $period = new Period();
-                $period->setYear($date[2]);
-
-                // Save the year as a phpws setting too
-                PHPWS_Settings::set('nomination', 'current_period', $date[2]);
-                PHPWS_Settings::save('nomination');
-            }
-
+            PHPWS_Core::initModClass('plm', 'Period.php');
+            $year = PHPWS_Settings::get('plm', 'current_period');
+            $period = Period::getPeriodByYear($year);
             $period->setStartDate($startUnixDate);
             $period->setEndDate($endUnixDate);
             $period->save();
-
+            
             /**
              * Update receiver of rollover reminder email
              */
-            PHPWS_Settings::set('nomination', 'rollover_email', $context['rollover_email']);
-            PHPWS_Settings::save('nomination');
+            PHPWS_Settings::set('plm', 'rollover_email', $context['rollover_email']);
+            PHPWS_Settings::save('plm');
 
-            PHPWS_Core::initModClass('nomination', 'NominationRolloverEmailPulse.php');
-            $pulse = NominationRolloverEmailPulse::getCurrentPulse();
+            PHPWS_Core::initModClass('plm', 'PLMRolloverEmailPulse.php');
+            $pulse = PLMRolloverEmailPulse::getCurrentPulse();
             $pulse->setExecuteTime($endUnixDate);
 
         } catch(Exception $e){
-            NQ::simple('nomination', NOMINATION_ERROR, $e->getMessage());
+            NQ::simple('plm', PLM_ERROR, $e->getMessage());
             return;
         }
-        NQ::simple('nomination', NOMINATION_SUCCESS, $year.' period updated.');
+        NQ::simple('plm', PLM_SUCCESS, $year.' period updated.');
     }
 
     /**
@@ -102,7 +85,7 @@ class UpdatePeriod extends Command
     {
         if(!is_array($date)){
             return false;
-        }
+        } 
         if(sizeof($date) != 3){
             return false;
         }

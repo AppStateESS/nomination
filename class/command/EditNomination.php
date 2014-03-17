@@ -2,7 +2,7 @@
 
 /**
  * EditNomination
- *
+ * 
  * Check that all required fields in form are completed, if not
  * redirect back to form with neglected fields highlighted and
  * Notification at top of form.
@@ -12,10 +12,10 @@
  * @author Robert Bost <bostrt at tux dot appstate dot edu>
  */
 
-PHPWS_Core::initModClass('nomination', 'Command.php');
-PHPWS_Core::initModClass('nomination', 'Context.php');
-PHPWS_Core::initModClass('nomination', 'NominationDocument.php');
-PHPWS_Core::initModClass('nomination', 'view/NominationForm.php');
+PHPWS_Core::initModClass('plm', 'Command.php');
+PHPWS_Core::initModClass('plm', 'Context.php');
+PHPWS_Core::initModClass('plm', 'PLM_Doc.php');
+PHPWS_Core::initModClass('plm', 'view/NominationForm.php');
 
 class EditNomination extends Command
 {
@@ -59,15 +59,15 @@ class EditNomination extends Command
             // Set form fail
             $context['form_fail'] = True;
 
-            // Throw exception
-            PHPWS_Core::initModClass('nomination', 'exception/BadFormException.php');
+            // Throw exception 
+            PHPWS_Core::initModClass('plm', 'exception/BadFormException.php');
             throw new BadFormException('Some fields are missing');
 
         } else {
-            PHPWS_Core::initModClass('nomination', 'Nomination.php');
-            PHPWS_Core::initModClass('nomination', 'Nominator.php');
-            PHPWS_Core::initModClass('nomination', 'Nominee.php');
-            PHPWS_Core::initModClass('nomination', 'Reference.php');
+            PHPWS_Core::initModClass('plm', 'Nomination.php');
+            PHPWS_Core::initModClass('plm', 'Nominator.php');
+            PHPWS_Core::initModClass('plm', 'Nominee.php');
+            PHPWS_Core::initModClass('plm', 'Reference.php');
 
             $nomination = Nomination::getByNominatorUnique_Id($context['unique_id']);
             //there is a lot of extra crap returned by the above function, and it's not an object...
@@ -90,14 +90,14 @@ class EditNomination extends Command
             $nominator->email        = $context['nominator_email'];
             $nominator->relationship = $context['nominator_relationship'];
             $nominator->save();
-
+            
             /***********
              * Nominee *
              ***********/
             $nominee              = $nominator->getNomination()->getNominee();
-            $nominee->first_name  = $context['nominee_first_name'];
-            $nominee->middle_name = $context['nominee_middle_name'];
-            $nominee->last_name   = $context['nominee_last_name'];
+            $nominee->first_name  = $context['nominee_first_name']; 
+            $nominee->middle_name = $context['nominee_middle_name']; 
+            $nominee->last_name   = $context['nominee_last_name']; 
             $nominee->email       = $context['nominee_email'];
             $nominee->position    = $context['nominee_position'];
             $nominee->major = $context['nominee_department_major'];
@@ -110,7 +110,7 @@ class EditNomination extends Command
              *
              * @pay-attention
              * Facts:
-             *    - References can be edited.
+             *    - References can be edited. 
              *    - Three references are required all the time
              * Only if the email is changed will we create a new reference and delete
              * the old one, creating a new unique_id in the process.
@@ -123,6 +123,7 @@ class EditNomination extends Command
 
                 // Get data from form
                 $first_name     = $context['reference_first_name_'.$i];
+                $middle_name    = $context['reference_middle_name_'.$i];
                 $last_name      = $context['reference_last_name_'.$i];
                 $department     = $context['reference_department_'.$i];
                 $phone          = $context['reference_phone_'.$i];
@@ -131,7 +132,7 @@ class EditNomination extends Command
 
                 // Get matching Reference Object
                 $reference = new Reference($nomination->$get_ref_id());
-
+                
                 // Check if email has changed...
                 if($reference->getEmail() == $email){
                     // If email is same then just Update
@@ -142,15 +143,15 @@ class EditNomination extends Command
                     $reference->setPhone($phone);
                     $reference->setRelationship($relation);
                     // DO NOT UPDATE ---> $reference->setEmail($email);
-
+                    
                     $reference->save();
                 } else {
                     // Delete document then old reference (In that order!)
-                    // Also delete all entries in nomination_email_log
-                    PHPWS_Core::initModClass('nomination', 'EmailMessage.php');
+                    // Also delete all entries in plm_email_log
+                    PHPWS_Core::initModClass('plm', 'EmailMessage.php');
                     EmailMessage::deleteMessages($reference, SHORT_Reference);
 
-                    NominationDocument::delete($reference->getUniqueId());
+                    PLM_Doc::delete($reference->getUniqueId());
                     $reference->delete();
 
                     // Create reference
@@ -166,8 +167,8 @@ class EditNomination extends Command
                     $nomination->save();
 
                     // Email new reference
-                    Nomination_Email::updateNominationReference($ref, $nominator, $nominee);
-                    NQ::simple('nomination', NOMINATION_SUCCESS, 'Email sent to '.$ref->getFullName());
+                    PLM_Email::updateNominationReference($ref, $nominator, $nominee);
+                    NQ::simple('plm', PLM_SUCCESS, 'Email sent to '.$ref->getFullName());
                 }
 
                 // Update 'completed' status for nomination
@@ -179,13 +180,13 @@ class EditNomination extends Command
              **************/
             $nomination->category = $context['category'];
 
-            $doc = new NominationDocument($nomination);
+            $doc = new PLM_Doc($nomination);
             try{
                 // TODO: Remove old file
                 $doc->receiveFile('statement', 'nominator', $nominator->unique_id);
             } catch( IllegalFileException $e ){
-                NQ::simple('nomination', NOMINATION_ERROR, $e->getMessage());
-                PHPWS_Core::initModClass('nomination', 'ViewFactory.php');
+                NQ::simple('plm', PLM_ERROR, $e->getMessage());
+                PHPWS_Core::initModClass('plm', 'ViewFactory.php');
                 $vf = new ViewFactory();
                 $view = $vf->get('NominationForm');
                 $view->unique_id = $context['unique_id'];
@@ -198,8 +199,8 @@ class EditNomination extends Command
             $nomination->save(); //save changes
 
             // Send email
-            Nomination_Email::updateNominationNominator($nominator, $nominee);
-            NQ::simple('nomination', NOMINATION_SUCCESS, 'Form successfully updated.');
+            PLM_Email::updateNominationNominator($nominator, $nominee);
+            NQ::simple('plm', PLM_SUCCESS, 'Form successfully updated.');
         }
     }
 }

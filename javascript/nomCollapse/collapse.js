@@ -2,8 +2,8 @@ var Collapse = function(num, id, PHPWS_SOURCE_HTTP){
     this.num = num;
     this.isOpen = true;
 
-    this.open = "<img src='"+PHPWS_SOURCE_HTTP+"mod/nomination/img/arrow_down.png'/> Nomination "+this.num;
-    this.closed = "<img src='"+PHPWS_SOURCE_HTTP+"mod/nomination/img/arrow_right.png'/> Nomination "+this.num;
+    this.open = "<img src='"+PHPWS_SOURCE_HTTP+"mod/plm/img/arrow_down.png'/> Nomination "+this.num;
+    this.closed = "<img src='"+PHPWS_SOURCE_HTTP+"mod/plm/img/arrow_right.png'/> Nomination "+this.num;
 
     this.nom = ".nomination#"+num;
     this.toggle = "#nom-toggle-"+num;

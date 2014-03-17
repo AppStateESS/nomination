@@ -1,8 +1,8 @@
 <?php
 
-PHPWS_Core::initModClass('nomination', 'ViewMenu.php');
+PHPWS_Core::initModClass('plm', 'ViewMenu.php');
 
-class CommitteeMenu extends ViewMenu
+class CommitteeMenu extends PlemmViewMenu
 {
     public function __construct()
     {

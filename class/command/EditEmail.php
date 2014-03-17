@@ -6,18 +6,18 @@
  *   Edit a email message.
  *
  * @author Daniel West <dwest at tux dot appstate dot edu>
- * @package nomination
+ * @package plm
  */
 
-PHPWS_Core::initModClass('nomination', 'Command.php');
-PHPWS_Core::initModClass('nomination', 'NominationEmail.php');
+PHPWS_Core::initModClass('plm', 'Command.php');
+PHPWS_Core::initModClass('plm', 'PLM_Email.php');
 
 class EditEmail extends Command {
     public $from;
     public $list;
     public $subject;
     public $message;
-
+    
     public function getRequestVars()
     {
         $vars = array('action'=>'EditEmail');
@@ -46,7 +46,7 @@ class EditEmail extends Command {
 
         //can't session object with serialization witchery...
         $review = array();
-        $review['from'] = isset($context['from']) ? $context['from'] : PHPWS_Settings::get('nomination', 'email_from_address');
+        $review['from'] = $context['from'];
         $review['list'] = $context['list'];
         $review['subject'] = $context['subject'];
         $review['message'] = $context['message'];

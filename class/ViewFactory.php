@@ -9,7 +9,7 @@
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
-PHPWS_Core::initModClass('nomination', 'AbstractFactory.php');
+PHPWS_Core::initModClass('plm', 'AbstractFactory.php');
 
 class ViewFactory extends AbstractFactory
 {
@@ -24,14 +24,14 @@ class ViewFactory extends AbstractFactory
     // inherited from parent
     public function throwIllegal($name)
     {
-        PHPWS_Core::initModClass('nomination', 'exception/IllegalViewException.php');
+        PHPWS_Core::initModClass('plm', 'exception/IllegalViewException.php');
         throw new IllegalViewException("Illegal characters found in view {$name}");
     }
 
     // inherited from parent
     public function throwNotFound($name)
     {
-        PHPWS_Core::initModClass('nomination', 'exception/ViewNotFoundException.php');
+        PHPWS_Core::initModClass('plm', 'exception/ViewNotFoundException.php');
         throw new ViewNotFoundException("Could not initialize view {$name}");
     }
 }

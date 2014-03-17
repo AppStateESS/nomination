@@ -6,14 +6,14 @@
  *  Force the admin to review their email before clicking 'accept'.
  *
  * @author Daniel West <dwest at tux dot appstate dot edu>
- * @package nomination
+ * @package plm
  */
 
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'ViewFactory.php');
-PHPWS_Core::initModClass('nomination', 'CommandFactory.php');
+PHPWS_Core::initModClass('plm', 'View.php');
+PHPWS_Core::initModClass('plm', 'ViewFactory.php');
+PHPWS_Core::initModClass('plm', 'CommandFactory.php');
 
-class ReviewEmail extends OmNomView {
+class ReviewEmail extends PlemmView {
     protected $from;
     protected $list;
     protected $subject;
@@ -34,7 +34,7 @@ class ReviewEmail extends OmNomView {
         if(isset($this->message)){
             $vars['message'] = $this->message;
         }
-        
+
         return $vars;
     }
 
@@ -51,7 +51,6 @@ class ReviewEmail extends OmNomView {
         }
 
         $data = $_SESSION['review'];
-        //test($data, 0);
 
         $cf = new CommandFactory;
         $backCmd = $cf->get('EditEmail');
@@ -73,7 +72,7 @@ class ReviewEmail extends OmNomView {
         $submitCmd->initForm($forward);
         $forward->addSubmit('Send');
         
-        $lists = NominationEmail::getLists();
+        $lists = PLM_Email::getLists();
         $_SESSION['review']['list'] = $lists[$_SESSION['review']['list']];
         $data = array_change_key_case($_SESSION['review'], CASE_UPPER);
 
@@ -84,7 +83,7 @@ class ReviewEmail extends OmNomView {
 
         Layout::addPageTitle('Review Email');
 
-        return PHPWS_Template::process($data, 'nomination', 'admin/confirm_email.tpl');
+        return PHPWS_Template::process($data, 'plm', 'admin/confirm_email.tpl');
     }
 }
 ?>

@@ -8,7 +8,7 @@
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
-PHPWS_Core::initModClass('nomination', 'ViewMenu.php');
+PHPWS_Core::initModClass('plm', 'ViewMenu.php');
 
 class AdminMenu extends ViewMenu
 {

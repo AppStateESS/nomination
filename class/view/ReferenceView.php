@@ -7,10 +7,10 @@
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'Reference.php');
+PHPWS_Core::initModClass('plm', 'View.php');
+PHPWS_Core::initModClass('plm', 'Reference.php');
 
-class ReferenceView extends OmNomView
+class ReferenceView extends PlemmView
 {
     public $id;
 
@@ -32,11 +32,11 @@ class ReferenceView extends OmNomView
         $tpl['RELATIONSHIP'] = $ref->getRelationship();
         
         if(isset($context['ajax'])){
-            echo PHPWS_Template::process($tpl, 'nomination', 'admin/reference.tpl');
+            echo PHPWS_Template::process($tpl, 'plm', 'admin/reference.tpl');
             exit();
         } else {
             Layout::addPageTitle('Reference View');
-            return PHPWS_Template::process($tpl, 'nomination', 'admin/reference.tpl');
+            return PHPWS_Template::process($tpl, 'plm', 'admin/reference.tpl');
         }
     }
 }

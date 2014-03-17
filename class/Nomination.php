@@ -1,406 +1,179 @@
 <?php
-/**
- * Nomination
- *
- * Model class for representing a nomination.
- *
- * @author Jeremy Booker
- * @package nomination
- */
+  /**
+   * Nomination
+   *
+   * Nomination is the glue for references, a nominator, and a nominee.
+   *
+   * @author Robert Bost <bostrt at tux dot appstate dot edu>
+   */
 
-class Nomination
+PHPWS_Core::initModClass('plm', 'PLM_Model.php');
+PHPWS_Core::initModClass('plm', 'Nominator.php');
+PHPWS_Core::initModClass('plm', 'Reference.php');
+PHPWS_Core::initModClass('plm', 'exception/DatabaseException.php');
+PHPWS_Core::initModClass('plm', 'view/NominationView.php');
+
+define('NOMINATION_TABLE', 'plm_nomination');
+
+class Nomination extends PLM_Model
 {
-    public $id;
+    public $nominee_id;
+    public $nominator_id;
+    public $reference_id_1;
+    public $reference_id_2;
+    public $reference_id_3;
+    public $category;
+    public $completed;
+    public $period;
+    public $winner;
+    public $added_on;
+    public $updated_on;
 
-    // Nominee information
-    public $banner_id;
-    public $first_name;
-    public $middle_name;
-    public $last_name;
-    public $asubox;
-    public $email;
-    public $position;
-    public $department_major; // and/or Major
-    public $years_at_asu;
-    public $phone;
-    public $gpa;
-    public $class; // freshmen, sophomore, junior, senior
-    public $responsibility;    // have they done a bad or not
-
-
-    // Nominator information
-    public $nominator_first_name;
-    public $nominator_middle_name;
-    public $nominator_last_name;
-    public $nominator_address;
-    public $nominator_phone;
-    public $nominator_email;
-    public $nominator_relation;
-    //private $nominatorUniqueId; // Unused so far, but needed for nomination editing
-
-
-    // Nomination metadata
-    private $category;
-    private $period;
-
-    private $complete;
-    private $winner;
-    private $added_on;
-    private $updated_on;
-
-
-    public function __construct($bannerId, $firstName, $middleName, $lastName, $email, $asubox, $position, $department, $yearsAtASU, $phone, $gpa, $class, $responsibility,
-                    $nominatorFirstName, $nominatorMiddleName, $nominatorLastName, $nominatorAddress, $nominatorPhone, $nominatorEmail, $nominatorRelation,
-                    $category, $period){
-
-        $this->banner_id   = $bannerId;
-        $this->first_name  = $firstName;
-        $this->middle_name = $middleName;
-        $this->last_name   = $lastName;
-        $this->email      = $email;
-        $this->position   = $position;
-        $this->department_major = $department;
-        $this->years_at_asu = $yearsAtASU;
-        $this->phone      = $phone;
-        $this->gpa        = $gpa;
-        $this->class      = $class;
-        $this->asubox     = $asubox;
-        $this->responsibility = $responsibility; // just to make you cringe buddy!
-
-        $this->nominator_first_name  = $nominatorFirstName;
-        $this->nominator_middle_name = $nominatorMiddleName;
-        $this->nominator_last_name   = $nominatorLastName;
-        $this->nominator_address    = $nominatorAddress;
-        $this->nominator_phone      = $nominatorPhone;
-        $this->nominator_email      = $nominatorEmail;
-        $this->nominator_relation   = $nominatorRelation;
-
-        $this->category = $category;
-        $this->period   = $period;
-
-        $this->complete = 0;
-        $this->winner = 0;
-        $currTime = time();
-        $this->added_on = $currTime;
-        $this->updated_on = $currTime;
+    public function getDb()
+    {
+        return new PHPWS_DB(NOMINATION_TABLE);
+    }
+    
+    // Override save from PLM_Model, set teh udpated_on everytime there is a save
+    public function save()
+    {
+        $this->updated_on = time();
+        return parent::save();
     }
 
     /**
-     * Getter & Setters
+     * Add nomination to DB
+     *
+     * @param *_id - id in DB for each nomination actor
+     * @param category - The category for the nomination, see inc/defines.php for listing
      */
-    public function getId(){
-        return $this->id;
+    public static function addNomination($nominee_id, $nominator_id, $reference_id_1,
+                                         $reference_id_2, $reference_id_3, $category)
+    {
+        $nom = new Nomination();
+        
+        $nom->nominee_id     = $nominee_id;
+        $nom->nominator_id   = $nominator_id;
+        $nom->reference_id_1 = $reference_id_1;
+        $nom->reference_id_2 = $reference_id_2;
+        $nom->reference_id_3 = $reference_id_3;
+        $nom->category       = $category;
+        $nom->completed = 0;
+        $nom->period = PHPWS_Settings::get('plm', 'current_period');
+        /* $nom->winner should be null */
+        $now = time();
+        $nom->added_on = $now;
+        $nom->updated_on = $now;
+
+        $result = $nom->save();
+
+        return $result;
     }
 
-    public function setId($id){
-        $this->id = $id;
+    /** 
+     * Getters...
+     */
+    public function getNomineeId(){
+        return $this->nominee_id;
     }
-
-    public function getBannerId(){
-        return $this->banner_id;
+    public function getNominatorId(){
+        return $this->nominator_id;
     }
-
-    public function setBannerId($id){
-        $this->banner_id = $id;
+    public function getReferenceId1(){
+        return $this->reference_id_1;
     }
-
-    public function getFirstName(){
-        return $this->first_name;
+    public function getReferenceId2(){
+        return $this->reference_id_2;
     }
-
-    public function setFirstName($name){
-        $this->first_name = $name;
+    public function getReferenceId3(){
+        return $this->reference_id_3;
     }
-
-    public function getMiddleName(){
-        return $this->middle_name;
-    }
-
-    public function setMiddleName($name){
-        $this->middle_name = $name;
-    }
-
-    public function getLastName(){
-        return $this->last_name;
-    }
-
-    public function setLastName($name){
-        $this->last_name = $name;
-    }
-
-    public function getFullName() {
-        return $this->getFirstName() . ' ' . $this->getLastName();
-    }
-
-    public function getAsubox() {
-        return $this->asubox;
-    }
-
-    public function setAsubox($asubox) {
-        $this->asubox = $asubox;
-    }
-
-    public function getEmail(){
-        return $this->email;
-    }
-
-    // Assumes email address is stored without domain,
-    // and all addresses belong to the @appstate.edu domain
-    public function getEmailLink(){
-        $email = $this->email . "@appstate.edu";
-        return "<a href='mailto:$email'>$email</a>";
-    }
-
-    public function setEmail($addr){
-        $this->email = $addr;
-    }
-
-    public function getPosition(){
-        return $this->position;
-    }
-
-    public function setPosition($pos){
-        $this->position = $pos;
-    }
-
-    public function getDeptMajor(){
-        return $this->department_major;
-    }
-
-    public function setDeptMajor($dept){
-        $this->department_major = $dept;
-    }
-
-    public function getYearsAtASU(){
-        return $this->years_at_asu;
-    }
-
-    public function setYearsAtASU($num){
-        $this->years_at_asu = $num;
-    }
-
-    public function getPhone(){
-        return $this->phone;
-    }
-
-    public function setPhone($phone){
-        $this->phone = $phone;
-    }
-
-    public function getGpa(){
-        return $this->gpa;
-    }
-
-    public function setGpa($gpa){
-        $this->gpa = $gpa;
-    }
-
-    public function getClass(){
-        return $this->class;
-    }
-
-    public function setClass($class){
-        $this->class = $class;
-    }
-
-    public function setResponsibility($responsibility) {
-        $this->responsibility = $responsibility;
-    }
-
-    public function getResponsibility() {
-        return $this->responsibility;
-    }
-
-    public function getNominatorFirstName(){
-        return $this->nominator_first_name;
-    }
-
-    public function setNominatorFirstName($name){
-        $this->nominator_first_name = $name;
-    }
-
-    public function getNominatorMiddleName(){
-        return $this->nominator_middle_name;
-    }
-
-    public function setNominatorMiddleName($name){
-        $this->nominator_middle_name = $name;
-    }
-
-    public function getNominatorLastName(){
-        return $this->nominator_last_name;
-    }
-
-    public function setNominatorLastName($name){
-        $this->nominator_last_name = $name;
-    }
-
-    public function getNominatorFullName() {
-        return $this->getNominatorFirstName() . ' ' . $this->getNominatorLastName();
-    }
-
-    public function getNominatorAddress(){
-        return $this->nominator_address;
-    }
-
-    public function setNominatorAddress($address){
-        $this->nominator_address = $address;
-    }
-
-    public function getNominatorPhone(){
-        return $this->nominator_phone;
-    }
-
-    public function setNominatorPhone($phone){
-        $this->nominator_phone = $phone;
-    }
-
-    public function getNominatorEmail(){
-        return $this->nominator_email;
-    }
-
-    // Assumes email address is stored without domain,
-    // and all addresses belong to the @appstate.edu domain
-    public function getNominatorEmailLink(){
-        $email = $this->nominator_email . "@appstate.edu";
-        return "<a href='mailto:$email'>$email</a>";
-    }
-
-    public function setNominatorEmail($address){
-        $this->nominator_email = $address;
-    }
-
-    public function getNominatorRelation(){
-        return $this->nominator_relation;
-    }
-
-    public function setNominatorRelation($relation){
-        $this->nominator_relation = $relation;
-    }
-
     public function getCategory(){
-        /*
-         switch($this->category)
-         {
-        case NOMINATION_STUDENT_LEADER:
-        return NOMINATION_STUDENT_LEADER_TEXT;
-        case NOMINATION_STUDENT_EDUCATOR:
-        return NOMINATION_STUDENT_EDUCATOR_TEXT;
-        case NOMINATION_FACULTY_MEMBER:
-        return NOMINATION_FACULTY_MEMBER_TEXT;
-        case NOMINATION_EMPLOYEE:
-        return NOMINATION_EMPLOYEE_TEXT;
-        default:
-        return null;
-        }
-        */
-        return $this->category;
+        switch($this->category)
+            {
+            case PLM_STUDENT_LEADER:
+                return PLM_STUDENT_LEADER_TEXT;
+            case PLM_STUDENT_EDUCATOR:
+                return PLM_STUDENT_EDUCATOR_TEXT;
+            case PLM_FACULTY_MEMBER:
+                return PLM_FACULTY_MEMBER_TEXT;
+            case PLM_EMPLOYEE:
+                return PLM_EMPLOYEE_TEXT;
+            default:
+                return null;
+            }
     }
-
-    public function setCategory($cat) {
-        $this->category = $cat;
-    }
-
     public function getPeriod(){
+        PHPWS_Core::initModClass('plm', 'Period.php');
+        return Period::getPeriodByYear($this->period);
+    }
+    public function getPeriodYear(){
         return $this->period;
     }
-
-    public function setPeriod($p) {
-        $this->period = $p;
+    public function isCompleted(){
+        return $this->completed;
     }
-
-    public function getComplete(){
-        return $this->complete;
+    public function getAddedOn(){
+        return $this->added_on;
     }
-
-    /**
-     * Marks this nomination as complete.
-     * @param boolean $comp
-     */
-    public function setComplete($comp) {
-        if($comp){
-            $this->complete = 1;
-        }else{
-            $this->complete = 0;
-        }
+    public function getReadableAddedOn(){
+        return strftime("%B %d, %Y", $this->getAddedOn());
     }
-
-    public function getWinner(){
-        return $this->winner;
+    public function getUpdatedOn(){
+        return $this->updated_on;
     }
-
-    public function isWinner()
-    {
-        if(($this->winner)==0){
+    public function getReadableUpdatedOn(){
+        return strftime("%B %d, %Y", $this->getUpdatedOn());
+    }
+    public function isWinner(){
+        if(is_null($this->winner)){
             return False;
         } else {
             return True;
         }
     }
-
-    public function setWinner($win) {
-        if($win){
-            $this->winner = 1;
-        }else{
-            $this->winner = 0;
+    
+    /**
+     * Setters...
+     */
+    public function setNomineeId($x){
+        $this->nomineeId = $x;
+    }
+    public function setNominatorId($x){
+        $this->nominatorId = $x;
+    }
+    public function setReferenceId1($refId1){
+        $this->reference_id_1 = $refId1;
+    }
+    public function setReferenceId2($refId2){
+        $this->reference_id_2 = $refId2;
+    }
+    public function setReferenceId3($refId3){
+        $this->reference_id_3 = $refId3;
+    }
+    public function setCategory($x){
+        $this->category = $x;
+    }
+    public function setCompleted($x){
+        $this->completed = $x;
+    }
+    public function setAddedOn($added){
+        $this->added_on = $added;
+    }
+    public function setUpdatedOn($updated){
+        $this->updated_on = $updated;
+    }
+    public function setWinner($winner){
+        if(!$winner){
+            $this->winner = Null;
+        } else {
+            $this->winner = True;
         }
-    }
-
-    public function getAddedOn(){
-        return $this->added_on;
-    }
-
-    public function getReadableAddedOn(){
-        return strftime("%B %d, %Y", $this->getAddedOn());
-    }
-
-    public function setAddedOn($time) {
-        $this->added_on = $time;
-    }
-
-    public function getUpdatedOn(){
-        return $this->updated_on;
-    }
-
-    public function getReadableUpdatedOn(){
-        return strftime("%B %d, %Y", $this->getUpdatedOn());
-    }
-
-    public function setUpdatedOn($time) {
-        $this->updated_on = $time;
     }
 
     /**
      * Utilities
      */
-
-    public function checkCompletion()
-    {
-        //we need to check if this nomination is complete
-        // 1. has each reference uploaded a document?
-        PHPWS_Core::initModClass('nomination','ReferenceFactory.php');
-        PHPWS_Core::initModClass('nomination','Reference.php');
-        $numReferencesReq = Reference::getNumReferencesReq();
-
-        $ref = new ReferenceFactory();
-
-        //grab the references attached to this
-        $references = $ref->getByNominationId($this->id);
-
-        var_dump(debug_backtrace());
-        exit;
-
-
-        // foreach reference in references
-        //   do they have a doc?
-        //   if everyone has a doc then its complete
-        foreach($references as $ref){
-            if($ref->getDocId() == NULL)
-                return false;
-        }
-        return true;
-
-    }
     /**
      *  Get link to view nomination
      *  Default text is nominator name and submission date
@@ -424,171 +197,427 @@ class Nomination
 
         return $link;
     }
-    //gets a link to the nominee
-    public function getNomineeLink(){
-        PHPWS_Core::initModClass('nomination','view/NomineeView.php');
 
-        $view = new NomineeView();
-        //we need this so we can see the id later
-        $view->setNominationId($this->id);
-        $name = $this->getFullName();
-        $link = $view->getLink($name);
-        return $link;
+    public function deleteForReal()
+    {
+        PHPWS_Core::initModClass('plm', 'Reference.php');
+        PHPWS_Core::initModClass('plm', 'Nominator.php');
+        PHPWS_Core::initModClass('plm', 'Nominee.php');
+        PHPWS_Core::initModClass('plm', 'EmailMessage.php');
+        PHPWS_Core::initModClass('plm', 'PLM_Doc.php');
+
+        // Delete the nominee if needed (Read comments at top of file)
+        $nominee = $this->getNominee();
+
+        // Get nomination count INCLUDING THIS ONE
+        if($nominee->getNominationCount() < 2){
+            // This was the only nomination; it's okay to delete nominee
+            EmailMessage::deleteMessages($nominee);
+            $nominee->delete();
+        }
+
+        // Delete references, their uploaded documents, and logged emails.
+        $references = $this->getReferences();
+        foreach($references as $reference){
+            PLM_Doc::delete($reference->unique_id);
+            EmailMessage::deleteMessages($reference);
+            $reference->delete();
+        }
+
+        // Delete nominator, his supporting statement, and logged emails.
+        $nominator = $this->getNominator(); 
+        PLM_Doc::delete($nominator->unique_id);
+        EmailMessage::deleteMessages($nominator);
+        $nominator->delete();
+
+        // Finally, delete the nomination;
+        $this->delete();
     }
 
-    public function getNominatorLink() {
-        PHPWS_Core::initModClass('nomination', 'view/NominatorView.php');
-
-        $view = new NominatorView();
-        //we need this so we can see the id later
-        $view->setNominationId($this->id);
-        $name = $this->getNominatorFullName();
-        $link = $view->getLink($name);
-        return $link;
-    }
-
-    /*
-     public function deleteForReal()
-     {
-    PHPWS_Core::initModClass('nomination', 'Reference.php');
-    PHPWS_Core::initModClass('nomination', 'Nominator.php');
-    PHPWS_Core::initModClass('nomination', 'Nominee.php');
-    PHPWS_Core::initModClass('nomination', 'EmailMessage.php');
-    PHPWS_Core::initModClass('nomination', 'NominationDocument.php');
-
-    // Delete the nominee if needed (Read comments at top of file)
-    $nominee = $this->getNominee();
-
-    // Get nomination count INCLUDING THIS ONE
-    if($nominee->getNominationCount() < 2){
-    // This was the only nomination; it's okay to delete nominee
-    EmailMessage::deleteMessages($nominee);
-    $nominee->delete();
-    }
-
-    // Delete references, their uploaded documents, and logged emails.
-    $references = $this->getReferences();
-    foreach($references as $reference){
-    NominationDocument::delete($reference->unique_id);
-    EmailMessage::deleteMessages($reference);
-    $reference->delete();
-    }
-
-    // Delete nominator, his supporting statement, and logged emails.
-    $nominator = $this->getNominator();
-    NominationDocument::delete($nominator->unique_id);
-    EmailMessage::deleteMessages($nominator);
-    $nominator->delete();
-
-    // Finally, delete the nomination;
-    $this->delete();
-    }
-    */
-
-
-    // Row tags for DBPager
-    public function rowTags() {
-
-        /*$nominee = $this->getNominee();
-         $nominator = $this->getNominator();
-        $period = $this->getPeriodYear();
-
-        $tpl= array('NOMINEE_LINK' => $nominee->getLink(),
-                        'NOMINATOR_LINK' => $nominator->getLink(),
-                        'PERIOD' => $period);
-
-
-        return $tpl;
-        */
-
-        //get nominee link
-        //get nominee email
-
-        $tpl             = array();
-        $tpl['NOMINEE_LINK']     = $this->getNomineeLink();
-        $tpl['NOMINATOR_LINK']   = $this->getNominatorLink();
-        //$tpl['NOMINATOR_LINK']   = $this->getNominatorFullName();
-        return $tpl;
-    }
-}
-
-/**
- * Empty child class for Nomination for loading objects from the database.
- *
- * @author jbooker
- * @package nomination
- */
-class DBNomination extends Nomination {
     /**
-     * Empty constructor for restoring objects from a database
-     * without calling the parent class' constructor.
+     * Check if all references have submitted a 
+     * letter of recommendation.
+     * If they have then set nomination to completed
      */
-    public function __construct(){
-    }
-}
-
-/**
- * This function is used by DB_Pager's csv reporting function. It returns
- * the row data for a CSV report of Nominations.
- *
- * This is located here instead of in the Nomination class because it needs to
- * be a standalone function, otherwise DB_Pager will not send it the Object it needs.
- *
- * @param obj An object representing a row of the CSV report.
- * @returns An associative array of variables that make up one row of a CSV report.
- */
-function reportRowForCSV($obj) {
-    PHPWS_Core::initModClass('nomination', 'NominationFactory.php');
-    $factory = new NominationFactory();
-    $data = $factory->getNominationbyId($obj->getId());
-
-    $row['banner_id']               = $data->getBannerId();
-    $row['first_name']              = $data->getFirstName();
-    $row['middle_name']             = $data->getMiddleName();
-    $row['last_name']               = $data->getLastName();
-    $row['email']                   = $data->getEmail() . '@appstate.edu';
-    $row['phone']                   = $data->getPhone();
-    $row['asubox']                  = $data->getAsuBox();
-    $row['position']                = $data->getPosition();
-    $row['department_major']        = $data->getDeptMajor();
-    $row['years_at_asu']            = $data->getYearsAtASU();
-    $row['gpa']                     = $data->getGpa();
-    $row['class']                   = $data->getClass();
-    $row['responsibility']          = $data->getResponsibility();
-    $row['nominator_first_name']    = $data->getNominatorFirstName();
-    $row['nominator_middle_name']   = $data->getNominatorMiddleName();
-    $row['nominator_last_name']     = $data->getNominatorLastName();
-    $row['nominator_email']         = $data->getNominatorEmail() . '@appstate.edu';
-    $row['nominator_phone']         = $data->getNominatorPhone();
-    $row['nominator_address']       = $data->getNominatorAddress();
-    $row['nominator_relation']      = $data->getNominatorRelation();
-
-    // These variables are private in the nomination object.
-    // To make these work, DB_Pager needs to pass the row data to this method so
-    // that this method can load the nomination object from the DB.
-    // DB_Pager only passes row data to standalone functions.
-    $row['category']                = $data->getCategory();
-    $row['period']                  = $data->getPeriod();
-    $row['complete']                = $data->getComplete() ? 'Yes' : 'No';
-    $row['winner']                  = $data->isWinner() ? 'Yes' : 'No';
-    $row['added_on']                = strftime('%m/%d/%Y %T', $data->getAddedOn());
-    $row['updated_on']              = strftime('%m/%d/%Y %T', $data->getUpdatedOn());
-
-    $numRefs = PHPWS_Settings::get('nomination', 'num_references_req');
-    $db = new PHPWS_DB('nomination_reference');
-    $db->addWhere('nomination_id', $obj->getId());
-    $references = $db->select();
-
-    for($i = 0; $i < $numRefs; $i++) {
-        $num = $i+1;
-        $row['reference_'.$num.'_first_name'] = $references[$i]['first_name'];
-        $row['reference_'.$num.'_last_name'] = $references[$i]['last_name'];
-        $row['reference_'.$num.'_email'] = $references[$i]['email'];
-        $row['reference_'.$num.'_phone'] = $references[$i]['phone'];
-        $row['reference_'.$num.'_department'] = $references[$i]['department'];
-        $row['reference_'.$num.'_relationship'] = $references[$i]['relationship'];
+    public function checkCompletion()
+    {
+        $refs = $this->getReferences();
+        $terminado = True;
+        foreach($refs as $ref){
+            if(is_null($ref->doc_id)){
+                $this->setCompleted(False);
+                $this->save();
+                return False;
+            }
+        }
+        $this->setCompleted(True);
+        $this->save();
+        return True;
     }
 
-    return $row;
+
+    /********
+     * Util *
+     ********/
+    // Row tags for DBPager
+    public function rowTags()
+    {
+        $nominee = $this->getNominee();
+        $nominator = $this->getNominator();
+        $period = $this->getPeriodYear();
+        
+        $tpl= array('NOMINEE_LINK' => $nominee->getLink(),
+                    'NOMINATOR_LINK' => $nominator->getLink(),
+                    'PERIOD' => $period);
+                    
+        
+        return $tpl;
+                                  
+    }
+
+    /******************************
+     * Factory Methods for Actors *
+     ******************************/
+    public function getNomineeEmail()
+    {
+        $nominee = $this->getNominee();
+        return $nominee->getEmail();
+    }
+
+    public function getNominatorEmail()
+    {
+        $nominator = $this->getNominator();
+        return $nominator->getEmail();
+    }
+
+    public function getNominator()
+    {
+        PHPWS_Core::initModClass('plm', 'Nominator.php');
+        $nominator = new Nominator();
+        $nominator->id = $this->nominator_id;
+        $nominator->load();
+
+        return $nominator;
+    }
+
+    public function getNominee()
+    {
+        PHPWS_Core::initModClass('plm', 'Nominee.php');
+        $nominee = new Nominee();
+        $nominee->id = $this->nominee_id;
+        $nominee->load();
+
+        return $nominee;
+    }
+
+    public function getNomineeName()
+    {
+        $omnominee = $this->getNominee();
+        return $omnominee->getFullName();
+    }
+
+    public function getReferences()
+    {
+        PHPWS_Core::initModClass('plm', 'Reference.php');
+        
+        $ref = array();
+
+        for($i = 1; $i <= REFERENCE_COUNT; $i++){
+            $func = 'getReferenceId'.$i;
+            $ref = new Reference($this->$func());
+            $refs[] = $ref;
+        }
+        return $refs;
+    }
+
+    public function getReference1()
+    {
+        PHPWS_Core::initModClass('plm', 'Reference.php');
+        return new Reference($this->reference_id_1);
+    }
+
+    public function getReference2()
+    {
+        PHPWS_Core::initModClass('plm', 'Reference.php');
+        return new Reference($this->reference_id_2);
+    }
+
+    public function getReference3()
+    {
+        PHPWS_Core::initModClass('plm', 'Reference.php');
+        return new Reference($this->reference_id_3);
+    }
+
+
+    /*******************
+     * Factory Methods *
+     *******************/
+    /**
+     * Get a "Nomination" by references/nominator unique_id
+     * @return array - Return an array representation of a Nomination
+     */
+    public static function getByNominatorUnique_Id($unique_id){
+        $db = Nomination::getDb();
+
+        $db->addJoin('left', 'plm_nomination', 'plm_nominator', 'nominator_id', 'id');
+        $db->addWhere('plm_nominator.unique_id', $unique_id);
+
+        $results = $db->select('row');
+
+        if(PHPWS_Error::logIfError($results) || sizeof($results) == 0){
+            throw new DatabaseException('No results');
+        }
+
+        $db = new PHPWS_DB('plm_nominee');
+        $db->addWhere('id', $results);
+        $nominee = $db->select('row');
+        
+        if(PHPWS_Error::logIfError($results) || sizeof($results) == 0){
+            throw new DatabaseException('Nomination with no nominee?');
+        }
+        
+        foreach($nominee as $key=>$nominee_field){
+            $results['nominee_'.$key] = $nominee_field;
+        }
+
+        $db = new PHPWS_DB('plm_reference');
+        $db->addWhere('id', $results['reference_id_1'], NULL, 'or');
+        $db->addWhere('id', $results['reference_id_2'], NULL, 'or');
+        $db->addWhere('id', $results['reference_id_3'], NULL, 'or');
+        $db->setIndexBy('id');
+
+        $references = $db->select();
+
+        if(PHPWS_Error::logIfError($references)){
+            throw new DatabaseException('Insufficient References on file!');
+        }
+
+        for($i=0; $i < 3; $i++){ //magic number is the number of references, change iff that changes
+            $key = 'reference_id_'.($i+1);
+            if(isset($results[$key]) && !is_null($results[$key])){
+                foreach($references[$results[$key]] as $field_name=>$field_value){
+                    if($field_name != 'id')
+                        $results['reference_'.$field_name.'_'.($i+1)] = $field_value;;
+                }
+            }
+        }
+
+        $db = new PHPWS_DB('plm_nominator');
+        $db->addWhere('id', $results['nominator_id']);
+        
+        $nominator = $db->select('row');
+        
+        if(PHPWS_Error::logIfError($nominator) || sizeof($nominator) == 0){
+            throw new DatabaseException('Nomination without nominator?');
+        }
+
+        foreach($nominator as $field_name=>$field_value){
+            $results['nominator_'.$field_name] = $field_value;
+        }
+
+        return $results;
+    }
+
+    /**
+     * Get Nomination by reference unique_id
+     * There should only be one Nomination returned from DB
+     *
+     * @return Nomination - 
+     */
+    public static function getByReferenceUnique_Id($unique_id)
+    {
+        $db = self::getDb();
+        $db->addTable('plm_reference');
+        $db->addWhere('reference_id_1', 'plm_reference.id', NULL, 'or', 'ref');
+        $db->addWhere('reference_id_2', 'plm_reference.id', NULL, 'or', 'ref');
+        $db->addWhere('reference_id_3', 'plm_reference.id', NULL, 'or', 'ref');
+        $db->addWhere('plm_reference.unique_id', $unique_id);
+        $result = $db->getObjects('Nomination');
+
+        if(PHPWS_Error::logIfError($result) || sizeof($result) > 1 || sizeof($result) == 0){
+            throw new DatabaseException('Invalid reference unique_id');
+        }
+
+        return $result[0];
+    }
+    
+
+    /**
+     * Return Reference/Nominator that matches the given unique_id.
+     * There should only be one Refernce or Nominator for a given unique_id.
+     *
+     * @param unique_id - unqiue_id of reference or nominator but not both!
+     */
+    public static function getMember($unique_id)
+    {
+        $db = new PHPWS_DB('plm_reference');
+        $db->addWhere('unique_id', $unique_id);
+        $result = $db->getObjects('Reference');
+
+        if(PHPWS_Error::logIfError($result) || sizeof($result) > 1){
+            throw new DatabaseException('Invalid unique_id');
+        }
+
+        if(sizeof($result) != 0){
+            return $result[0];
+        } // else check to see if it's the nominator
+        $db = new PHPWS_DB('plm_nominator');
+        $db->addWhere('unique_id', $unique_id);
+        $result = $db->getObjects('Nominator');
+
+        if(PHPWS_Error::logIfError($result) || sizeof($result) > 1 || sizeof($result) == 0){
+            throw new DatabaseException('Invalid unique_id');
+        }
+
+        return $result[0];
+    }
+
+    /**
+     * Get the non-winning nominations for current nomination period
+     *
+     * @return Nomination - Array of non-winning nominations
+     */
+    public static function getNonWinningNominations()
+    {
+        $currPeriod = PHPWS_Settings::get('plm', 'current_period');
+        return Nomination::getNonWinningNominationsByPeriod($currPeriod);
+    }
+
+    /**
+     * Get the non-winning nominations for a given nomination period
+     *
+     * @return Nomination - Array of non-winning nominations
+     */
+    public static function getNonWinningNominationsByPeriod($period)
+    {
+        $db = Nomination::getDb();
+        
+        $db->addWhere('period', $period);
+        $db->addWhere('winner', NULL);
+
+        $result = $db->select();
+
+        if(PHPWS_Error::logIfError($result)){
+            throw new DatabaseException($result->toString());
+        }
+        // Plug info into objects
+        $noms = array();
+        foreach($result as $nom){
+            $nomObj = new Nomination();
+            PHPWS_Core::plugObject($nomObj, $nom);
+            $noms[] = $nomObj;
+        }
+        return $noms;
+    }
+
+    /**
+     * Get the winning nominations for current nomination period
+     *
+     * @return Nomination - Array of winning nominations
+     */
+    public static function getWinningNominations()
+    {
+        $currPeriod = PHPWS_Settings::get('plm', 'current_period');
+        return Nomination::getWinningNominationsByPeriod($currPeriod);
+    }
+
+    /**
+     * Get the winning nominations for a given nomination period
+     *
+     * @return Nomination - Array of winning nominations
+     */
+    public static function getWinningNominationsByPeriod($period)
+    {
+        $db = Nomination::getDb();
+        
+        $db->addWhere('period', $period);
+        $db->addWhere('winner', !NULL);
+        $result = $db->select();
+        
+        if(PHPWS_Error::logIfError($result)){
+            PHPWS_Core::initModClass('plm', 'exception/DatabaseException.php');
+            throw new DatabaseException($result->toString());
+        }
+        // Plug info into objects
+        $noms = array();
+        foreach($result as $nom){
+            $nomObj = new Nomination();
+            PHPWS_Core::plugObject($nomObj, $nom);
+            $noms[] = $nomObj;
+        }
+        return $noms;
+    }
+
+    /**
+     * Get nomination by the nominator id
+     */
+    public static function getByNominatorId($id)
+    {
+        $db = Nomination::getDb();
+        
+        $db->addWhere('nominator_id', $id);
+        $result = $db->getObjects('Nomination');
+        
+        if(PHPWS_Error::logIfError($result)){
+            PHPWS_Core::initModClass('plm', 'exception/DatabaseException.php');
+            throw new DatabaseException($result->toString());
+        }
+        else if(sizeof($result) != 1){
+            PHPWS_Core::initModClass('plm', 'exception/DatabaseException.php');
+            throw new DatabaseException('DatabaseException: Should only be one nomination per nominator');
+        }
+        
+        return $result[0];
+    }
+    /**
+     * Get nomination by the reference id
+     */
+    public static function getByReferenceId($id)
+    {
+        $db = Nomination::getDb();
+        
+        $db->addWhere('reference_id_1', $id, NULL, 'OR');
+        $db->addWhere('reference_id_2', $id, NULL, 'OR');
+        $db->addWhere('reference_id_3', $id, NULL, 'OR');
+
+        $result = $db->getObjects('Nomination');
+        
+        if(PHPWS_Error::logIfError($result)){
+            PHPWS_Core::initModClass('plm', 'exception/DatabaseException.php');
+            throw new DatabaseException($result->toString());
+        } 
+        else if(sizeof($result) != 1){
+            PHPWS_Core::initModClass('plm', 'exception/DatabaseException.php');
+            throw new DatabaseException('DatabaseException: Should be one nomination per reference');
+        }
+        
+        // Should only be a single nomination
+        return $result[0];
+    }
+
+    /**
+     * Get Nomination by nominee ID
+     * There may be more than one Nomination returned. 
+     * Nominations and Nominees are N-to-1
+     *
+     * @param id - row id in nominee table
+     * @return Nomination - 
+     */
+    public static function getByNomineeId($id)
+    {
+        PHPWS_Core::initModClass('plm', 'Period.php');
+
+        $db = self::getDb();
+        $db->addWhere('nominee_id', $id);
+        $db->addWhere('period', Period::getCurrentPeriodYear());
+        
+        $result = $db->getObjects('Nomination');
+        
+        if(PHPWS_Error::logIfError($results)){
+            throw new DatabaseException($results->getMessage());
+        } else {
+            return $results;
+        }
+    }
 }
 ?>

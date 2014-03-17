@@ -10,7 +10,7 @@ abstract class AbstractFactory
 {
     abstract function getDirectory();
     abstract function throwIllegal($name);
-    abstract function throwNotFound($name);
+    abstract function throwNotFound($name);	
 
     public function get($name=Null)
     {
@@ -32,8 +32,12 @@ abstract class AbstractFactory
             $this->throwIllegal($name);
         }
 
-        PHPWS_Core::initModClass('nomination', "{$dir}/{$name}.php");
-
+        try{
+            PHPWS_Core::initModClass('plm', "{$dir}/{$name}.php");
+        } catch(Exception $e){
+            $this->throwNotFound($name);
+        }
+        
         return $name;
     }
 }

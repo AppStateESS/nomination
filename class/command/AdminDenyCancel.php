@@ -9,7 +9,7 @@
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
-PHPWS_Core::initModClass('nomination', 'Command.php');
+PHPWS_Core::initModClass('plm', 'Command.php');
 
 class AdminDenyCancel extends Command
 {
@@ -32,8 +32,8 @@ class AdminDenyCancel extends Command
         if(!UserStatus::isAdmin()){
             throw new PermissionException('You are not allowed to do that!');
         }
-        PHPWS_Core::initModClass('nomination', 'Nomination.php');
-        PHPWS_Core::initModClass('nomination', 'CancelQueue.php');
+        PHPWS_Core::initModClass('plm', 'Nomination.php');
+        PHPWS_Core::initModClass('plm', 'CancelQueue.php');
 
         $nomination = new Nomination($context['nominationId']);
         CancelQueue::remove($nomination);

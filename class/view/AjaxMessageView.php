@@ -7,11 +7,11 @@
    * context.
    *
    * @author Daniel West <dwest at tux dot appstate dot edu>
-   * @package nomination
+   * @package plm
    */
-PHPWS_Core::initModClass('nomination', 'View.php');
+PHPWS_Core::initModClass('plm', 'View.php');
 
-class AjaxMessageView extends OmNomView {
+class AjaxMessageView extends PlemmView {
     protected $message;
 
     public function getRequestVars()

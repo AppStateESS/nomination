@@ -1,4 +1,4 @@
-<script type="text/javascript" src="{PHPWS_SOURCE_HTTP}mod/nomination/javascript/nomCollapse/collapse.js"></script>
+<script type="text/javascript" src="{PHPWS_SOURCE_HTTP}mod/plm/javascript/nomCollapse/collapse.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
     var noms = {noms};

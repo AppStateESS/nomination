@@ -10,11 +10,10 @@
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
-PHPWS_Core::initModClass('nomination', 'Command.php');
-PHPWS_Core::initModClass('nomination', 'view/AjaxMessageView.php');
-PHPWS_Core::initModClass('nomination', 'Nomination.php');
-PHPWS_Core::initModClass('nomination', 'NominationFactory.php');
-PHPWS_Core::initModClass('nomination', 'Period.php');
+PHPWS_Core::initModClass('plm', 'Command.php');
+PHPWS_Core::initModClass('plm', 'view/AjaxMessageView.php');
+PHPWS_Core::initModClass('plm', 'Nomination.php');
+PHPWS_Core::initModClass('plm', 'Period.php');
 
 
 class SetWinnerStatus extends Command
@@ -31,25 +30,22 @@ class SetWinnerStatus extends Command
         }
 
         $context['after'] = new AjaxMessageView();
-        $status = $context['status'];
-        $factory = new NominationFactory();
-        $nomination = $factory->getNominationById($context['id']);
+        $status = $context['status'] == "1";
+        $nomination = new Nomination($context['id']);
+        $period = $nomination->getPeriod();
 
-        $db = new PHPWS_DB('nomination_period');
-        $db->addWhere('id', $nomination->getPeriod());
-        $period = $db->select('row');
-
-        if ($period['year'] == Period::getCurrentPeriodYear()) {
+        // Check that nomination is for current year
+        if($period->getYear() == Period::getCurrentPeriodYear()){
             $nomination->setWinner($status);
-        } else {
+        }
+        else{
             $context['after']->setMessage(False);
             return;
         }
-
-        try {
-            $factory->save($nomination);
+        try{
+            $nomination->save();
             $context['after']->setMessage(True);
-        } catch (DatabaseException $e) {
+        } catch (DatabaseException $e){
             $context['after']->setMessage(False);
         }
     }

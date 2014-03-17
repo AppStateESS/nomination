@@ -9,7 +9,7 @@
  * @package timetracker
  */
 
-abstract class OmNomView {
+abstract class PlemmView {
     abstract function getRequestVars();
     abstract function display(Context $context);
 
@@ -17,7 +17,7 @@ abstract class OmNomView {
     {
         $module = $form->get('module');
         if(PEAR::isError($module)){
-            $form->addHidden('module', 'nomination');
+            $form->addHidden('module', 'plm');
         }
         
         foreach($this->getRequestVars() as $key=>$value){
@@ -49,7 +49,7 @@ abstract class OmNomView {
 	 */
 	public function getLink($text, $target = NULL, $cssClass = NULL, $title = NULL)
 	{
-		return PHPWS_Text::moduleLink(dgettext('nomination', $text), 'nomination', $this->getRequestVars(), $target, $title, $cssClass);
+		return PHPWS_Text::moduleLink(dgettext('plm', $text), 'plm', $this->getRequestVars(), $target, $title, $cssClass);
 	}
 
 	/**
@@ -68,8 +68,8 @@ abstract class OmNomView {
 	 * @see redirect
 	 */
 	function getURI(){
-		$uri = $_SERVER['SCRIPT_NAME'] . "?module=nomination";
-        $uri = 'index.php?module=nomination';
+		$uri = $_SERVER['SCRIPT_NAME'] . "?module=plm";
+        $uri = 'index.php?module=plm';
 		foreach($this->getRequestVars() as $key=>$val) {
 			if(is_array($val)){
 				foreach($val as $key2=>$val2)
@@ -88,7 +88,7 @@ abstract class OmNomView {
     }
 }
 
-abstract class NomView extends OmNomView
+abstract class PLMView extends PlemmView
 {
     private $main;
     
@@ -101,12 +101,12 @@ abstract class NomView extends OmNomView
         return $this->main;
     }
     
-    public function displayNomination($content)
+    public function displayPLM($content)
     {
         $tpl = array();
         $tpl['MAIN'] = $content;
-        Layout::addStyle('nomination', 'css/nomination.css');
-        return PHPWS_Template::process($tpl, 'nomination', 'nomination.tpl');
+        Layout::addStyle('plm', 'css/plm.css');
+        return PHPWS_Template::process($tpl, 'plm', 'plm.tpl');
     }
 }
 ?>

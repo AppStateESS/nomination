@@ -1,47 +1,14 @@
 <?php
 
-/**
- * UpdateSettings - Controller class to handle saving module settings.
- *
- * @author bost?
- * @author Jeremy Booker
- * @package nomination
- */
-PHPWS_Core::initModClass('nomination', 'Command.php');
-PHPWS_Core::initModClass('nomination', 'Context.php');
-PHPWS_Core::initModClass('nomination', 'view/NominationNotificationView.php');
-PHPWS_Core::initModClass('nomination', 'exception/InvalidSettingsException.php');
+PHPWS_Core::initModClass('plm', 'Command.php');
+PHPWS_Core::initModClass('plm', 'Context.php');
+PHPWS_Core::initModClass('plm', 'view/PLMNotificationView.php');
+PHPWS_Core::initModClass('plm', 'exception/InvalidSettingsException.php');
 
 class UpdateSettings extends Command {
 
     public function getRequestVars(){
         return array('action' => 'UpdateSettings', 'after' => 'AdminSettings');
-    }
-
-    public function getNominationFields()
-    {
-        return array('nominee_asubox',
-                     'nominee_position',
-                     'nominee_department_major',
-                     'nominee_years',
-                     'nominee_responsibility',
-                     'nominee_banner_id',
-                     'nominee_phone',
-                     'nominee_gpa',
-                     'nominee_class',
-                     'category',
-                     'reference_department',
-                     'reference_email',
-                     'reference_phone',
-                     'reference_relationship',
-                     'statement',
-                     'nominator_first_name',
-                     'nominator_middle_name',
-                     'nominator_last_name',
-                     'nominator_address',
-                     'nominator_phone',
-                     'nominator_email',
-                     'nominator_relationship');
     }
 
     public function execute(Context $context)
@@ -54,21 +21,7 @@ class UpdateSettings extends Command {
             // Store settings in a map
             $settingsMap = array();
 
-            /*
-             * Update award title
-             */
-            if(!empty($context['award_title'])){
-                $settingsMap['award_title'] = $context['award_title'];
-            }
-
-            /*
-             * Update References Required
-             */
-            if(!empty($context['num_references_req'])){
-                $settingsMap['num_references_req'] = $context['num_references_req'];
-            }
-
-            /*
+            /**
              * Update file storage path
              */
             if(!empty($context['file_dir'])){
@@ -81,6 +34,13 @@ class UpdateSettings extends Command {
                 $settingsMap['file_dir'] = $file_dir;
             }
 
+            /*
+             * Update award title
+             */
+            if(!empty($context['award_title'])){
+                $settingsMap['award_title'] = $context['award_title'];
+            }
+
             /**
              * Update allowed file types for upload
              */
@@ -89,30 +49,26 @@ class UpdateSettings extends Command {
             } else {
                 throw new InvalidSettingsException('At least one file type must be set.');
             }
-
+            
             $settingsMap['email_from_address'] = $context['email_from_address'];
-
-            PHPWS_Core::initModClass('nomination', 'NominationFieldVisibility.php');
-            $vis = new NominationFieldVisibility();
-            $vis->saveFromContext($context, 'show_fields');
 
             /**
              * Actually perform updates now
              * PHPWS_Settings::save() returns null on success
              */
             foreach($settingsMap as $key=>$value){
-                PHPWS_Settings::set('nomination', $key, $value);
-            }
-            $result = PHPWS_Settings::save('nomination');
+                PHPWS_Settings::set('plm', $key, $value);
+                $result = PHPWS_Settings::save('plm');
 
-            if(!is_null($result)){
-                throw new Exception('Something bad happened when settings were being saved.');
+                if(!is_null($result)){
+                    throw new Exception('Something bad happened when '.$key.' was being saved.');
+                }
             }
         } catch (Exception $e){
-            NQ::simple('nomination', NOMINATION_ERROR, $e->getMessage());
+            NQ::simple('plm', PLM_ERROR, $e->getMessage());
             return;
         }
-        NQ::simple('nomination', NOMINATION_SUCCESS, 'Settings saved.');
+        NQ::simple('plm', PLM_SUCCESS, 'Settings saved.');
     }
 
 }

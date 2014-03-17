@@ -6,11 +6,11 @@
  *   Puts the nomination into the 'pending_removal' queue.
  *
  * @author Daniel West <dwest at tux dot appstate dot edu>
- * @package nomination
+ * @package plm
  */
 
-PHPWS_Core::initModClass('nomination', 'Command.php');
-PHPWS_Core::initModClass('nomination', 'CancelQueue.php');
+PHPWS_Core::initModClass('plm', 'Command.php');
+PHPWS_Core::initModClass('plm', 'CancelQueue.php');
 
 class CancelNomination extends Command {
     public $unique_id;

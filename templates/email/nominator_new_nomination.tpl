@@ -16,5 +16,5 @@ Please don't hesitate to contact me if you have any questions.
 
 Sincerely,
 
-{SIGNATURE}
-{SIG_POSITION}
+Dino DiBernardi, Chair
+W. H. Plemmons Leadership Medallion Committee

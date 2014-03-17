@@ -1,3 +1,6 @@
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         $("#dialog").hide();
@@ -11,7 +14,7 @@
 </script>
 
 <h2>Period Settings</h2>
-<h3>Current period is: <strong>{CURRENT_PERIOD_YEAR}</strong>.</h3>
+<h3>Current period is <b>{CURRENT_PERIOD_YEAR}</b>.</h3>
 
 <div id="dialog" title="Start/End Date">
   <ul>
@@ -35,11 +38,7 @@
 
   <tr>
     <th>Rollover</th>
-    <td>
-        <!-- BEGIN next_period -->
-        Next period is {NEXT_PERIOD} {ROLLOVER_LINK}
-        <!-- END next_period -->
-    </td>
+    <td>Next period is {NEXT_PERIOD} [{ROLLOVER_LINK}]</td>
   </tr>
 
   <tr>

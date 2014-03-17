@@ -68,7 +68,7 @@ var Details = function(span, semaphore)
 
     // Get data from server
     this.fetch = function(){
-        $.get('index.php', {'module':'nomination', 'view': me.view,
+        $.get('index.php', {'module':'plm', 'view': me.view,
                             'id':me.id, 'ajax':true},
               function(data){
                   me.semaphore.steal(me);

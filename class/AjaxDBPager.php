@@ -7,7 +7,7 @@
    *  ajax view.
    *
    * @author Daniel West <dwest at tux dot appstate dot edu>
-   * @package nomination
+   * @package plm
    */
 
 PHPWS_Core::initCoreClass('DBPager.php');

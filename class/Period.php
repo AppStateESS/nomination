@@ -1,20 +1,18 @@
 <?php
- /**
-  * Period
-  *
-  * Represents the current nomination period/year.
-  * Handles start and end dates for nominations.
-  *
-  * @author Robert Bost <bostrt at tux dot appstate dot edu>
-  * @author Jeremy Booker
-  * @package nomination
-  */
+  /**
+   * Period
+   *
+   * Represents the current nomination period/year.
+   * Handles start and end dates for nominations.
+   *
+   * @author Robert Bost <bostrt at tux dot appstate dot edu>
+   */
 
-PHPWS_Core::initModClass('nomination', 'Nomination_Model.php');
+PHPWS_Core::initModClass('plm', 'PLM_Model.php');
 
-define('PERIOD_TABLE', 'nomination_period');
+define('PERIOD_TABLE', 'plm_period');
 
-class Period extends Nomination_Model
+class Period extends PLM_Model
 {
     public $year;
     public $start_date;
@@ -64,18 +62,11 @@ class Period extends Nomination_Model
     /********
      * Util *
      ********/
-    /**
-     * Determine if this period is over. Return true if so, false otherwise.
-     */
+    // Determine if this period is over
     public static function isOver()
     {
-        $now = time();
+        $now = mktime();
         $currPeriod = Period::getCurrentPeriod();
-
-        if(is_null($currPeriod)){
-            throw new InvalidArgumentException('No current time period set.');
-        }
-
         if($now > $currPeriod->getEndDate()){
             return true;
         } else {
@@ -85,7 +76,7 @@ class Period extends Nomination_Model
     // Determine if this period has begun yet
     public static function hasBegun()
     {
-        $now = time();
+        $now = mktime();
         $currPeriod = Period::getCurrentPeriod();
         if($now > $currPeriod->getStartDate()){
             return true;
@@ -112,18 +103,17 @@ class Period extends Nomination_Model
      * Factory Methods *
      *******************/
     /**
-     * Get a Period object for the given year
+     * Get a Period object for current year
      * @return period - Period object
      */
-    public static function getPeriodByYear($year)
+    public function getPeriodByYear($year)
     {
-        $derp = new Period();
-        $db = $derp->getDb();
-
+        $db = Period::getDb();
+        
         $db->addWhere('year', $year);
-
+        
         $result = $db->select();
-
+        
         // if null results return null
         if(empty($result) || is_null($result)){
             return null;
@@ -131,7 +121,7 @@ class Period extends Nomination_Model
 
         // Create the Period object
         $period = new Period($result[0]['id']);
-
+        
         return $period;
     }
 
@@ -140,12 +130,7 @@ class Period extends Nomination_Model
      */
     public static function getCurrentPeriod()
     {
-        $year = PHPWS_Settings::get('nomination', 'current_period');
-
-        if(!isset($year) || is_null($year)){
-            return null;
-        }
-
+        $year = PHPWS_Settings::get('plm', 'current_period');
         return Period::getPeriodByYear($year);
     }
     /**
@@ -153,10 +138,10 @@ class Period extends Nomination_Model
      */
     public static function getCurrentPeriodYear()
     {
-        return PHPWS_Settings::get('nomination', 'current_period');
+        return PHPWS_Settings::get('plm', 'current_period');
     }
     /**
-     * @return year - The next period
+     * @return year - The next period 
      */
     public static function getNextPeriodYear()
     {

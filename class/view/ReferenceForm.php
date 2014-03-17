@@ -6,17 +6,14 @@
    *   Allows References to submit their letter of recommendation.
    *
    * @author Daniel West <dwest at tux dot appstate dot edu>
-   * @author Jeremy Booker
-   * @package nomination
+   * @package plm
    */
 
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'NominationDocument.php');
-PHPWS_Core::initModClass('nomination', 'CommandFactory.php');
-PHPWS_Core::initModClass('nomination', 'NominationFactory.php');
-PHPWS_Core::initModClass('nomination', 'ReferenceFactory.php');
+PHPWS_Core::initModClass('plm', 'View.php');
+PHPWS_Core::initModClass('plm', 'PLM_Doc.php');
+PHPWS_Core::initModClass('plm', 'CommandFactory.php');
 
-class ReferenceForm extends OmNomView {
+class ReferenceForm extends PlemmView {
 
     public function getRequestVars()
     {
@@ -37,36 +34,36 @@ class ReferenceForm extends OmNomView {
         $submitCmd->initForm($form);
 
         // Check if unique_id is in context
-        if(!isset($context['unique_id'])){
-            NQ::simple('nomination', NOMINATION_ERROR, 'Missing ID in link');
+        if(isset($context['unique_id'])){
+            $form->addHidden('unique_id', $context['unique_id']);
+        } else {
+            NQ::simple('plm', PLM_ERROR, 'Missing ID in link');
             $vFactory = new ViewFactory();
             $fof = $vFactory->get('FourOhFour');
             $fof->redirect();
         }
-
-        $ref = ReferenceFactory::getByUniqueId($context['unique_id']);
-
-        // Check that we got a reference obj back
-        if(is_null($ref)){
-            NQ::simple('nomination', NOMINATION_ERROR, 'Invalid ID');
-            $vFactory = new ViewFactory();
-            $fof = $vFactory->get('FourOhFour');
-            $fof->redirect();
-        }
-
-        $nom = NominationFactory::getNominationById($ref->getNominationId());
-
-        $form->addHidden('unique_id', $context['unique_id']);
-
-        $tpl['RECOMMENDATION'] = NominationDocument::getFileWidget(null, 'recommendation', $form);
-        $tpl['STUDENT'] = $nom->getFullName();
 
         $form->addSubmit('submit', 'Submit');
-        $form->mergeTemplate($tpl);
 
+        $ref = Reference::getByUniqueId($context['unique_id']);
+        
+        // Check that we got a reference obj back
+        if(is_null($ref)){
+            NQ::simple('plm', PLM_ERROR, 'Invalid ID');
+            $vFactory = new ViewFactory();
+            $fof = $vFactory->get('FourOhFour');
+            $fof->redirect();
+        }
+
+        $upload = new PLM_Doc();
+        $upload->nomination = $ref; //should probably be an uploadable interface instead of this hack
+        $tpl['RECOMMENDATION'] = $upload->getFileWidget('recommendation', $form);
+
+        $form->mergeTemplate($tpl);
+        
         Layout::addPageTitle('Reference Form');
 
-        return PHPWS_Template::process($form->getTemplate(), 'nomination', 'reference_form.tpl');
+        return PHPWS_Template::process($form->getTemplate(), 'plm', 'reference_form.tpl');
     }
 }
 ?>

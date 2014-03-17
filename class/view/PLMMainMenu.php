@@ -8,7 +8,7 @@
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
-PHPWS_Core::initModClass('nomination', 'othermenu/MainMenu.php');
+PHPWS_Core::initModClass('othermenu', 'MainMenu.php');
 
 class PLMMainMenu extends MainMenu
 {

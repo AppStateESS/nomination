@@ -7,26 +7,20 @@
    * Supports Ajax
    */ 
 
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'Context.php');
-PHPWS_Core::initModClass('nomination', 'Nominator.php');
-PHPWS_Core::initModClass('nomination', 'Nomination.php');
-PHPWS_Core::initModClass('nomination', 'NominationFactory.php');
+PHPWS_Core::initModClass('plm', 'View.php');
+PHPWS_Core::initModClass('plm', 'Context.php');
+PHPWS_Core::initModClass('plm', 'Nominator.php');
+PHPWS_Core::initModClass('plm', 'Nomination.php');
 
-class NominatorView extends OmNomView 
+class NominatorView extends PlemmView 
 {
-    public $nominationId;
+    public $nominatorId;
 
     public function getRequestVars(){
-        $vars = array('id'   => $this->nominationId,
+        $vars = array('id'   => $this->nominatorId,
                       'view' => 'NominatorView');
 
         return $vars;
-    }
-
-    //this is so we can get the id later
-    public function setNominationId($id){
-      $this->nominationId = $id;
     }
 
     public function display(Context $context)
@@ -37,21 +31,20 @@ class NominatorView extends OmNomView
 
         $tpl = array();
 
-        $factory = new NominationFactory();
-        $nominator = $factory->getNominationbyId($context['id']);
+        $nominator = new Nominator($context['id']);
 
-        $tpl['NAME']    = $nominator->getNominatorFullName();
-        $tpl['EMAIL']   = $nominator->getNominatorEmailLink();
-        $tpl['PHONE']   = $nominator->getNominatorPhone();
-        $tpl['ADDRESS'] = $nominator->getNominatorAddress();
-        //$tpl['RELATIONSHIP'] = $nominator->getRelationship();
+        $tpl['NAME']    = $nominator->getFullName();
+        $tpl['EMAIL']   = $nominator->getEmailLink();
+        $tpl['PHONE']   = $nominator->getPhone();
+        $tpl['ADDRESS'] = $nominator->getAddress();
+        $tpl['RELATIONSHIP'] = $nominator->getRelationship();
 
         if(isset($context['ajax'])){
-            echo PHPWS_Template::process($tpl, 'nomination', 'admin/nominator.tpl');
+            echo PHPWS_Template::process($tpl, 'plm', 'admin/nominator.tpl');
             exit();
         } else {
             Layout::addPageTitle('Nominator View');
-            return PHPWS_Template::process($tpl, 'nomination', 'admin/nominator.tpl');
+            return PHPWS_Template::process($tpl, 'plm', 'admin/nominator.tpl');
         }
     }
 }

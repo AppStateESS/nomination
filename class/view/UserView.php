@@ -8,11 +8,11 @@
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'UserStatus.php');
+PHPWS_Core::initModClass('plm', 'View.php');
+PHPWS_Core::initModClass('plm', 'UserStatus.php');
 
 
-class UserView extends NomView
+class UserView extends PLMView
 {
     private $sideMenu;
 
@@ -34,7 +34,7 @@ class UserView extends NomView
         $tpl['MAIN'] = $this->getMain();
         $tpl['MENU'] = $this->sideMenu;
         $tpl['USER_STATUS'] = UserStatus::getDisplay();
-        return $this->displayNomination(PHPWS_Template::process($tpl, 'nomination', 'user.tpl'));
+        return $this->displayPLM(PHPWS_Template::process($tpl, 'plm', 'user.tpl'));
     }
 }
 ?>

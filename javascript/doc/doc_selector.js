@@ -45,7 +45,7 @@ var DocumentSelector = function(orig, title, input, close){
         var mime = $(me.input)[0].files[0].type;
         var size = $(me.input)[0].files[0].size;
 
-        $.post('index.php', {'module': 'nomination', 'action': 'CheckFile', 'type': mime, 'size': size},
+        $.post('index.php', {'module': 'plm', 'action': 'CheckFile', 'type': mime, 'size': size},
                function(data){
                    if(data != 1){
                        me.doClose();

@@ -8,7 +8,7 @@
    */
 $link[] = array('label'       => _('Nomination Module'),
                 'restricted'  => TRUE,
-                'url'         => 'index.php?module=nomination',
+                'url'         => 'index.php?module=plm',
                 'description' => _('Manage nominations.'),
                 'image'       => 'tango/mimetypes/application-certificate.png',
                 'tab'         => 'admin'

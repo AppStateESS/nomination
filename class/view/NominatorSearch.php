@@ -1,10 +1,10 @@
 <?php
 
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'Nominator.php');
+PHPWS_Core::initModClass('plm', 'View.php');
+PHPWS_Core::initModClass('plm', 'Nominator.php');
 PHPWS_Core::initCoreClass('DBPager.php');
 
-class NominatorSearch extends OmNomView
+class NominatorSearch extends PlemmView
 {
     public function getRequestVars()
     {
@@ -25,11 +25,11 @@ class NominatorSearch extends OmNomView
             exit;
         } else {
             javascript('jquery_ui');
-            javascriptMod('nomination', 'search', array('PHPWS_SOURCE_HTTP' => PHPWS_SOURCE_HTTP));
+            javascriptMod('plm', 'search', array('PHPWS_SOURCE_HTTP' => PHPWS_SOURCE_HTTP));
             $form = new PHPWS_Form('search');
             $form->setMethod('get');
             $form->addText('query', $searchString);
-            $form->addHidden('module', 'nomination');
+            $form->addHidden('module', 'plm');
             $form->addHidden('view', 'NominatorSearch');
             $form->addSubmit('Search');
             $tpl = $form->getTemplate();
@@ -39,52 +39,41 @@ class NominatorSearch extends OmNomView
             
             Layout::addPageTitle('Nominator Search');
 
-            return PHPWS_Template::process($tpl, 'nomination', 'admin/search.tpl');
+            return PHPWS_Template::process($tpl, 'plm', 'admin/search.tpl');
         }
     }
 
     public function getPager($searchString="")
     {
-        PHPWS_Core::initModClass('nomination', 'Period.php');
-	    PHPWS_Core::initModClass('nomination', 'Nomination.php');
-        //$pager = new DBPager(NOMINATOR_TABLE, 'Nominator');
-	    $pager = new DBPager('nomination_nomination', 'DBNomination');
-        $pager->setModule('nomination');
+        PHPWS_Core::initModClass('plm', 'Period.php');
+
+        $pager = new DBPager(NOMINATOR_TABLE, 'Nominator');
+        $pager->setModule('plm');
         $pager->setTemplate('admin/nominator_search_results.tpl');
-        $pager->setEmptyMessage('No matching nominators found');
-        $pager->setReportRow('reportRowForCSV');
+        $pager->setEmptyMessage('No matching nominees found');
 
         $pager->db->addWhere('first_name', "%".$searchString."%", "like", 'or', 'search');
         $pager->db->addWhere('middle_name', "%".$searchString."%", "like", 'or', 'search');
         $pager->db->addWhere('last_name', "%".$searchString."%", "like", 'or', 'search');
-        //$pager->db->addWhere('email', "%".$searchString."%", "like", 'or', 'search');
-        // New search fields
-        $pager->db->addWhere('nominator_email', "%".$searchString."%", "like", 'or', 'search');
-        $pager->db->addWhere('nominator_first_name', "%".$searchString."%", "like", 'or', 'search');
-        $pager->db->addWhere('nominator_middle_name', "%".$searchString."%", "like", 'or', 'search');
-        $pager->db->addWhere('nominator_last_name', "%".$searchString."%", "like", 'or', 'search');
+        $pager->db->addWhere('email', "%".$searchString."%", "like", 'or', 'search');
 
         // Committee members should only see completed nominations.
         if(UserStatus::isCommitteeMember()){
-            $pager->db->addWhere('nomination_nomination.completed', TRUE);
+            $pager->db->addWhere('plm_nomination.completed', TRUE);
         }
         
-	    //these fields don't exist anymore
-        //$pager->db->addJoin('left', 'nomination_nominator', 'nomination_nomination', 'id', 'nominator_id');
-        //$pager->db->addWhere('nomination_nomination.period', Period::getCurrentPeriodYear());
-	    $pager->db->addJoin('left', 'nomination_nomination', 'nomination_period', 'period', 'id');
-        $pager->db->addWhere('nomination_period.year', Period::getCurrentPeriodYear());
+        $pager->db->addJoin('left', 'plm_nominator', 'plm_nomination', 'id', 'nominator_id');
+        $pager->db->addWhere('plm_nomination.period', Period::getCurrentPeriodYear());
 
-
-	    //these fields don't exist anymore
-	    // $pager->joinResult('id', 'nomination_nomination', 'nominator_id', 'added_on', 'added_on');
+        $pager->joinResult('id', 'plm_nomination', 'nominator_id', 'added_on', 'added_on');
 
         $pager->addSortHeader('first_name', 'First');
         $pager->addSortHeader('middle_name', 'Middle');
         $pager->addSortHeader('last_name', 'Last');
-        //$pager->addSortHeader('added_on', 'Submission Date');
-        //$pager->addSortHeader('nominee_link', 'Nominee');
+        $pager->addSortHeader('added_on', 'Submission Date');
+        $pager->addSortHeader('nominee_link', 'Nominee');
         $pager->addRowTags('rowTags');
+
         return $pager->get();
     }
 }

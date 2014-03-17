@@ -7,17 +7,17 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 
 
 
-PHPWS_Core::requireInc('nomination', 'defines.php');
-PHPWS_Core::initModClass('nomination', 'Context.php');
+PHPWS_Core::requireInc('plm', 'defines.php');
+
+PHPWS_Core::initModClass('plm', 'Context.php');
+
+PHPWS_Core::initModClass('plm', 'PLMFactory.php');
 
 PHPWS_Core::initModClass('notification', 'NQ.php');
-PHPWS_Core::initModClass('nomination', 'view/NominationNotificationView.php');
 
-PHPWS_Core::initModClass('nomination', 'NominationModFactory.php');
+PHPWS_Core::initModClass('plm', 'view/PLMNotificationView.php');
 
 
-$controller = NominationModFactory::getNomination();
+$controller = PLMFactory::getPLM();
 $controller->process();
-
-
 ?>

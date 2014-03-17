@@ -10,5 +10,6 @@ You have until {END_DATE} to resubmit your document.  Your previous document wil
 
 Sincerely,
 
-{SIGNATURE}
-{SIG_POSITION}
+
+Dino DiBernardi, Chair
+W. H. Plemmons Leadership Medallion Committee

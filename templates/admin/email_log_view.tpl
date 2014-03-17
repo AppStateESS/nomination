@@ -10,7 +10,7 @@
         $(".resend-email").click(function(){
             var id = $(this).attr('id');
             var recvr = $(this).attr('receiver');
-            $.post('index.php', {'module':'nomination', 'action':'AdminResendEmail', 'id':id, 'ajax':true},
+            $.post('index.php', {'module':'plm', 'action':'AdminResendEmail', 'id':id, 'ajax':true},
                    function(data){
                        if(data){
                            // TODO: Test in IE.

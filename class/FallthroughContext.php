@@ -10,9 +10,9 @@
    * should be used to fill out the default values for a form.
    *
    * @author Daniel West <dwest at tux dot appstate dot edu>
-   * @package nomination
+   * @package plm
    */
-PHPWS_Core::initModClass('nomination', 'Context.php');
+PHPWS_Core::initModClass('plm', 'Context.php');
 
 class FallthroughContext extends Context {
     protected $others = array();

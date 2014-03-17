@@ -1,8 +1,8 @@
 <?php
 
-PHPWS_Core::initModClass('nomination', 'View.php');
+PHPWS_Core::initModClass('plm', 'View.php');
 
-class AdminMainMenu extends OmNomView
+class AdminMainMenu extends PlemmView
 {
     public function getRequestVars()
     {
@@ -15,10 +15,10 @@ class AdminMainMenu extends OmNomView
             throw new PermissionException('You are not allowed to see that!');
         }
 
-        PHPWS_Core::initModClass('nomination', 'Period.php');
+        PHPWS_Core::initModClass('plm', 'Period.php');
         $vFactory = new ViewFactory();
         
-        $topMenu = $vFactory->get('NominationMainMenu');
+        $topMenu = $vFactory->get('PLMMainMenu');
 
         /** Search menu **/
         // (menu_title, tag)

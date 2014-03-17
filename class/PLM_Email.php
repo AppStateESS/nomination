@@ -8,7 +8,7 @@
  * @author Daniel West <dwest at tux dot appstate dot edu>
  * @package plm
  */
-
+PHPWS_Core::initCoreClass('Mail.php');
 PHPWS_Core::initModClass('plm', 'exception/DatabaseException.php');
 // Abbreviated NominationActor names
 // Used in DB

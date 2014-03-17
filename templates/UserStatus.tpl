@@ -1,4 +1,4 @@
-<div id="nomination-userstatus">
+<div id="plm-userstatus">
     <!-- BEGIN LOGGED_IN_AS -->
     <span class="logged-in-as">{LOGGED_IN_AS}
     <!-- END LOGGED_IN_AS -->

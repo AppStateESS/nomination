@@ -1,6 +1,6 @@
 var Nom = function(num, id, winner, PHPWS_SOURCE_HTTP){
-    var awardIcon  = PHPWS_SOURCE_HTTP+"mod/nomination/img/tango/actions/list-add-green.png";
-    var removeIcon = PHPWS_SOURCE_HTTP+"mod/nomination/img/tango/actions/list-remove-red.png";
+    var awardIcon  = PHPWS_SOURCE_HTTP+"mod/plm/img/tango/actions/list-add-green.png";
+    var removeIcon = PHPWS_SOURCE_HTTP+"mod/plm/img/tango/actions/list-remove-red.png";
     var awardHint  = "Click to set as winner";
     var removeHint = "Click to remove winner status";
     var me = this;
@@ -19,26 +19,26 @@ var Nom = function(num, id, winner, PHPWS_SOURCE_HTTP){
     // Swap icons and helper text
     this.toggleWinner = function() {
         var icon = me.winner ? awardIcon : removeIcon;
-        var status = me.winner ? false : true;
+        var status = me.winner ? 0 : 1;
 
-        $.post('index.php', {'module': 'nomination', 'action': 'SetWinnerStatus', 'id': me.id, 'status': status}, 
+        $.post('index.php', {'module': 'plm', 'action': 'SetWinnerStatus', 'id': me.id, 'status': status}, 
                function(data){
                    if(!data){
                        alert("Cannot change winner status");
                    } else {
-                        
-                        // Fade icons
-                        $(me.icon).fadeOut('fast',function(){
-                            $(me.icon).attr('src', icon);
-                        });
-                        $(me.icon).fadeIn('fast');
+                       
+                       // Fade icons
+                       $(me.icon).fadeOut('fast',function(){
+                           $(me.icon).attr('src', icon);
+                       });
+                       $(me.icon).fadeIn('fast');
 
-                        // Change winner status
-                        me.winner = !me.winner;
-                        // Change helper text
-                        $(me.helpText).html(me.winner ? removeHint : awardHint);
+                       // Change winner status
+                       me.winner = !me.winner;
+                       // Change helper text
+                       $(me.helpText).html(me.winner ? removeHint : awardHint);
                    }
-               });
+               }, 'json');
     }
 
     // Set to winner when icon is clicked
