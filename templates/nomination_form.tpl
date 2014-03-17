@@ -249,7 +249,9 @@ This nomination period will end on <b>{PERIOD_END}</b>.
     In order for you to be considered for the Student Conduct Board and/or Academic Integrity Board, you must be a student in good academic standing (GPA of 2.5 or above) and good conduct standing (not currently on probation) within the Appalachian community. You must also attest that all of the information provided is accurate to the best of your knowledge. By submitting this form, it will give the Office of Student Conduct staff permission to check your records and grades.
   </p>
 </div>
-
+<br>
+{CAPTCHA_IMAGE}
+<br>
 {SUBMIT}
 {END_FORM}
 </div>

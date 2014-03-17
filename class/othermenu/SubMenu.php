@@ -9,19 +9,39 @@ class SubMenu extends MenuItem implements arrayaccess
   /**
    * Insert new menu item at index $tag
    */
-  public function addMenuItem(MenuItem $item)
+  public function addMenuItem($text, $tag=null, $parentTag=null)
   {
-    $tag = $item->getTag();
-    $this[$tag] = $item;
+    // find the menu they want to add an item to
+    $menu = $this->getMenuByTag($parentTag);
+    
+    // If tag isn't given then make one for them
+    if(is_null($tag)){
+      $tag = $menu->getTag() . '-item-' . $menu->getMenuItemCount();
+    }
+
+    // Create the item
+    $item = new MenuItem($text, $tag);
+    
+    $menu[$tag] = $item;
   }
 
   /**
    * Insert new sub menu at index $tag
    */
-  public function addSubMenu(SubMenu $menu)
+  public function addSubMenu($text, $tag=null, $parentTag=null)
   {
-    $tag = $item->getTag();
-    $this[$tag] = $menu;
+    // find the menu they want to add another menu to
+    $menu = $this->getMenuByTag($parentTag);
+
+    // If tag isn't given then make one for them
+    if(is_null($tag)){
+      $tag = $menu->getTag() . '-submenu-' . $menu->getSubMenuCount();
+    }
+    // Create sub menu
+    $subMenu = new SubMenu($text, $tag);
+
+    // Add the menu
+    $menu[$tag] = $subMenu;
   }
 
   public function getMenuByTag($tag)

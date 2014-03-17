@@ -30,6 +30,8 @@ PHPWS_Core::initModClass('nomination', 'NominationEmail.php');
 
 PHPWS_Core::initModClass('nomination', 'Period.php');
 
+PHPWS_CORE::initCoreClass('Captcha.php');
+
 class CreateNomination extends Command
 {
     public function getRequestVars()
@@ -45,7 +47,12 @@ class CreateNomination extends Command
 				    'nominee_email',
                     'nominee_phone',
                     'nominee_gpa',
+                    'nominee_asubox',
                     'nominee_class',
+                    'reference_first_name',
+                    'reference_last_name',
+                    'reference_phone',
+                    'reference_email',
 				    'nominator_first_name',
 				    'nominator_last_name',
 				    'nominator_email',
@@ -62,17 +69,19 @@ class CreateNomination extends Command
         $vis = new NominationFieldVisibility();
 
         $required = array();
-        foreach($required as $field) {
-            if($vis->isVisible($field)) $required[] = $field;
+        foreach(self::$requiredFields as $field) {
+            if($vis->isVisible($field))
+            {
+            	$required[] = $field;
+            }
         }
-
         /*****************
          * Check  fields *
         *****************/
-
+				
         // Check for missing required fields
         foreach($required as $key=>$value){
-            if(!isset($context[$value]) || $context[$value] == ""){
+            if(!isset($context[$value]) || $context[$value] == ""){// || $context[$value[0]] == ""){
                 $missing[] = $value;
             } else {
                 $entered[$key] = $context[$value];
@@ -98,12 +107,12 @@ class CreateNomination extends Command
                 throw new BadFormException($msg);
             }
         }
-
+		
         // If anything was missing, redirect back to the form
-        if(!empty($missing)){
+        if(!empty($missing) || !Captcha::verify()){
             // Notify the user that they must reselect their file
             $missing[] = 'statement';
-
+			
             $context['after'] = 'NominationForm';// Set after view to the form
             $context['missing'] = $missing;// Add missing fields to context
             $context['form_fail'] = True;// Set form fail

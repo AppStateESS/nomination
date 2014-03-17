@@ -12,6 +12,7 @@ PHPWS_Core::initModClass('nomination', 'NominationDocument.php');
 PHPWS_Core::initModClass('nomination', 'CommandFactory.php');
 PHPWS_Core::initModClass('nomination', 'FallthroughContext.php');
 PHPWS_Core::initModClass('nomination', 'CancelQueue.php');
+PHPWS_CORE::initCoreClass('Captcha.php');
 
 class NominationForm extends OmNomView
 {
@@ -304,7 +305,14 @@ class NominationForm extends OmNomView
             $form->addText('nominator_relationship', isset($c['nominator_relationship']) ? $c['nominator_relationship'] : '');
             $form->setLabel('nominator_relationship', 'Relation to Nominee: ');
         }
-
+        
+        /***********
+         * Captcha *
+        ***********/
+        
+//        $tpl = $refForm->getTemplate();
+        $tpl['CAPTCHA_IMAGE'] = Captcha::get();
+		
         // Check if we were redirected back to this
         // form because some fields were not entered
         // If form_fail is true then it did fail

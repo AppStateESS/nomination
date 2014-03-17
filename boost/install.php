@@ -18,7 +18,7 @@ function nomination_install(&$content)
     // Create pulse for this period
     PHPWS_Core::initModClass('nomination', 'NominationRolloverEmailPulse.php');
     $pulse = new NominationRolloverEmailPulse();
-    $timeDiff = $period->getEndDate() - mktime();
+    $timeDiff = $period->getEndDate() - time();
     $pulse->newFromNow($timeDiff);
 
     // Create Committee group
