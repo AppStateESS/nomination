@@ -23,7 +23,7 @@ class NominationRolloverEmailPulse extends ScheduledPulse
         $this->username = 'bostrt';
     }
 
-    public function execute()
+    public static function execute()
     {
         PHPWS_Core::initModClass('nomination', 'NominationEmail.php');
 

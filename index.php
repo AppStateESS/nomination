@@ -5,8 +5,6 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-
-
 PHPWS_Core::requireInc('nomination', 'defines.php');
 PHPWS_Core::initModClass('nomination', 'Context.php');
 
@@ -15,9 +13,7 @@ PHPWS_Core::initModClass('nomination', 'view/NominationNotificationView.php');
 
 PHPWS_Core::initModClass('nomination', 'NominationModFactory.php');
 
-
 $controller = NominationModFactory::getNomination();
 $controller->process();
-
 
 ?>
