@@ -4,7 +4,7 @@ PHPWS_Core::initModClass('nomination', 'View.php');
 PHPWS_Core::initModClass('nomination', 'Nominator.php');
 PHPWS_Core::initCoreClass('DBPager.php');
 
-class NominatorSearch extends OmNomView
+class NominatorSearch extends \nomination\View
 {
     public function getRequestVars()
     {

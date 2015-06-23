@@ -9,7 +9,7 @@
 
 PHPWS_Core::initModClass('nomination', 'View.php');
 
-class FourOhFour extends OmNomView
+class FourOhFour extends \nomination\View
 {
     public function getRequestVars()
     {

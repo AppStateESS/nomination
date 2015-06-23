@@ -14,7 +14,7 @@ PHPWS_Core::initModClass('nomination', 'View.php');
 PHPWS_Core::initModClass('nomination', 'CommandFactory.php');
 PHPWS_Core::initModClass('nomination', 'Period.php');
 
-class PeriodMaintenance extends OmNomView
+class PeriodMaintenance extends \nomination\View
 {
     public function getRequestVars()
     {

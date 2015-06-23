@@ -12,7 +12,7 @@
 PHPWS_Core::initModClass('nomination', 'View.php');
 PHPWS_Core::initCoreClass('DBPager.php');
 
-class WinnersView extends OmNomView
+class WinnersView extends \nomination\View
 {
     public function getRequestVars()
     {

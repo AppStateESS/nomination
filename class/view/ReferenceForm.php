@@ -16,7 +16,7 @@ PHPWS_Core::initModClass('nomination', 'CommandFactory.php');
 PHPWS_Core::initModClass('nomination', 'NominationFactory.php');
 PHPWS_Core::initModClass('nomination', 'ReferenceFactory.php');
 
-class ReferenceForm extends OmNomView {
+class ReferenceForm extends \nomination\View {
 
     public function getRequestVars()
     {

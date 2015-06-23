@@ -14,7 +14,7 @@ PHPWS_Core::initModClass('nomination', 'FallthroughContext.php');
 PHPWS_Core::initModClass('nomination', 'CancelQueue.php');
 PHPWS_CORE::initCoreClass('Captcha.php');
 
-class NominationForm extends OmNomView
+class NominationForm extends \nomination\View
 {
 
     public function getRequestVars()

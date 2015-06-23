@@ -2,7 +2,7 @@
 
 PHPWS_Core::initModClass('nomination', 'View.php');
 
-abstract class ViewMenu extends OmNomView
+abstract class ViewMenu extends \nomination\View
 {
     private $views = array();
 

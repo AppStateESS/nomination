@@ -10,7 +10,7 @@
 PHPWS_Core::initModClass('nomination', 'View.php');
 PHPWS_Core::initModClass('nomination', 'Reference.php');
 
-class ReferenceView extends OmNomView
+class ReferenceView extends \nomination\View
 {
     public $id;
 

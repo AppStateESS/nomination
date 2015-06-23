@@ -10,7 +10,7 @@
 
 PHPWS_Core::initModClass('nomination', 'View.php');
 
-class EmailLogView extends OmNomView
+class EmailLogView extends \nomination\View
 {
     
     public function getRequestVars()

@@ -14,7 +14,7 @@ PHPWS_Core::initModClass('nomination', 'ViewFactory.php');
 PHPWS_Core::initModClass('nomination', 'Reference.php');
 PHPWS_Core::initModClass('nomination', 'NominationDocument.php');
 
-class AdminSettings extends OmNomView {
+class AdminSettings extends \nomination\View {
 
     public function getRequestVars()
     {

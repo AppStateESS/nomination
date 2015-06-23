@@ -12,7 +12,7 @@ PHPWS_Core::initModClass('nomination', 'View.php');
 PHPWS_Core::initModClass('nomination', 'Nominee.php');
 PHPWS_Core::initModClass('nomination', 'AjaxDBPager.php');
 
-class NomineeSearch extends OmNomView
+class NomineeSearch extends \nomination\View
 {
     public $query;
     public $pg;

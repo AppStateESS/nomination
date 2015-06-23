@@ -10,7 +10,7 @@
 
 PHPWS_Core::initModClass('nomination', 'View.php');
 
-class ThankYouReference extends OmNomView
+class ThankYouReference extends \nomination\View
 {
 
     public function getRequestVars()

@@ -14,7 +14,7 @@ PHPWS_Core::initModClass('nomination', 'Context.php');
 PHPWS_Core::initModClass('nomination', 'NominationEmail.php');
 PHPWS_Core::initModClass('nomination', 'CommandFactory.php');
 
-class SendEmail extends OmNomView {
+class SendEmail extends \nomination\View {
 
     public function getRequestVars()
     {

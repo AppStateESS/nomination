@@ -12,7 +12,7 @@ PHPWS_Core::initModClass('nomination', 'View.php');
 PHPWS_Core::initModClass('nomination', 'UserStatus.php');
 
 
-class UserView extends NomView
+class UserView extends \nomination\NomView
 {
     private $sideMenu;
 
@@ -33,6 +33,8 @@ class UserView extends NomView
 
         $tpl['MAIN'] = $this->getMain();
         $tpl['MENU'] = $this->sideMenu;
+        // var_dump($this->sideMenu);
+        // exit();
         $tpl['USER_STATUS'] = UserStatus::getDisplay();
         return $this->displayNomination(PHPWS_Template::process($tpl, 'nomination', 'user.tpl'));
     }
