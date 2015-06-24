@@ -12,7 +12,7 @@ PHPWS_Core::initModClass('nomination', 'View.php');
 
 class EmailLogView extends \nomination\View
 {
-    
+
     public function getRequestVars()
     {
         return array('view'=>'EmailLogView');
@@ -24,15 +24,15 @@ class EmailLogView extends \nomination\View
             PHPWS_Core::initModClass('nomination', 'exception/PermissionException.php');
             throw new PermissionException('You are not allowed to see that!');
         }
-        
+
         PHPWS_Core::initModClass('nomination', 'EmailMessage.php');
-    
-        $pager = new DBPager(EMAIL_MESSAGE_TABLE, 'EmailMessage');
-        
+
+        $pager = new DBPager(nomination_email_log, 'EmailMessage');
+
         $pager->setModule('nomination');
         $pager->setTemplate('admin/email_log_view.tpl');
         $pager->setEmptyMessage('Email log is empty');
-        $pager->joinResult('nominee_id', 'nomination_nominee', 'id',
+        $pager->joinResult('nominee_id', 'nomination_nomination', 'id',
                            'last_name', 'nominee_last_name');
 
         $pager->addSortHeader('nominee_last_name', 'Nominee');

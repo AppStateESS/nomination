@@ -173,7 +173,7 @@ class NominationForm extends \nomination\View
             $form->setLabel('nominee_gpa', 'GPA');
         }
         if($vis->isVisible('nominee_class')) {
-            $form->addDropBox('nominee_class', array(-1=>'Select', 'fr'=>'Freshmen', 'so'=>'Sophomore', 'jr'=>'Junior', 'sr'=>'Senior', 'grad'=>'Graudate'));
+            $form->addDropBox('nominee_class', array(-1=>'Select', 'fr'=>'Freshmen', 'so'=>'Sophomore', 'jr'=>'Junior', 'sr'=>'Senior', 'grad'=>'Graduate'));
             $form->setMatch('nominee_class', -1);
             $form->setLabel('nominee_class', 'Class');
         }
@@ -189,7 +189,7 @@ class NominationForm extends \nomination\View
         }
 
         /*************
-         * Refernces *
+         * References *
         *************/
         //TODO: fix reference editing
 
@@ -305,14 +305,14 @@ class NominationForm extends \nomination\View
             $form->addText('nominator_relationship', isset($c['nominator_relationship']) ? $c['nominator_relationship'] : '');
             $form->setLabel('nominator_relationship', 'Relation to Nominee: ');
         }
-        
+
         /***********
          * Captcha *
         ***********/
-        
+
 //        $tpl = $refForm->getTemplate();
         $tpl['CAPTCHA_IMAGE'] = Captcha::get();
-		
+
         // Check if we were redirected back to this
         // form because some fields were not entered
         // If form_fail is true then it did fail
