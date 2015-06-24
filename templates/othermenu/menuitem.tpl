@@ -1,3 +1,3 @@
-<li id={TAG} class="view-link">
+<div class="col-md-12">
 {TEXT}
-</li>
+</div>

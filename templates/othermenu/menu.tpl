@@ -1,13 +1,12 @@
-<fieldset class="top-menu">
+<div class="col-md-6">
 
-<legend class="menu-title">
-{TOP_MENU_TEXT}
-</legend>
+  <h4>
+    {TOP_MENU_TEXT}
+  </h4>
 
-<span id={TOP_MENU_TAG}>
-<!-- BEGIN menu_items -->
-{CONTENT}
-<!-- END menu_items -->
-</span>
-</fieldset>
-
+  <div class="row" id={TOP_MENU_TAG}>
+    <!-- BEGIN menu_items -->
+    {CONTENT}
+    <!-- END menu_items -->
+  </div>
+</div>

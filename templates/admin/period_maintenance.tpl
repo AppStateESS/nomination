@@ -10,8 +10,8 @@
     });
 </script>
 
-<h2>Period Settings</h2>
-<h3>Current period is: <strong>{CURRENT_PERIOD_YEAR}</strong>.</h3>
+<h3>Period Settings</h3>
+<h4>Current period is: <strong>{CURRENT_PERIOD_YEAR}</strong>.</h4>
 
 <div id="dialog" title="Start/End Date">
   <ul>
@@ -21,31 +21,42 @@
 </div>
 
 {START_FORM}
-<table>
-  <tr>
-    <th>{NOMINATION_PERIOD_START_LABEL}</th>
-    <td>{NOMINATION_PERIOD_START}</td>
-    <td rowspan="2"><img class="help-icon" src="{HELP_ICON}"></td>
-  </tr>
 
-  <tr>
-    <th>{NOMINATION_PERIOD_END_LABEL}</th>
-    <td>{NOMINATION_PERIOD_END}</td>
-  </tr>
+<div class="col-md-12">
 
-  <tr>
-    <th>Rollover</th>
-    <td>
-        <!-- BEGIN next_period -->
-        Next period is {NEXT_PERIOD} {ROLLOVER_LINK}
-        <!-- END next_period -->
-    </td>
-  </tr>
+  <div class="row">
+    {NOMINATION_PERIOD_START_LABEL}
+    {NOMINATION_PERIOD_START}
+  </div>
 
-  <tr>
-    <th>{ROLLOVER_EMAIL_LABEL}</th>
-    <td>{ROLLOVER_EMAIL}</td>
-  </tr>
-</table>
-{SUBMIT}
+  <div class="row">
+    {NOMINATION_PERIOD_END_LABEL}
+    {NOMINATION_PERIOD_END}
+  </div>
+
+  <h5>
+    Rollover
+  </h5>
+
+  <p>
+    <!-- BEGIN next_period -->
+      Next period is {NEXT_PERIOD} {ROLLOVER_LINK}
+    <!-- END next_period -->
+  </p>
+
+  <div class="row">
+    {ROLLOVER_EMAIL_LABEL}
+    {ROLLOVER_EMAIL}
+  </div>
+
+  <p></p>
+
+  <div class="row">
+    <button type="submit" class="btn btn-lg btn-success">
+      <i class="fa fa-calendar"></i>
+      Update Period
+    </button>
+  </div>
+</div>
+
 {END_FORM}
