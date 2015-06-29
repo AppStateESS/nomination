@@ -1,5 +1,5 @@
 <h2>Award Winners</h2>
-<table>
+<table class="table table-striped table-hover">
   <tr>
     <th>{NOMINEE_LAST_NAME_SORT}
     </th>

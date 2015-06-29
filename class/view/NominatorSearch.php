@@ -29,6 +29,7 @@ class NominatorSearch extends \nomination\View
             $form = new PHPWS_Form('search');
             $form->setMethod('get');
             $form->addText('query', $searchString);
+            $form->addCssClass('query', 'form-control');
             $form->addHidden('module', 'nomination');
             $form->addHidden('view', 'NominatorSearch');
             $form->addSubmit('Search');
@@ -36,7 +37,7 @@ class NominatorSearch extends \nomination\View
 
             $tpl['PAGER'] = $this->getPager($searchString);
             $tpl['TITLE'] = 'Nominator Search';
-            
+
             Layout::addPageTitle('Nominator Search');
 
             return PHPWS_Template::process($tpl, 'nomination', 'admin/search.tpl');
@@ -68,7 +69,7 @@ class NominatorSearch extends \nomination\View
         if(UserStatus::isCommitteeMember()){
             $pager->db->addWhere('nomination_nomination.completed', TRUE);
         }
-        
+
 	    //these fields don't exist anymore
         //$pager->db->addJoin('left', 'nomination_nominator', 'nomination_nomination', 'id', 'nominator_id');
         //$pager->db->addWhere('nomination_nomination.period', Period::getCurrentPeriodYear());

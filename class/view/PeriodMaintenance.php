@@ -43,8 +43,10 @@ class PeriodMaintenance extends \nomination\View
 
         $form->addText('nomination_period_start');
         $form->setLabel('nomination_period_start', 'Period Start Date');
+        $form->addCssClass('nomination_period_start', 'form-control');
         $form->addText('nomination_period_end');
         $form->setLabel('nomination_period_end', 'Period End Date');
+        $form->addCssClass('nomination_period_end', 'form-control');
 
         if(is_null($period)){
             // This can happen if no periods are configured yet (e.g. on first install)
@@ -70,6 +72,7 @@ class PeriodMaintenance extends \nomination\View
 
         $form->addText('rollover_email', PHPWS_Settings::get('nomination', 'rollover_email'));
         $form->setLabel('rollover_email', 'Rollover Reminder');
+        $form->addCssClass('rollover_email', 'form-control');
 
         // For use with JQuery datepicker and start/end dates
         $tpl['START_DATE_ID'] = $form->getFormId().'_nomination_period_start';
@@ -77,7 +80,7 @@ class PeriodMaintenance extends \nomination\View
 
         $tpl['HELP_ICON'] = PHPWS_SOURCE_HTTP."mod/nomination/img/tango/apps/help-browser.png";
 
-        $form->addSubmit('Update Period');
+        //$form->addSubmit('Update Period');
 
         $form->mergeTemplate($tpl);
         $tpl = $form->getTemplate();
