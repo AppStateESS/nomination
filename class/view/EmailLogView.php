@@ -25,9 +25,9 @@ class EmailLogView extends \nomination\View
             throw new PermissionException('You are not allowed to see that!');
         }
 
-        PHPWS_Core::initModClass('nomination', 'EmailMessage.php');
+        PHPWS_Core::initModClass('nomination', 'EmailLog.php');
 
-        $pager = new DBPager(nomination_email_log, 'EmailMessage');
+        $pager = new DBPager('nomination_email_log', 'DBEmailLog');
 
         $pager->setModule('nomination');
         $pager->setTemplate('admin/email_log_view.tpl');

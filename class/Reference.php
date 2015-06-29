@@ -149,6 +149,19 @@ class Reference
         $this->nominationId = $id;
     }
 
+    //gets a link to the nominee
+    public function getReferenceLink(){
+        PHPWS_Core::initModClass('nomination','view/ReferenceView.php');
+
+        $view = new ReferenceView();
+        //we need this so we can see the id later
+
+        $view->setReferenceId($this->id);
+        $name = $this->getFullName();
+        $link = $view->getLink($name);
+        return $link;
+    }
+
     /**
      * Static Utility methods
      */

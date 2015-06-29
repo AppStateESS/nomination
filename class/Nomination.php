@@ -53,27 +53,28 @@ class Nomination
                     $nominatorFirstName, $nominatorMiddleName, $nominatorLastName, $nominatorAddress, $nominatorPhone, $nominatorEmail, $nominatorRelation,
                     $category, $period){
 
-        $this->banner_id   = $bannerId;
-        $this->first_name  = $firstName;
-        $this->middle_name = $middleName;
-        $this->last_name   = $lastName;
-        $this->email      = $email;
-        $this->position   = $position;
+        $this->banner_id        = $bannerId;
+        $this->first_name       = $firstName;
+        $this->middle_name      = $middleName;
+        $this->last_name        = $lastName;
+        $this->email            = $email;
+        $this->position         = $position;
         $this->department_major = $department;
-        $this->years_at_asu = $yearsAtASU;
-        $this->phone      = $phone;
-        $this->gpa        = $gpa;
-        $this->class      = $class;
-        $this->asubox     = $asubox;
-        $this->responsibility = $responsibility; // just to make you cringe buddy!
+        $this->years_at_asu     = $yearsAtASU;
+        $this->phone            = $phone;
+        $this->gpa              = $gpa;
+        $this->class            = $class;
+        $this->asubox           = $asubox;
+        $this->responsibility   = $responsibility; // just to make you cringe buddy!
 
         $this->nominator_first_name  = $nominatorFirstName;
         $this->nominator_middle_name = $nominatorMiddleName;
         $this->nominator_last_name   = $nominatorLastName;
-        $this->nominator_address    = $nominatorAddress;
-        $this->nominator_phone      = $nominatorPhone;
-        $this->nominator_email      = $nominatorEmail;
-        $this->nominator_relation   = $nominatorRelation;
+        $this->nominator_address     = $nominatorAddress;
+        $this->nominator_phone       = $nominatorPhone;
+        $this->nominator_email       = $nominatorEmail;
+        $this->nominator_relation    = $nominatorRelation;
+        $this->nominatorUniqueId     = $nominatorUniqueId;
 
         $this->category = $category;
         $this->period   = $period;
@@ -270,6 +271,7 @@ class Nomination
         $this->nominator_email = $address;
     }
 
+
     public function getNominatorRelation(){
         return $this->nominator_relation;
     }
@@ -279,21 +281,7 @@ class Nomination
     }
 
     public function getCategory(){
-        /*
-         switch($this->category)
-         {
-        case NOMINATION_STUDENT_LEADER:
-        return NOMINATION_STUDENT_LEADER_TEXT;
-        case NOMINATION_STUDENT_EDUCATOR:
-        return NOMINATION_STUDENT_EDUCATOR_TEXT;
-        case NOMINATION_FACULTY_MEMBER:
-        return NOMINATION_FACULTY_MEMBER_TEXT;
-        case NOMINATION_EMPLOYEE:
-        return NOMINATION_EMPLOYEE_TEXT;
-        default:
-        return null;
-        }
-        */
+
         return $this->category;
     }
 
@@ -447,43 +435,7 @@ class Nomination
         return $link;
     }
 
-    /*
-     public function deleteForReal()
-     {
-    PHPWS_Core::initModClass('nomination', 'Reference.php');
-    PHPWS_Core::initModClass('nomination', 'Nominator.php');
-    PHPWS_Core::initModClass('nomination', 'Nominee.php');
-    PHPWS_Core::initModClass('nomination', 'EmailMessage.php');
-    PHPWS_Core::initModClass('nomination', 'NominationDocument.php');
 
-    // Delete the nominee if needed (Read comments at top of file)
-    $nominee = $this->getNominee();
-
-    // Get nomination count INCLUDING THIS ONE
-    if($nominee->getNominationCount() < 2){
-    // This was the only nomination; it's okay to delete nominee
-    EmailMessage::deleteMessages($nominee);
-    $nominee->delete();
-    }
-
-    // Delete references, their uploaded documents, and logged emails.
-    $references = $this->getReferences();
-    foreach($references as $reference){
-    NominationDocument::delete($reference->unique_id);
-    EmailMessage::deleteMessages($reference);
-    $reference->delete();
-    }
-
-    // Delete nominator, his supporting statement, and logged emails.
-    $nominator = $this->getNominator();
-    NominationDocument::delete($nominator->unique_id);
-    EmailMessage::deleteMessages($nominator);
-    $nominator->delete();
-
-    // Finally, delete the nomination;
-    $this->delete();
-    }
-    */
 
 
     // Row tags for DBPager

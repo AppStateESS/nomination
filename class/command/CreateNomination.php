@@ -78,7 +78,7 @@ class CreateNomination extends Command
         /*****************
          * Check  fields *
         *****************/
-				
+
         // Check for missing required fields
         foreach($required as $key=>$value){
             if(!isset($context[$value]) || $context[$value] == ""){// || $context[$value[0]] == ""){
@@ -107,12 +107,12 @@ class CreateNomination extends Command
                 throw new BadFormException($msg);
             }
         }
-		
+
         // If anything was missing, redirect back to the form
         if(!empty($missing) || !Captcha::verify()){
             // Notify the user that they must reselect their file
             $missing[] = 'statement';
-			
+
             $context['after'] = 'NominationForm';// Set after view to the form
             $context['missing'] = $missing;// Add missing fields to context
             $context['form_fail'] = True;// Set form fail
@@ -148,7 +148,7 @@ class CreateNomination extends Command
         $nomineeMiddleName  = $context['nominee_middle_name'];
         $nomineeLastName    = $context['nominee_last_name'];
         $nomineeAsubox      = $context['nominee_asubox'];
-        $nomineeEmail       = $context['nominee_email'];
+        $nomineeEmail       = $context['nominee_email'] . '@appstate.edu';
         $nomineePosition    = $context['nominee_position'];
         $nomineeDeptMajor   = $context['nominee_department_major'];
         $nomineeYears       = $context['nominee_years'];
@@ -166,7 +166,7 @@ class CreateNomination extends Command
         $nominatorLastName     = $context['nominator_last_name'];
         $nominatorAddress      = $context['nominator_address'];
         $nominatorPhone        = $context['nominator_phone'];
-        $nominatorEmail        = $context['nominator_email'];
+        $nominatorEmail        = $context['nominator_email'] . '@appstate.edu';
         $nominatorRelation     = $context['nominator_relationship'];
 
 
@@ -245,7 +245,7 @@ class CreateNomination extends Command
 
 
         /******************************
-         * Statement / Documnt Upload *
+         * Statement / Document Upload *
          ******************************/
         PHPWS_Core::initModClass('nomination', 'exception/IllegalFileException.php');
 
@@ -270,14 +270,14 @@ class CreateNomination extends Command
         ***************/
 
         foreach($references as $ref){
-            NominationEmail::newNominationReference($ref, $nomination);
+            ReferenceEmail::newNomination($ref, $nomination);
         }
 
         // Send email to nominator, only if the nominator fields are turned on
         PHPWS_Core::initModClass('nomination', 'NominationFieldVisibility.php');
         $vis = new NominationFieldVisibility();
         if($vis->isVisible('nominator_email')) {
-            NominationEmail::newNominationNominator($nomination);
+            NominatorEmail::newNomination($nomination);
         }
 
         NQ::simple('Nomination', NOMINATION_SUCCESS, 'Form successfully submitted. Email sent.');

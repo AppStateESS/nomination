@@ -1,12 +1,7 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $(".tip").hide();
-        $(".view-email, .resend-email").mouseenter(function(){
-            $(this).next().show();
-        });
-        $(".view-email, .resend-email").mouseleave(function(){
-            $(this).next().hide();
-        });
+
         $(".resend-email").click(function(){
             var id = $(this).attr('id');
             var recvr = $(this).attr('receiver');
@@ -24,7 +19,7 @@
 </script>
 
 <h2>Email Log</h2>
-<table>
+<table class="table table-striped table-hover">
 <tr>
   <th>{NOMINEE_LAST_NAME_SORT}</th>
   <th>To</th>
@@ -41,8 +36,8 @@
   <td>{RECEIVER_TYPE}</td>
   <td>{SENT_ON}</td>
   <td>{MESSAGE_TYPE}</td>
-  <td><img class="view-email" src="{ACTION}" id="{ID}"/><span class="tip">View </span>
-    <img class="resend-email" src="{RESEND}" id="{ID}"/><span class="tip">Resend </span></td>
+  <td><button class="btn btn-sm btn-info view-email" src="{ACTION}" id="{ID}"><i class="fa fa-eye"></i></button>
+    <button class="btn btn-sm btn-success resend-email" src="{RESEND}" id="{ID}"><i class="fa fa-envelope"></i></button></td>
 </tr>
 <!-- END listrows -->
 

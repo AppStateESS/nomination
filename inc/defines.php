@@ -27,4 +27,9 @@ define('BOTH_TEXT', 'Both Student Conduct &amp; Academic Integrity Boards');
 
 define('NOMINATION_EMAIL_DOMAIN', 'appstate.edu');
 define('EMAIL_TEST_FLAG', FALSE);
+
+define('NOMINATOR', 'NTR');
+define('REFERENCE', 'REF');
+define('NOMINEE', 'NEE');
+
 ?>

@@ -18,19 +18,19 @@ class ReferenceView extends \nomination\View
     {
         return array('view' => 'ReferenceView', 'id' => $this->id);
     }
-    
+
     public function display(Context $context)
     {
         $tpl = array();
-        
-        $ref = new Reference($context['id']);
-        
+
+        $ref = ReferenceFactory::getReferenceById($context['id']);
+
         $tpl['NAME'] = $ref->getFullName();
-        $tpl['EMAIL'] = $ref->getEmailLink();
+        $tpl['EMAIL'] = $ref->getEmail();
         $tpl['PHONE'] = $ref->getPhone();
         $tpl['DEPARTMENT'] = $ref->getDepartment();
         $tpl['RELATIONSHIP'] = $ref->getRelationship();
-        
+
         if(isset($context['ajax'])){
             echo PHPWS_Template::process($tpl, 'nomination', 'admin/reference.tpl');
             exit();
@@ -38,6 +38,10 @@ class ReferenceView extends \nomination\View
             Layout::addPageTitle('Reference View');
             return PHPWS_Template::process($tpl, 'nomination', 'admin/reference.tpl');
         }
+    }
+
+    public function setReferenceId($id){
+      $this->id = $id;
     }
 }
 ?>

@@ -10,7 +10,7 @@
 <!-- BEGIN listrows -->
 <tr>
   <td>{NOMINATOR_LINK}</td>
-  <td>{NOMINATOR_EMAIL}@appstate.edu</td>
+  <td>{NOMINATOR_EMAIL}</td>
   <td>{NOMINEE_LINK}</td>
 </tr>
 <!-- END listrows -->

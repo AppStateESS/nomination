@@ -1,0 +1,173 @@
+<?php
+/**
+ * EmailLog
+ *
+ * Model class for representing an EmailLog.
+ *
+ * @author Chris Detsch
+ * @package nomination
+ */
+class EmailLog
+{
+    public $id;
+    public $nominee_id;
+    public $message;
+    public $message_type;
+    public $subject;
+    public $receiver_id;
+    public $receiver_type;
+    public $sent_on;
+
+    public function __construct($id, $nominee_id, $message, $message_type, $subject,
+                                $receiver_id, $receiver_type, $sent_on)
+    {
+      $this->id = $id;
+      $this->nomineeId = $nominee_id;
+      $this->message = $message;
+      $this->messageType = $message_type;
+      $this->subject = $subject;
+      $this->receiverId = $receiver_id;
+      $this->receiverType = $receiver_type;
+      $this->sentOn = $sent_on;
+    }
+
+    /**
+     * Getters
+     */
+    public function getId()
+    {
+      return $this->id;
+    }
+
+    public function getNomineeId()
+    {
+      return $this->nominee_id;
+    }
+
+    public function getMessage()
+    {
+      return $this->message;
+    }
+
+    public function getMessageType()
+    {
+      return $this->message_type;
+    }
+
+    public function getSubject()
+    {
+      return $this->subject;
+    }
+
+    public function getReceiverId()
+    {
+      return $this->receiver_id;
+    }
+
+    public function getReceiverType()
+    {
+      return $this->receiver_type;
+    }
+
+    public function getSentOn()
+    {
+      return $this->sent_on;
+    }
+
+    /**
+     * Setters
+     */
+    public function setId($id)
+    {
+      $this->id = $id;
+    }
+
+    public function setNomineeId($nomineeId)
+    {
+      $this->nomineeId = $nomineeId;
+    }
+
+    public function setMessage($message)
+    {
+      $this->message = $message;
+    }
+
+    public function setMessageType($messageType)
+    {
+      $this->messageType = $messageType;
+    }
+
+    public function setSubject($subject)
+    {
+      $this->subject = $subject;
+    }
+
+    public function setReceiverId($receiverId)
+    {
+      $this->receiverId = $receiverId;
+    }
+
+    public function setReceiverType($receiverType)
+    {
+      $this->receiverType = $receiverType;
+    }
+
+    public function setSentOn($sentOn)
+    {
+      $this->sentOn = $sentOn;
+    }
+
+    // Row tags for DBPager
+    public function rowTags() {
+        $tpl             = array();
+        $tpl['ID']     = $this->getId();
+        $nomination    = NominationFactory::getNominationbyId($this->getNomineeId());
+        $tpl['NOMINEE'] = $nomination->getNomineeLink();
+        $tpl['MESSAGE'] = $this->getMessage();
+        $msgTypeList = NominationEmail::getLists();
+        $tpl['MESSAGE_TYPE'] = $msgTypeList[$this->getMessageType()];
+        $tpl['SUBJECT'] = $this->getSubject();
+        if($this->getReceiverType() === 'REF')
+        {
+          $ref = ReferenceFactory::getReferenceById($this->getReceiverId());
+          $tpl['RECEIVER'] = $ref->getReferenceLink();
+          $tpl['RECEIVER_TYPE'] = 'Reference';
+        }
+        else if($this->getReceiverType() === 'NTR')
+        {
+          $nomination = NominationFactory::getNominationbyId($this->getReceiverId());
+          $tpl['RECEIVER'] = $nomination->getNominatorLink();
+          $tpl['RECEIVER_TYPE'] = 'Nominator';
+        }
+        else if($this->getReceiverType() === 'NEE')
+        {
+          $nomination = NominationFactory::getNominationbyId($this->getReceiverId());
+          $tpl['RECEIVER'] = $nomination->getNomineeLink();
+          $tpl['RECEIVER_TYPE'] = 'Nominee';
+        }
+        $tpl['SENT_ON'] = date("m/d/Y h:i a",$this->getSentOn());
+        return $tpl;
+    }
+
+
+}
+
+/**
+ * Empty child class for Nomination for loading objects from the database.
+ *
+ * @author jbooker
+ * @package nomination
+ */
+class DBEmailLog extends EmailLog {
+    /**
+     * Empty constructor for restoring objects from a database
+     * without calling the parent class' constructor.
+     */
+    public function __construct()
+    {
+
+    }
+}
+
+
+?>
