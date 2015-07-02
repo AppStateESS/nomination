@@ -1,5 +1,5 @@
 {CSV_REPORT}
-<table>
+<table class="table table-striped table-hover">
 <tr>
   <th class="name-sort">Name <br />
     {FIRST_NAME_SORT} {MIDDLE_NAME_SORT} {LAST_NAME_SORT}
@@ -10,7 +10,7 @@
 <!-- BEGIN listrows -->
 <tr>
   <td>{NOMINEE_LINK}</td>
-  <td> {EMAIL}@appstate.edu
+  <td> {EMAIL}
   </td>
 </tr>
 <!-- END listrows -->

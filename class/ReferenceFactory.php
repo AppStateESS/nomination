@@ -125,6 +125,48 @@ class ReferenceFactory {
         return $objs;
     }
 
+    /**
+     * Returns the Reference object with the given nomination id, or null if
+     * no matching reference is found.
+     *
+     * @param string $Id - The Reference's nomination ID.
+     * @return Reference Reference object, or null if no matching id found
+     */
+    public static function getReferenceById($Id){
+
+        $db = new PHPWS_DB('nomination_reference');
+
+        $db->addWhere('id', $Id);
+
+        $results = $db->select();
+
+        if(PHPWS_Error::logIfError($results)){
+            PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
+            throw new DatabaseException($results->toString());
+        }
+
+
+        $objs = array();
+
+        foreach ($results as $result){
+            $ref = new DBReference();
+            $ref->setId($result['id']);
+            $ref->setFirstName($result['first_name']);
+            $ref->setLastName($result['last_name']);
+            $ref->setDepartment($result['department']);
+            $ref->setEmail($result['email']);
+            $ref->setPhone($result['phone']);
+            $ref->setUniqueId($result['unique_id']);
+            $ref->setDocId($result['doc_id']);
+            $ref->setRelationship($result['relationship']);
+            $ref->setNominationId($result['nomination_id']);
+
+            $objs[] = $ref;
+        }
+
+        return $objs[0];
+    }
+
 }
 
 ?>

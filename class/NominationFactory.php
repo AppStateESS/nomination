@@ -226,8 +226,23 @@ class NominationFactory {
      */
     public static function getNonWinningNominations()
     {
-        $currPeriod = PHPWS_Settings::get('nomination', 'current_period');
-        return Nomination::getNonWinningNominationsByPeriod($currPeriod);
+        $currPeriod = Period::getCurrentPeriod();
+        $period_id = $currPeriod->getId();
+        $db = new PHPWS_DB('nomination_nomination');
+        $db->addColumn('id');
+        $db->addWhere('period', $period_id);
+        $db->addWhere('winner', 0);
+        $results = $db->select('col');
+
+        $lost = array();
+
+        foreach ($results as $nom) {
+          $id = $nom['id'];
+          $nomination = NominationFactory::getNominationbyId($id);
+          array_push($lost, $nomination);
+        }
+
+        return $lost;
     }
 
     /**
@@ -264,8 +279,23 @@ class NominationFactory {
      */
     public static function getWinningNominations()
     {
-        $currPeriod = PHPWS_Settings::get('nomination', 'current_period');
-        return Nomination::getWinningNominationsByPeriod($currPeriod);
+      $currPeriod = Period::getCurrentPeriod();
+      $period_id = $currPeriod->getId();
+      $db = new PHPWS_DB('nomination_nomination');
+      $db->addColumn('id');
+      $db->addWhere('period', $period_id);
+      $db->addWhere('winner', 1);
+      $results = $db->select('col');
+
+      $winners = array();
+
+      foreach ($results as $nom) {
+        $id = $nom['id'];
+        $nomination = NominationFactory::getNominationbyId($id);
+        array_push($winners, $nomination);
+      }
+
+      return $winners;
     }
 
     /**
@@ -294,6 +324,25 @@ class NominationFactory {
         }
         return $noms;
     }
+
+    /**
+     * Delete nomination with the given id
+     *
+     * @param $id Nomination id
+     */
+    public static function deleteNomination($id)
+    {
+      if(!isset($id)){
+          throw new InvalidArgumentException('Missing id.');
+      }
+
+      $db = Nomination::getDb();
+
+      $db->addWhere('id', $id);
+      $db->delete();
+    }
+
+    
 
 }
 

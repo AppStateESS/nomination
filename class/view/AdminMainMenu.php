@@ -2,7 +2,7 @@
 
 PHPWS_Core::initModClass('nomination', 'View.php');
 
-class AdminMainMenu extends OmNomView
+class AdminMainMenu extends nomination\View
 {
     public function getRequestVars()
     {
@@ -17,7 +17,7 @@ class AdminMainMenu extends OmNomView
 
         PHPWS_Core::initModClass('nomination', 'Period.php');
         $vFactory = new ViewFactory();
-        
+
         $topMenu = $vFactory->get('NominationMainMenu');
 
         /** Search menu **/
@@ -38,7 +38,7 @@ class AdminMainMenu extends OmNomView
         $topMenu->addMenuItemByName('RolloverView', 'Rollover',
                                     'rollover_period', 'period');
 
-        $topMenu->insertNewColumn();
+
 
         /** Forms **/
         $topMenu->addMenu('User Forms', 'forms');

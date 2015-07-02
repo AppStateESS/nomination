@@ -40,16 +40,46 @@ class DoEmail extends Command {
 
     public function execute(Context $context)
     {
+
         if(!UserStatus::isAdmin()){
             throw new PermissionException('You are not allowed to do this!');
         }
-        
+
         try{
             $msgType = $context['list'];
-            $mail = new NominationEmail(NominationEmail::getListMembers($msgType), $context['subject'], $context['message'], $msgType);
-            $mail->send();
+
+            if($msgType === 'ALLNOM')
+            {
+              $mail = new AllNominatorsEmail($context['subject'], $context['message'], $msgType);
+              $mail->send();
+            }
+            else if($msgType === 'NOMCPL')
+            {
+              $mail = new CompleteNominationEmail($context['subject'], $context['message'], $msgType);
+              $mail->send();
+            }
+            else if($msgType === 'NOMINC')
+            {
+              $mail = new IncompleteNomEmail($context['subject'], $context['message'], $msgType);
+              $mail->send();
+            }
+            else if($msgType === 'REFNON')
+            {
+              $mail = new RefNeedUploadEmail($context['subject'], $context['message'], $msgType);
+              $mail->send();
+            }
+            else if($msgType === 'NOMINE')
+            {
+              $mail = new CompleteNomineeEmail($context['subject'], $context['message'], $msgType);
+              $mail->send();
+            }
+            // $mail = new NominationEmail(NominationEmail::getListMembers($msgType), $context['subject'], $context['message'], $msgType);
+            // $mail->send();
             NQ::simple('nomination', NOMINATION_SUCCESS, 'Emails sent');
+            $this->redirect();
+
         } catch(DatabaseException $e){
+
             NQ::simple('nomination', NOMINATION_ERROR, $e->getMessage());
         }
     }

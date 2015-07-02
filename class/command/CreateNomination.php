@@ -78,7 +78,7 @@ class CreateNomination extends Command
         /*****************
          * Check  fields *
         *****************/
-				
+
         // Check for missing required fields
         foreach($required as $key=>$value){
             if(!isset($context[$value]) || $context[$value] == ""){// || $context[$value[0]] == ""){
@@ -107,12 +107,12 @@ class CreateNomination extends Command
                 throw new BadFormException($msg);
             }
         }
-		
+
         // If anything was missing, redirect back to the form
         if(!empty($missing) || !Captcha::verify()){
             // Notify the user that they must reselect their file
             $missing[] = 'statement';
-			
+
             $context['after'] = 'NominationForm';// Set after view to the form
             $context['missing'] = $missing;// Add missing fields to context
             $context['form_fail'] = True;// Set form fail
@@ -148,7 +148,7 @@ class CreateNomination extends Command
         $nomineeMiddleName  = $context['nominee_middle_name'];
         $nomineeLastName    = $context['nominee_last_name'];
         $nomineeAsubox      = $context['nominee_asubox'];
-        $nomineeEmail       = $context['nominee_email'];
+        $nomineeEmail       = $context['nominee_email'] . '@appstate.edu';
         $nomineePosition    = $context['nominee_position'];
         $nomineeDeptMajor   = $context['nominee_department_major'];
         $nomineeYears       = $context['nominee_years'];
@@ -166,7 +166,7 @@ class CreateNomination extends Command
         $nominatorLastName     = $context['nominator_last_name'];
         $nominatorAddress      = $context['nominator_address'];
         $nominatorPhone        = $context['nominator_phone'];
-        $nominatorEmail        = $context['nominator_email'];
+        $nominatorEmail        = $context['nominator_email'] . '@appstate.edu';
         $nominatorRelation     = $context['nominator_relationship'];
 
 
@@ -175,12 +175,13 @@ class CreateNomination extends Command
         **************/
         $category = $context['category'];
         $period = Period::getCurrentPeriod();
-	//we need this cause we're adding the period's "number" not the period object itself
-	$period_id = $period->getId();
+	      //we need this cause we're adding the period's "number" not the period object itself
+	      $period_id = $period->getId();
         $nomination = new Nomination($nomineeBannerId, $nomineeFirstName, $nomineeMiddleName, $nomineeLastName,
                         $nomineeEmail, $nomineeAsubox, $nomineePosition, $nomineeDeptMajor, $nomineeYears,
                         $nomineePhone, $nomineeGpa, $nomineeClass, $nomineeResponsibility,
-                        $nominatorFirstName, $nominatorMiddleName, $nominatorLastName, $nominatorAddress, $nominatorPhone, $nominatorEmail, $nominatorRelation, $category, $period_id);
+                        $nominatorFirstName, $nominatorMiddleName, $nominatorLastName, $nominatorAddress,
+                        $nominatorPhone, $nominatorEmail, $nominatorRelation, $category, $period_id);
         // Save the nomination to the db; If this works,
         // the factory will populate the $nomination with its database id.
         NominationFactory::save($nomination);
@@ -201,29 +202,35 @@ class CreateNomination extends Command
             $relationship   = $context['reference_relationship'][$i];
 
             // Check for missing refernce info. If anything other than "relationship" is missing, then we return to the form
-            if(!isset($context['reference_first_name']) && $vis->isVisible('reference_first_name')) {
+            if(!isset($context['reference_first_name']) && $vis->isVisible('reference_first_name'))
+            {
                 $missingFields[] = "reference_first_name[$i]";
             }
 
-            if(!isset($context['reference_last_name']) && $vis->isVisible('reference_last_name')) {
+            if(!isset($context['reference_last_name']) && $vis->isVisible('reference_last_name'))
+            {
                 $missingFields[] = "reference_last_name[$i]";
             }
 
-            if(!isset($context['reference_department']) && $vis->isVisible('reference_department')) {
+            if(!isset($context['reference_department']) && $vis->isVisible('reference_department'))
+            {
                 $missingFields[] = "reference_department[$i]";
             }
 
-            if(!isset($context['reference_phone']) && $vis->isVisible('reference_phone')) {
+            if(!isset($context['reference_phone']) && $vis->isVisible('reference_phone'))
+            {
                 $missingFields[] = "reference_phone[$i]";
             }
 
-            if(!isset($context['reference_email']) && $vis->isVisible('reference_email')) {
+            if(!isset($context['reference_email']) && $vis->isVisible('reference_email'))
+            {
                 $missingFields[] = "reference_email[$i]";
             }
 
             // If anything is missing, redirect back to the form
             //TODO: re-populate form values after redirect
-            if(!empty($missingFields)){
+            if(!empty($missingFields))
+            {
                 $context['after'] = 'NominationForm';// Set after view to the form
                 $context['missing'] = $missingFields;// Add missing fields to context
                 $context['form_fail'] = True;// Set form fail
@@ -245,18 +252,20 @@ class CreateNomination extends Command
 
 
         /******************************
-         * Statement / Documnt Upload *
+         * Statement / Document Upload *
          ******************************/
         PHPWS_Core::initModClass('nomination', 'exception/IllegalFileException.php');
 
         // Make sure the $_FILES array some info on the file we're looking for
-        if(!isset($_FILES['statement']) || !is_uploaded_file($_FILES['statement']['tmp_name'])){
+        if(!isset($_FILES['statement']) || !is_uploaded_file($_FILES['statement']['tmp_name']))
+        {
             PHPWS_Core::initModClass('nomination', 'exception/BadFormException.php');
             throw new BadFormException('Please select a document to upload.');
         }
 
         // Sanity check on mime type for files the client may still have open
-        if($_FILES['statement']['type'] == 'application/octet-stream'){
+        if($_FILES['statement']['type'] == 'application/octet-stream')
+        {
             throw new IllegalFileException('Please save and close all word processors then re-submit file.');
         }
 
@@ -269,15 +278,17 @@ class CreateNomination extends Command
          * Send Emails *
         ***************/
 
-        foreach($references as $ref){
-            NominationEmail::newNominationReference($ref, $nomination);
+        foreach($references as $ref)
+        {
+            ReferenceEmail::newNomination($ref, $nomination);
         }
 
         // Send email to nominator, only if the nominator fields are turned on
         PHPWS_Core::initModClass('nomination', 'NominationFieldVisibility.php');
         $vis = new NominationFieldVisibility();
-        if($vis->isVisible('nominator_email')) {
-            NominationEmail::newNominationNominator($nomination);
+        if($vis->isVisible('nominator_email'))
+        {
+            NominatorEmail::newNomination($nomination);
         }
 
         NQ::simple('Nomination', NOMINATION_SUCCESS, 'Form successfully submitted. Email sent.');

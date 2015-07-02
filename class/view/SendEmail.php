@@ -14,7 +14,7 @@ PHPWS_Core::initModClass('nomination', 'Context.php');
 PHPWS_Core::initModClass('nomination', 'NominationEmail.php');
 PHPWS_Core::initModClass('nomination', 'CommandFactory.php');
 
-class SendEmail extends OmNomView {
+class SendEmail extends \nomination\View {
 
     public function getRequestVars()
     {
@@ -37,10 +37,16 @@ class SendEmail extends OmNomView {
 
         $form->addDropBox('list', NominationEmail::getLists());
         $form->setLabel('list', 'Recipients');
+        $form->addCssClass('list', 'form-control');
+
         $form->addText('subject');
         $form->setLabel('subject', 'Subject');
+        $form->addCssClass('subject', 'form-control');
+
         $form->addTextArea('message');
         $form->setLabel('message', 'Message');
+        $form->addCssClass('message', 'form-control');
+
         $form->addSubmit('Submit');
 
         if(isset($_SESSION['review'])){

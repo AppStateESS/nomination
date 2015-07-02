@@ -13,7 +13,7 @@ PHPWS_Core::initModClass('nomination', 'View.php');
 PHPWS_Core::initModClass('nomination', 'ViewFactory.php');
 PHPWS_Core::initModClass('nomination', 'CommandFactory.php');
 
-class ReviewEmail extends OmNomView {
+class ReviewEmail extends \nomination\View {
     protected $from;
     protected $list;
     protected $subject;

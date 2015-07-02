@@ -12,8 +12,8 @@ PHPWS_Core::initModClass('nomination', 'View.php');
 PHPWS_Core::initModClass('nomination', 'CancelQueue.php');
 PHPWS_Core::initCoreClass('DBPager.php');
 
-class CancelQueuePager extends OmNomView {
-    
+class CancelQueuePager extends \nomination\View {
+
     public function getRequestVars()
     {
         return array('view'=>'CancelQueuePager');
@@ -28,7 +28,7 @@ class CancelQueuePager extends OmNomView {
         $pager->setModule('nomination');
         $pager->setTemplate('admin/approve_remove.tpl');
         $pager->setEmptyMessage('No nominators are requesting nomination removal at this time.');
-        
+
         javascript('jquery');
 
         $pager->addRowTags('rowTags');

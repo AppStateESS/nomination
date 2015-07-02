@@ -1,5 +1,7 @@
 <?php
 
+namespace nomination;
+
 /**
  * View
  *
@@ -9,17 +11,17 @@
  * @package timetracker
  */
 
-abstract class OmNomView {
+abstract class View {
     abstract function getRequestVars();
-    abstract function display(Context $context);
+    abstract function display(\Context $context);
 
-    public function initForm(PHPWS_Form $form)
+    public function initForm(\PHPWS_Form $form)
     {
         $module = $form->get('module');
-        if(PEAR::isError($module)){
+        if(\PEAR::isError($module)){
             $form->addHidden('module', 'nomination');
         }
-        
+
         foreach($this->getRequestVars() as $key=>$value){
             $form->addHidden($key, $value);
         }
@@ -49,7 +51,7 @@ abstract class OmNomView {
 	 */
 	public function getLink($text, $target = NULL, $cssClass = NULL, $title = NULL)
 	{
-		return PHPWS_Text::moduleLink(dgettext('nomination', $text), 'nomination', $this->getRequestVars(), $target, $title, $cssClass);
+		return \PHPWS_Text::moduleLink(dgettext('nomination', $text), 'nomination', $this->getRequestVars(), $target, $title, $cssClass);
 	}
 
 	/**
@@ -82,16 +84,16 @@ abstract class OmNomView {
     }
 
     function redirect(){
-        NQ::close();
+        \NQ::close();
         header("Location: ".$this->getURI());
         exit();
     }
 }
 
-abstract class NomView extends OmNomView
+abstract class NomView extends View
 {
     private $main;
-    
+
     public function setMain($content){
         $this->main = $content;
     }
@@ -100,13 +102,13 @@ abstract class NomView extends OmNomView
     {
         return $this->main;
     }
-    
+
     public function displayNomination($content)
     {
         $tpl = array();
         $tpl['MAIN'] = $content;
-        Layout::addStyle('nomination', 'css/nomination.css');
-        return PHPWS_Template::process($tpl, 'nomination', 'nomination.tpl');
+        \Layout::addStyle('nomination', 'css/nomination.css');
+        return \PHPWS_Template::process($tpl, 'nomination', 'nomination.tpl');
     }
 }
 ?>

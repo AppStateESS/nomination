@@ -11,7 +11,7 @@
    */
 PHPWS_Core::initModClass('nomination', 'View.php');
 
-class AjaxMessageView extends OmNomView {
+class AjaxMessageView extends \nomination\View {
     protected $message;
 
     public function getRequestVars()

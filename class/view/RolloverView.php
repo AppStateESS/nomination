@@ -11,7 +11,7 @@
 PHPWS_Core::initModClass('nomination', 'View.php');
 PHPWS_Core::initModClass('nomination', 'Period.php');
 
-class RolloverView extends OmNomView
+class RolloverView extends \nomination\View
 {
     public function getRequestVars()
     {

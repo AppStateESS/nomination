@@ -15,7 +15,7 @@ PHPWS_Core::initModClass('nomination', 'NominationDocument.php');
 PHPWS_Core::initModClass('nomination', 'NominationFactory.php');
 PHPWS_Core::initModClass('nomination', 'DocumentFactory.php');
 
-class DownloadFile extends OmNomView {
+class DownloadFile extends \nomination\View {
     public $unique_id;
     public $nomination;
 

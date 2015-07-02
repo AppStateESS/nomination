@@ -13,7 +13,7 @@ PHPWS_Core::initModClass('nomination', 'Context.php');
 PHPWS_Core::initModClass('nomination', 'Nominee.php');
 PHPWS_Core::initModClass('nomination', 'Nomination.php');
 
-class NomineeView extends OmNomView {
+class NomineeView extends \nomination\View {
     public $nominationId;
 
     public function display(Context $context)

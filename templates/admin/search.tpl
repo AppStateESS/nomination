@@ -1,7 +1,25 @@
 <h2>{TITLE}</h2>
-<br />
-{START_FORM}{QUERY}{SUBMIT}{END_FORM}
-<br />
+
+{START_FORM}
+
+<div class="row">
+  <div class="col-md-6">
+    {QUERY}
+  </div>
+</div>
+
+<p></p>
+
+<div class="row">
+  <div class="col-md-4">
+    {SUBMIT}
+  </div>
+</div>
+
+{END_FORM}
+
+<p></p>
+
 <div id="pager">
 {PAGER}
 </div>

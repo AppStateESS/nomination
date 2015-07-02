@@ -13,7 +13,7 @@ PHPWS_Core::initModClass('nomination', 'Nominator.php');
 PHPWS_Core::initModClass('nomination', 'Nomination.php');
 PHPWS_Core::initModClass('nomination', 'NominationFactory.php');
 
-class NominatorView extends OmNomView 
+class NominatorView extends \nomination\View 
 {
     public $nominationId;
 
