@@ -41,6 +41,7 @@ class AdminSettings extends \nomination\View {
         $form->addText('award_title', PHPWS_Settings::get('nomination', 'award_title'));
         $form->setLabel('award_title', 'Award Title:');
         $form->setSize('award_title', 30);
+        $form->addCssClass('award_title', 'form-control');
 
         // Number of references required
         $numRefs = PHPWS_Settings::get('nomination', 'num_references_req');
@@ -48,11 +49,13 @@ class AdminSettings extends \nomination\View {
         $form->setLabel('num_references_req', '# References Required');
         $form->setSize('num_references_req', 3);
         $form->setMaxSize('num_references_req', 1);
+        $form->addCssClass('num_references_req', 'form-control');
 
         // File storage path
         $form->addText('file_dir', PHPWS_Settings::get('nomination', 'file_dir'));
         $form->setLabel('file_dir', 'File Directory:');
         $form->setSize('file_dir', 30);
+        $form->addCssClass('file_dir', 'form-control');
 
         // Allowed file types
         $types = NominationDocument::getFileNames();
@@ -65,6 +68,7 @@ class AdminSettings extends \nomination\View {
         $form->addText('email_from_address', PHPWS_Settings::get('nomination', 'email_from_address'));
         $form->setLabel('email_from_address', 'Email From Address');
         $form->setSize('email_from_address', 30);
+        $form->addCssClass('email_from_address', 'form-control');
 
         // Hidden Fields
         PHPWS_Core::initModClass('nomination', 'NominationFieldVisibility.php');

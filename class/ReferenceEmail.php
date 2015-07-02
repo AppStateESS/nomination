@@ -37,10 +37,10 @@
         //$vars['SIGNATURE'] = PHPWS_Settings::get('nomination', 'signature');
         //$vars['SIG_POSITION'] = PHPWS_Settings::get('nomination', 'sig_position');
 
-        $list = array($reference->getEmail());
+        $list = array($reference->getId());
         $subject = 'Reference Request: ' . PHPWS_Settings::get('nomination', 'award_title');
         $msg = PHPWS_Template::process($vars, 'nomination', 'email/reference_new_nomination.tpl');
-        $msgType = 'NEWNOM';
+        $msgType = 'NEWREF';
 
 
         $email = new EmailByList($list, $subject, $msg, $msgType);

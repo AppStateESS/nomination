@@ -15,10 +15,14 @@
 
    public function getMembers()
    {
+     $period = Period::getCurrentPeriod();
+     $period_id = $period->getId();
      $db = new PHPWS_DB('nomination_nomination');
      $db->addColumn('id');
+     $db->addWhere('period', $period_id);
      $results = $db->select('col');
 
+     
      if(PHPWS_Error::logIfError($results) || is_null($results))
      {
        throw new DatabaseException('Could not retrieve requested mailing list');
@@ -35,6 +39,7 @@
      foreach ($list as $id)
      {
        $nomination = NominationFactory::getNominationbyId($id);
+
        $this->sendTo($nomination->getNominatorEmail());
        $this->logEmail($nomination, $nomination->getNominatorEmail(), $nomination->getId(), NOMINATOR);
      }

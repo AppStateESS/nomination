@@ -30,29 +30,6 @@ class Rollover extends Command
         PHPWS_Core::initModClass('nomination', 'Period.php');
         PHPWS_Core::initModClass('nomination', 'EmailMessage.php');
 
-        // Delete all non-winning nominations and its participants
-        $losers = Nomination::getNonWinningNominations();
-        // DO NOT delete any nominees that have winning nominations
-        $winners = Nomination::getWinningNominations();
-
-        $results = array();
-
-        foreach($losers as $loser){
-
-            $deleteNom = True;
-            foreach($winners as $winner){
-                if($winner->getNomineeId() == $loser->getNomineeId()){
-                    $deleteNom = False;
-                }
-            }
-            if($deleteNom){
-                // Delete nominee
-                $nominee = new Nominee($loser->getNomineeId());
-                EmailMessage::deleteMessages($loser->getNominee());
-                $results[$loser->getId()]['nominee'] = $nominee->delete();
-            }
-            $loser->deleteForReal();
-        }
 
         // Check for errors when deleting
         foreach($results as $actor=>$result){

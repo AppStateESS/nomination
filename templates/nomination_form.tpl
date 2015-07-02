@@ -25,233 +25,464 @@
     </div>
     <!-- END resend -->
   </div>
+
+
 {START_FORM}
 
-<h1 class="title">{AWARD_TITLE}</h1>
+<h2>{AWARD_TITLE}</h2>
 
-This nomination period will end on <b>{PERIOD_END}</b>.
-<p>
+<p>This nomination period will end on <strong>{PERIOD_END}</strong>.</p>
 
-<h2>Nominee Information</h2>
 
-<table>
-<!-- BEGIN NOMINEE_BANNER_ID -->
-  <tr>
-    <td class="req">{NOMINEE_BANNER_ID_LABEL}</td>
-    <td>{NOMINEE_BANNER_ID}</td>
-  </tr>
-<!-- END NOMINEE_BANNER_ID -->
-  <tr>
-    <td class="req">{NOMINEE_FIRST_NAME_LABEL}</td>
-    <td>{NOMINEE_FIRST_NAME}</td>
-  </tr>
-  <tr>
-    <td>{NOMINEE_MIDDLE_NAME_LABEL}</td>
-    <td>{NOMINEE_MIDDLE_NAME}</td>
-  </tr>
-  <tr>
-    <td class="req">{NOMINEE_LAST_NAME_LABEL}</td>
-    <td>{NOMINEE_LAST_NAME}</td>
-  </tr>
-  <tr>
-    <td class="req">{NOMINEE_EMAIL_LABEL}</td>
-    <td>{NOMINEE_EMAIL}@appstate.edu</td>
-  </tr>
-<!-- BEGIN NOMINEE_ASUBOX -->
-  <tr>
-    <td class="req">{NOMINEE_ASUBOX_LABEL}</td>
-    <td>{NOMINEE_ASUBOX}</td>
-  </tr>
-<!-- END NOMINEE_ASUBOX -->
-<!-- BEGIN NOMINEE_PHONE -->
-  <tr>
-    <td class="req">{NOMINEE_PHONE_LABEL}</td>
-    <td>{NOMINEE_PHONE}</td>
-  </tr>
-<!-- END NOMINEE_PHONE -->
-<!-- BEGIN NOMINEE_POSITION -->
-  <tr>
-    <td>{NOMINEE_POSITION_LABEL}</td>
-    <td>{NOMINEE_POSITION}</td>
-  </tr>
-<!-- END NOMINEE_POSITION -->
-<!-- BEGIN NOMINEE_DEPARTMENT_MAJOR -->
-  <tr>
-    <td>{NOMINEE_DEPARTMENT_MAJOR_LABEL}</td>
-    <td>{NOMINEE_DEPARTMENT_MAJOR}</td>
-  </tr>
-<!-- END NOMINEE_DEPARTMENT_MAJOR -->
-<!-- BEGIN NOMINEE_GPA -->
-  <tr>
-    <td class="req">{NOMINEE_GPA_LABEL}</td>
-    <td>{NOMINEE_GPA}</td>
-  </tr>
-<!-- END NOMINEE_GPA -->
-<!-- BEGIN NOMINEE_CLASS -->
-  <tr>
-    <td class="req">{NOMINEE_CLASS_LABEL}</td>
-    <td>{NOMINEE_CLASS}</td>
-  </tr>
-<!-- END NOMINEE_CLASS -->
-<!-- BEGIN NOMINEE_YEARS -->
-  <tr>
-    <td>{NOMINEE_YEARS_LABEL}</td>
-    <td>{NOMINEE_YEARS}</td>
-  </tr>
-<!-- END NOMINEE_YEARS -->
-<!-- BEGIN NOMINEE_RESPONSIBILITY -->
-  <tr>
-    <td colspan="2">Have you ever been found responsible or accepted responsibility for violating ASU's (or another school's) policies, or any law or regulation?</td>
-  </tr>
-  <tr>
-    <td>{NOMINEE_RESPONSIBILITY_1} {NOMINEE_RESPONSIBILITY_1_LABEL}<br />{NOMINEE_RESPONSIBILITY_2} {NOMINEE_RESPONSIBILITY_2_LABEL}</td>
-  </tr>
-<!-- END NOMINEE_RESPONSIBILITY -->
-</table>
+<h3>Nominee Information</h3>
 
-<!-- BEGIN CATEGORY -->
-<hr>
+<div class="col-md-12">
+  <!-- BEGIN NOMINEE_BANNER_ID -->
+  <div class="row">
+    <label class="req">
+      {NOMINEE_BANNER_ID_LABEL}
+    </label>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      {NOMINEE_BANNER_ID}
+    </div>
+  </div>
+  <!-- END NOMINEE_BANNER_ID -->
 
-<h2> Please choose group you would like to apply to: </h2>
-<ul style="list-style-image: none; list-style-type: none; margin-left:-12px;">
-  <li>
-    {CATEGORY_1}
-    Student Conduct Board
-  </li>
-  
-  <li>
-    {CATEGORY_2}
-    Academic Integrity Board
-  </li>
-  
-  <li>
-    {CATEGORY_3}
-    Both / Either (Student Conduct and/or Academic Integrity Board)
-  </li>
-</ul>
-<!-- END CATEGORY -->
-<!-- BEGIN REFERENCES_OVERALL -->
-<hr>
 
-<h2>References</h2>
-  <p>
-  <b>Contact information for {NUM_REFS} reference(s) must be included for this application.</b>
-  These references will be sent a link to submit letters of recommendation which should include relevant information that gives examples of your leadership ability, dependability, integrity, self-confidence, maturity, and communication skills as it relates to your abilities to serve on one of the student boards.</p>
-  
-  <ol>
-    <!-- BEGIN REFERENCES_REPEAT -->
-    <li>
-      <table>
-<!-- BEGIN REFERENCE_FIRST_NAME -->
-        <tr>
-          <td class="req">{REFERENCE_FIRST_NAME__LABEL}</td>
-          <td>{REFERENCE_FIRST_NAME_}</td>
-        </tr>
-<!-- END REFERENCE_FIRST_NAME -->
-<!-- BEGIN REFERENCE_LAST_NAME -->
-        <tr>
-          <td class="req">{REFERENCE_LAST_NAME__LABEL}</td>
-          <td>{REFERENCE_LAST_NAME_}</td>
-        </tr>
-<!-- END REFERENCE_LAST_NAME -->
-<!-- BEGIN REFERENCE_DEPARTMENT -->
-        <tr>
-          <td>{REFERENCE_DEPARTMENT__LABEL}</td>
-          <td>{REFERENCE_DEPARTMENT_}</td>
-        </tr>
-<!-- END REFERENCE_DEPARTMENT -->
-<!-- BEGIN REFERENCE_PHONE -->
-        <tr>
-          <td class="req">{REFERENCE_PHONE__LABEL}</td>
-          <td>{REFERENCE_PHONE_}</td>
-        </tr>
-<!-- END REFERENCE_PHONE -->
-<!-- BEGIN REFERENCE_EMAIL -->
-        <tr>
-          <td class="req">{REFERENCE_EMAIL__LABEL}</td>
-          <td>{REFERENCE_EMAIL_}</td>
-        </tr>
-<!-- END REFERENCE_EMAIL -->
-<!-- BEGIN REFERENCE_RELATIONSHIP -->
-        <tr>
-          <td>{REFERENCE_RELATIONSHIP__LABEL}</td>
-          <td>{REFERENCE_RELATIONSHIP_}</td>
-        </tr>
-<!-- END REFERENCE_RELATIONSHIP -->
-      </table>
-    </li>
+  <div class="row">
+    <label class="req">
+      {NOMINEE_FIRST_NAME_LABEL}
+    </label>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      {NOMINEE_FIRST_NAME}
+    </div>
+  </div>
+
+  <div class="row">
+    <label>
+      {NOMINEE_MIDDLE_NAME_LABEL}
+    </label>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      {NOMINEE_MIDDLE_NAME}
+    </div>
+  </div>
+
+  <div class="row">
+    <label class="req">
+      {NOMINEE_LAST_NAME_LABEL}
+    </label>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      {NOMINEE_LAST_NAME}
+    </div>
+  </div>
+
+  <div class="row">
+    <label class="req">
+      {NOMINEE_EMAIL_LABEL}
+    </label>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      <div class="form-group">
+        <div class="input-group">
+          {NOMINEE_EMAIL}
+          <div class="input-group-addon">
+            @appstate.edu
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BEGIN NOMINEE_ASUBOX -->
+  <div class="row">
+    <label class="req">
+      {NOMINEE_ASUBOX_LABEL}
+    </label>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      {NOMINEE_ASUBOX}
+    </div>
+  </div>
+  <!-- END NOMINEE_ASUBOX -->
+
+  <!-- BEGIN NOMINEE_PHONE -->
+  <div class="row">
+    <label class="req">
+      {NOMINEE_PHONE_LABEL}
+    </label>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      {NOMINEE_PHONE}
+    </div>
+  </div>
+  <!-- END NOMINEE_PHONE -->
+
+  <!-- BEGIN NOMINEE_POSITION -->
+  <div class="row">
+    <label>
+      {NOMINEE_POSITION_LABEL}
+    </label>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      {NOMINEE_POSITION}
+    </div>
+  </div>
+  <!-- END NOMINEE_POSITION -->
+
+  <!-- BEGIN NOMINEE_DEPARTMENT_MAJOR -->
+  <div class="row">
+    <label>
+      {NOMINEE_DEPARTMENT_MAJOR_LABEL}
+    </label>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      {NOMINEE_DEPARTMENT_MAJOR}
+    </div>
+  <!-- END NOMINEE_DEPARTMENT_MAJOR -->
+  </div>
+
+  <!-- BEGIN NOMINEE_GPA -->
+  <div class="row">
+    <label class="req">
+      {NOMINEE_GPA_LABEL}
+    </label>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      {NOMINEE_GPA}
+    </div>
+  </div>
+  <!-- END NOMINEE_GPA -->
+
+  <!-- BEGIN NOMINEE_CLASS -->
+  <div class="row">
+    <label class="req">
+      {NOMINEE_CLASS_LABEL}
+    </label>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      {NOMINEE_CLASS}
+    </div>
+  </div>
+  <!-- END NOMINEE_CLASS -->
+
+  <!-- BEGIN NOMINEE_YEARS -->
+  <div class="row">
+    <label>
+      {NOMINEE_YEARS_LABEL}
+    </label>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      {NOMINEE_YEARS}
+    </div>
+  </div>
+  <!-- END NOMINEE_YEARS -->
+
+  <!-- BEGIN NOMINEE_RESPONSIBILITY -->
+  <div class="row">
+    <p>
+      Have you ever been found responsible or accepted responsibility for violating ASU's (or another school's) policies, or any law or regulation?
+    </p>
+    <div class="radio">
+      <label>
+        {NOMINEE_RESPONSIBILITY_1} {NOMINEE_RESPONSIBILITY_1_LABEL}
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        {NOMINEE_RESPONSIBILITY_2} {NOMINEE_RESPONSIBILITY_2_LABEL}
+      </label>
+    </div>
+  </div>
+  <!-- END NOMINEE_RESPONSIBILITY -->
+
+  <!-- BEGIN CATEGORY -->
+  <div class="row">
+    <p>
+      Please choose group you would like to apply to:
+    </p>
+    <div class="radio">
+      <label>
+        {CATEGORY_1}
+        Student Conduct Board
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        {CATEGORY_2}
+        Academic Integrity Board
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        {CATEGORY_3}
+        Both / Either (Student Conduct and/or Academic Integrity Board)
+      </label>
+    </div>
+  </div>
+  <!-- END CATEGORY -->
+
+  <!-- BEGIN REFERENCES_OVERALL -->
+  <div class="row">
+    <h3>References</h3>
+    <p>
+      <b>Contact information for {NUM_REFS} reference(s) must be included for this
+      application.</b> These references will be sent a link to submit letters of
+      recommendation which should include relevant information that gives examples
+      of your leadership ability, dependability, integrity, self-confidence, maturity,
+      and communication skills as it relates to your abilities to serve on one of
+      the student boards.
+    </p>
+  </div>
+
+
+  <!-- BEGIN REFERENCES_REPEAT -->
+  <div>
+    <div class="row">
+      <h4>
+        Reference
+      </h4>
+    </div>
+    <!-- BEGIN REFERENCE_FIRST_NAME -->
+    <div class="row">
+      <label class="req">
+        {REFERENCE_FIRST_NAME__LABEL}
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {REFERENCE_FIRST_NAME_}
+      </div>
+    </div>
+    <!-- END REFERENCE_FIRST_NAME -->
+    <!-- BEGIN REFERENCE_LAST_NAME -->
+    <div class="row">
+      <label class="req">
+        {REFERENCE_LAST_NAME__LABEL}
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {REFERENCE_LAST_NAME_}
+      </div>
+    </div>
+    <!-- END REFERENCE_LAST_NAME -->
+    <!-- BEGIN REFERENCE_DEPARTMENT -->
+    <div class="row">
+      <label>
+        {REFERENCE_DEPARTMENT__LABEL}
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {REFERENCE_DEPARTMENT_}
+      </div>
+    </div>
+    <!-- END REFERENCE_DEPARTMENT -->
+    <!-- BEGIN REFERENCE_PHONE -->
+    <div class="row">
+      <label class="req">
+        {REFERENCE_PHONE__LABEL}
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {REFERENCE_PHONE_}
+      </div>
+    </div>
+    <!-- END REFERENCE_PHONE -->
+    <!-- BEGIN REFERENCE_EMAIL -->
+    <div class="row">
+      <label class="req">
+        {REFERENCE_EMAIL__LABEL}
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {REFERENCE_EMAIL_}
+      </div>
+    </div>
+    <!-- END REFERENCE_EMAIL -->
+    <!-- BEGIN REFERENCE_RELATIONSHIP -->
+    <div class="row">
+      <label>
+        {REFERENCE_RELATIONSHIP__LABEL}
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {REFERENCE_RELATIONSHIP_}
+      </div>
+    </div>
+    <!-- END REFERENCE_RELATIONSHIP -->
+    </div>
     <!-- END REFERENCES_REPEAT -->
-  </ol>
 
-<!-- END REFERENCES_OVERALL -->
+    <!-- END REFERENCES_OVERALL -->
 
-<!-- BEGIN STATEMENT -->
-<hr>
+    <!-- BEGIN STATEMENT -->
+    <div class="row">
+      <h3>
+        Resume & Short Answer
+      </h3>
+      <p>
+        Please <a href="{FILES_DIR}mod/nomination/files/StudentConductApplicationQuestions.doc">
+        download this document</a> (please right-click and select "save link as...")
+        and insert your answers to the short-answer questions directly into the
+        document. Then, attach your resume as the last page of the document and
+        upload the document using the button below. Please save your document as a
+        PDF file, if possible.
+      </p>
+      <p>
+        {STATEMENT}
+      </p>
+    </div>
+    <!-- END STATEMENT -->
 
-<h2>Resume & Short Answer</h2>
-<p>Please <a href="{FILES_DIR}mod/nomination/files/StudentConductApplicationQuestions.doc">download this document</a> (please right-click and select "save link as...") and insert your answers to the short-answer questions directly into the document. Then, attach your resume as the last page of the document and upload the document using the button below. Please save your document as a PDF file, if possible. 
-</p>
-<p>{STATEMENT}</p>
-<!-- END STATEMENT -->
+    <!-- BEGIN NOMINATOR_OVERALL -->
+    <div class="row">
+      <h2>
+        Nominator Information
+      </h2>
+    </div>
 
-<!-- BEGIN NOMINATOR_OVERALL -->
-<hr>
+    <!-- BEGIN NOMINATOR_FIRST_NAME -->
+    <div class="row">
+      <label class="req">
+        {NOMINATOR_FIRST_NAME_LABEL}
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {NOMINATOR_FIRST_NAME}
+      </div>
+    </div>
+    <!-- END NOMINATOR_FIRST_NAME -->
 
-<h2>Nominator Information</h2>
-<table>
-<!-- BEGIN NOMINATOR_FIRST_NAME -->
-  <tr>
-    <td class="req">{NOMINATOR_FIRST_NAME_LABEL}</td>
-    <td>{NOMINATOR_FIRST_NAME}</td>
-  </tr>
-<!-- END NOMINATOR_FIRST_NAME -->
-<!-- BEGIN NOMINATOR_MIDDLE_NAME -->
-  <tr>
-    <td>{NOMINATOR_MIDDLE_NAME_LABEL}</td>
-    <td>{NOMINATOR_MIDDLE_NAME}</td>
-  </tr>
-<!-- END NOMINATOR_MIDDLE_NAME -->
-<!-- BEGIN NOMINATOR_LAST_NAME -->
-  <tr>
-    <td class="req">{NOMINATOR_LAST_NAME_LABEL}</td>
-    <td>{NOMINATOR_LAST_NAME}</td>
-  </tr>
-<!-- END NOMINATOR_LAST_NAME -->
-<!-- BEGIN NOMINATOR_ADDRESS -->
-  <tr>
-    <td class="req">{NOMINATOR_ADDRESS_LABEL}</td>
-    <td>{NOMINATOR_ADDRESS}</td>
-  </tr>
-<!-- END NOMINATOR_ADDRESS -->
-<!-- BEGIN NOMINATOR_PHONE -->
-  <tr>
-    <td class="req">{NOMINATOR_PHONE_LABEL}</td>
-    <td>{NOMINATOR_PHONE}</td>
-  </tr>
-<!-- END NOMINATOR_PHONE -->
-<!-- BEGIN NOMINATOR_EMAIL -->
-  <tr>
-    <td class="req">{NOMINATOR_EMAIL_LABEL}</td>
-    <td>{NOMINATOR_EMAIL}@appstate.edu</td>
-  </tr>
-<!-- END NOMINATOR_EMAIL -->
-<!-- BEGIN NOMINATOR_RELATIONSHIP -->
-  <tr>
-    <td>{NOMINATOR_RELATIONSHIP_LABEL}</td>
-    <td>{NOMINATOR_RELATIONSHIP}</td>
-  </tr>
-<!-- END NOMINATOR_RELATIONSHIP -->
-</table>
-<!-- END NOMINATOR_OVERALL -->
-<hr>
-<div>
-  <p>
-    In order for you to be considered for the Student Conduct Board and/or Academic Integrity Board, you must be a student in good academic standing (GPA of 2.5 or above) and good conduct standing (not currently on probation) within the Appalachian community. You must also attest that all of the information provided is accurate to the best of your knowledge. By submitting this form, it will give the Office of Student Conduct staff permission to check your records and grades.
-  </p>
-</div>
-<br>
-{CAPTCHA_IMAGE}
-<br>
-{SUBMIT}
-{END_FORM}
+    <!-- BEGIN NOMINATOR_MIDDLE_NAME -->
+    <div class="row">
+      <label class="req">
+        {NOMINATOR_MIDDLE_NAME_LABEL}
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {NOMINATOR_MIDDLE_NAME}
+      </div>
+    </div>
+    <!-- END NOMINATOR_MIDDLE_NAME -->
+
+    <!-- BEGIN NOMINATOR_LAST_NAME -->
+    <div class="row">
+      <label class="req">
+        {NOMINATOR_LAST_NAME_LABEL}
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {NOMINATOR_LAST_NAME}
+      </div>
+    </div>
+    <!-- END NOMINATOR_LAST_NAME -->
+
+    <!-- BEGIN NOMINATOR_ADDRESS -->
+    <div class="row">
+      <label class="req">
+        {NOMINATOR_ADDRESS_LABEL}
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {NOMINATOR_ADDRESS}
+      </div>
+    </div>
+    <!-- END NOMINATOR_ADDRESS -->
+
+    <!-- BEGIN NOMINATOR_PHONE -->
+    <div class="row">
+      <label class="req">
+        {NOMINATOR_PHONE_LABEL}
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {NOMINATOR_PHONE}
+      </div>
+    </div>
+    <!-- END NOMINATOR_PHONE -->
+
+    <!-- BEGIN NOMINATOR_EMAIL -->
+    <div class="row">
+      <label class="req">
+        {NOMINATOR_EMAIL_LABEL}
+      </label>
+    </div>
+    <div class="row">
+      <div class="form-group">
+        <div class="col-md-8">
+          <div class="input-group">
+            {NOMINATOR_EMAIL}
+            <div class="input-group-addon">
+              @appstate.edu
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END NOMINATOR_EMAIL -->
+
+    <!-- BEGIN NOMINATOR_RELATIONSHIP -->
+    <div class="row">
+      <label>
+        {NOMINATOR_RELATIONSHIP_LABEL}
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {NOMINATOR_RELATIONSHIP}
+      </div>
+    </div>
+    <!-- END NOMINATOR_RELATIONSHIP -->
+
+    <p></p>
+
+    <!-- END NOMINATOR_OVERALL -->
+
+    <div class="row">
+      <p>
+        In order for you to be considered for the Student Conduct Board and/or
+        Academic Integrity Board, you must be a student in good academic standing
+        (GPA of 2.5 or above) and good conduct standing (not currently on probation)
+        within the Appalachian community. You must also attest that all of the
+        information provided is accurate to the best of your knowledge. By submitting
+        this form, it will give the Office of Student Conduct staff permission to
+        check your records and grades.
+      </p>
+    </div>
+
+    <div class="row">
+      {CAPTCHA_IMAGE}
+    </div>
+
+    <div class="row">
+      {SUBMIT}
+    </div>
+
+    {END_FORM}
+  </div>
 </div>

@@ -38,7 +38,7 @@ class AdminMainMenu extends nomination\View
         $topMenu->addMenuItemByName('RolloverView', 'Rollover',
                                     'rollover_period', 'period');
 
-        $topMenu->insertNewColumn();
+
 
         /** Forms **/
         $topMenu->addMenu('User Forms', 'forms');

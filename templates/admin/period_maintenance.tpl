@@ -25,28 +25,49 @@
 <div class="col-md-12">
 
   <div class="row">
-    {NOMINATION_PERIOD_START_LABEL}
-    {NOMINATION_PERIOD_START}
+    <label>
+      {NOMINATION_PERIOD_START_LABEL}
+    </label>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      {NOMINATION_PERIOD_START}
+    </div>
   </div>
 
   <div class="row">
-    {NOMINATION_PERIOD_END_LABEL}
-    {NOMINATION_PERIOD_END}
+    <label>
+      {NOMINATION_PERIOD_END_LABEL}
+    </label>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      {NOMINATION_PERIOD_END}
+    </div>
   </div>
 
-  <h5>
-    Rollover
-  </h5>
-
-  <p>
-    <!-- BEGIN next_period -->
-      Next period is {NEXT_PERIOD} {ROLLOVER_LINK}
-    <!-- END next_period -->
-  </p>
+  <div class="row">
+    <label>
+      Rollover
+    </label>
+  </div>
+  <div class="row">
+    <p class="col-md-6">
+      <!-- BEGIN next_period -->
+        Next period is {NEXT_PERIOD} {ROLLOVER_LINK}
+      <!-- END next_period -->
+    </p>
+  </div>
 
   <div class="row">
-    {ROLLOVER_EMAIL_LABEL}
-    {ROLLOVER_EMAIL}
+    <label>
+      {ROLLOVER_EMAIL_LABEL}
+    </label>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      {ROLLOVER_EMAIL}
+    </div>
   </div>
 
   <p></p>

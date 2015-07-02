@@ -2,7 +2,7 @@
 <script type='text/javascript'>
     $(document).ready(function(){
         $('.view-pending-nom').click(function(){
-            
+
             // Reset any text changes done in past clicks
             $('.view-pending-nom').css('font-weight', 'normal');
             $('.view-pending-nom').css('font-style', 'normal');
@@ -47,8 +47,8 @@ function checkApprove(){
 </script>
 <h2>Pending Nomination Removal Requests</h2>
 {START_DENY_FORM}{END_DENY_FORM}{START_APPRV_FORM}{END_APPRV_FORM}
-<div id="pending-removal" style="display: inline-block;">
-<table style="float: left;" >
+<div id="pending-removal" class="col-md-12">
+<table class="table table-hover table-striped">
   <tr>
     <th>Nominee Name
     </th>
@@ -59,8 +59,8 @@ function checkApprove(){
   <tr>
     <td>{NAME}
     </td>
-    <td><a class="view-pending-nom" id={NOMINATION}>View</a> | 
-      <span onclick="checkApprove()"><a>{APPROVE}</a></span> | 
+    <td><a class="view-pending-nom" id={NOMINATION}>View</a> |
+      <span onclick="checkApprove()"><a>{APPROVE}</a></span> |
       <span onclick="checkDeny()"><a>{DENY}</a></span>
     </td>
   </tr>

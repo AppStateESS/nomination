@@ -59,6 +59,12 @@ class Reference
     /***************************
      * Getter & Setter Methods *
      ***************************/
+
+    public function getDb()
+    {
+      return new PHPWS_DB('nomination_reference');
+    }
+
     public function getId()
     {
         return $this->id;

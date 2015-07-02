@@ -84,7 +84,7 @@ class EmailLog
 
     public function setNomineeId($nomineeId)
     {
-      $this->nomineeId = $nomineeId;
+      $this->nominee_id = $nomineeId;
     }
 
     public function setMessage($message)
@@ -94,7 +94,7 @@ class EmailLog
 
     public function setMessageType($messageType)
     {
-      $this->messageType = $messageType;
+      $this->message_type = $messageType;
     }
 
     public function setSubject($subject)
@@ -104,17 +104,17 @@ class EmailLog
 
     public function setReceiverId($receiverId)
     {
-      $this->receiverId = $receiverId;
+      $this->receiver_id = $receiverId;
     }
 
     public function setReceiverType($receiverType)
     {
-      $this->receiverType = $receiverType;
+      $this->receiver_type = $receiverType;
     }
 
     public function setSentOn($sentOn)
     {
-      $this->sentOn = $sentOn;
+      $this->sent_on = $sentOn;
     }
 
     // Row tags for DBPager
@@ -145,6 +145,7 @@ class EmailLog
           $tpl['RECEIVER'] = $nomination->getNomineeLink();
           $tpl['RECEIVER_TYPE'] = 'Nominee';
         }
+
         $tpl['SENT_ON'] = date("m/d/Y h:i a",$this->getSentOn());
         return $tpl;
     }

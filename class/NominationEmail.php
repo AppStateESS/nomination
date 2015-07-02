@@ -23,6 +23,7 @@ define('SHORT_Reference', 'REF');
 
 // Message types
 define('NEWNOM', 'New Nomination');
+define('NEWREF', 'New Reference');
 define('UPDNOM', 'Updated nomination');
 define('REFUPL', 'Reference document upload');
 define('NOMDEL', 'Removal request approved');
@@ -32,6 +33,7 @@ define('NOMCPL', 'Nominators with complete nomination');
 define('NOMINC', 'Nominators with incomplete nomination');
 define('REFNON', 'References that need to upload');
 define('NOMINE', 'Nominees with complete nominations');
+
 
 
 abstract class NominationEmail {
@@ -108,6 +110,8 @@ abstract class NominationEmail {
     {
         // This is all kinds of messed up. Just write it to a log file for now...
 
+
+
         // Log the message to a text file
         $fd = fopen(PHPWS_SOURCE_DIR . 'logs/email.log',"a");
         fprintf($fd, "=======================\n");
@@ -128,7 +132,9 @@ abstract class NominationEmail {
 
         $message = new EmailLog();
 
+
         $message->setNomineeId($nomination->getId());
+
         $message->setMessage($this->message);
         $message->setMessageType($this->messageType);
         $message->setSubject($this->subject);
@@ -183,11 +189,14 @@ abstract class NominationEmail {
         //if you change anything about this array update the below function
         //yes it's hackish but we're "sure" that there will only be 5 lists...
         $lists = array();
+
         $lists['ALLNOM'] = ALLNOM;
         $lists['NOMCPL'] = NOMCPL;
         $lists['NOMINC'] = NOMINC;
         $lists['REFNON'] = REFNON;
         $lists['NOMINE'] = NOMINE;
+        $lists['NEWNOM'] = NEWNOM;
+        $lists['NEWREF'] = NEWREF;
 
         return $lists;
     }

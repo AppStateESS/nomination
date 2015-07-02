@@ -15,9 +15,12 @@
 
    public function getMembers()
    {
+     $period = Period::getCurrentPeriod();
+     $period_id = $period->getId();
      $db = new PHPWS_DB('nomination_nomination');
      $db->addColumn('nomination_nomination.email');
      $db->addWhere('complete', 1);
+     $db->addWhere('period', $period_id);
      $results = $db->select('col');
 
      if(PHPWS_Error::logIfError($results) || is_null($results)){

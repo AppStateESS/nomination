@@ -26,7 +26,9 @@ class NomineeSearch extends \nomination\View
         $ajax = !is_null($context['ajax']);
         $searchString = !is_null($context['query']) ? $context['query'] : '';
 
+
         $this->query = $searchString;
+
 
         if(!is_null($context['pg'])){
             $this->pg = $context['pg'];
@@ -40,11 +42,14 @@ class NomineeSearch extends \nomination\View
             echo $this->getPager($searchString);
             exit;
         } else {
+
             javascript('jquery_ui');
             javascriptMod('nomination', 'search', array('PHPWS_SOURCE_HTTP' => PHPWS_SOURCE_HTTP));
             $form = new PHPWS_Form('search');
+
             $form->setMethod('get');
             $form->addText('query', $searchString);
+            $form->addCssClass('query', 'form-control');
             if(!is_null($this->pg)){
                 $form->addHidden('pg', $this->pg);
             }
@@ -56,9 +61,11 @@ class NomineeSearch extends \nomination\View
             $form->addHidden('module', 'nomination');
             $form->addHidden('view', 'NomineeSearch');
             $form->addSubmit('Search');
+
             $tpl = $form->getTemplate();
 
             $tpl['PAGER'] = $this->getPager($searchString);
+
             $tpl['TITLE'] = 'Nominee Search';
 
             Layout::addPageTitle('Nominee Search');
@@ -69,6 +76,7 @@ class NomineeSearch extends \nomination\View
 
     public function getPager($searchString="")
     {
+
         PHPWS_Core::initModClass('nomination', 'Period.php');
 
         $pager = new DBPager('nomination_nomination', 'DBNomination');
@@ -82,7 +90,7 @@ class NomineeSearch extends \nomination\View
 
         // Committee members should only see completed nominations.
         if(UserStatus::isCommitteeMember()){
-            $pager->db->addWhere('nomination_nomination.completed', TRUE);
+            $pager->db->addWhere('nomination_nomination.complete', TRUE);
         }
 
         //these fields don't exist anymore

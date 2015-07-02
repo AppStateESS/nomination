@@ -31,7 +31,7 @@
         $vars['SIGNATURE'] = PHPWS_Settings::get('nomination', 'signature');
         $vars['SIG_POSITION'] = PHPWS_Settings::get('nomination', 'sig_position');
 
-        $list = array($nom->getNominatorEmail());
+        $list = array($nom->getId());
         $subject = $vars['AWARD_NAME'];
         $msg = PHPWS_Template::process($vars, 'nomination', 'email/nominator_new_nomination.tpl');
         $msgType = 'NEWNOM';

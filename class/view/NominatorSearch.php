@@ -20,10 +20,12 @@ class NominatorSearch extends \nomination\View
         $ajax = !is_null($context['ajax']);
         $searchString = !is_null($context['query']) ? $context['query'] : '';
 
+
         if($ajax){
             echo $this->getPager($searchString);
             exit;
         } else {
+
             javascript('jquery_ui');
             javascriptMod('nomination', 'search', array('PHPWS_SOURCE_HTTP' => PHPWS_SOURCE_HTTP));
             $form = new PHPWS_Form('search');
@@ -33,12 +35,14 @@ class NominatorSearch extends \nomination\View
             $form->addHidden('module', 'nomination');
             $form->addHidden('view', 'NominatorSearch');
             $form->addSubmit('Search');
+
             $tpl = $form->getTemplate();
 
             $tpl['PAGER'] = $this->getPager($searchString);
             $tpl['TITLE'] = 'Nominator Search';
 
             Layout::addPageTitle('Nominator Search');
+
 
             return PHPWS_Template::process($tpl, 'nomination', 'admin/search.tpl');
         }
@@ -67,13 +71,13 @@ class NominatorSearch extends \nomination\View
 
         // Committee members should only see completed nominations.
         if(UserStatus::isCommitteeMember()){
-            $pager->db->addWhere('nomination_nomination.completed', TRUE);
+            $pager->db->addWhere('nomination_nomination.complete', TRUE);
         }
 
 	    //these fields don't exist anymore
         //$pager->db->addJoin('left', 'nomination_nominator', 'nomination_nomination', 'id', 'nominator_id');
         //$pager->db->addWhere('nomination_nomination.period', Period::getCurrentPeriodYear());
-	    $pager->db->addJoin('left', 'nomination_nomination', 'nomination_period', 'period', 'id');
+	      $pager->db->addJoin('left', 'nomination_nomination', 'nomination_period', 'period', 'id');
         $pager->db->addWhere('nomination_period.year', Period::getCurrentPeriodYear());
 
 

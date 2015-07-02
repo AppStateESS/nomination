@@ -89,6 +89,10 @@ class Nomination
     /**
      * Getter & Setters
      */
+    public function getDb(){
+      return new PHPWS_DB('nomination_nomination');
+    }
+
     public function getId(){
         return $this->id;
     }
