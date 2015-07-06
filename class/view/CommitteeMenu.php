@@ -9,7 +9,7 @@ class CommitteeMenu extends ViewMenu
         if(!UserStatus::isCommitteeMember()){
             throw new PermissionException('You do have permission to look at this!');
         }
-        $this->addViewByName('Nominees', 'NomineeSearch');        
+        $this->addViewByName('Nominees', 'NomineeSearch');
         $this->addViewByName('Nominators', 'NominatorSearch');
     }
 
@@ -23,4 +23,3 @@ class CommitteeMenu extends ViewMenu
         return parent::display($context);
     }
 }
-?>

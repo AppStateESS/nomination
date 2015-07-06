@@ -362,4 +362,3 @@ class NominationForm extends \nomination\View
         return $result;
     }
 }
-?>

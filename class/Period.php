@@ -149,7 +149,7 @@ class Period extends Nomination_Model
         return Period::getPeriodByYear($year);
     }
     /**
-     * @return - current period stored in settings
+     * @return current period stored in settings
      */
     public static function getCurrentPeriodYear()
     {
@@ -164,4 +164,3 @@ class Period extends Nomination_Model
         return $currPeriod->getYear()+1;
     }
 }
-?>

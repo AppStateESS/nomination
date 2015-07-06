@@ -342,8 +342,6 @@ class NominationFactory {
       $db->delete();
     }
 
-    
+
 
 }
-
-?>

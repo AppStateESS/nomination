@@ -3,7 +3,7 @@
   /**
    * AjaxMessageView
    *
-   *   JSON encodes whatever is set in the message field of the 
+   *   JSON encodes whatever is set in the message field of the
    * context.
    *
    * @author Daniel West <dwest at tux dot appstate dot edu>
@@ -35,4 +35,3 @@ class AjaxMessageView extends \nomination\View {
         $this->message = $message;
     }
 }
-?>

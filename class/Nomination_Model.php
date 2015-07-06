@@ -13,13 +13,13 @@ abstract class Nomination_Model
 {
     public $id;
 
-    abstract function getDb();
+    public abstract function getDb();
 
     public function __construct($id = 0)
     {
         if(!is_null($id) && is_numeric($id)){
             $this->id = $id;
-            
+
             $result = $this->load();
 
             if(!$result){
@@ -29,7 +29,7 @@ abstract class Nomination_Model
             $this->id = 0;
         }
     }
-    
+
     public function getId(){
         return $this->id;
     }
@@ -46,7 +46,7 @@ abstract class Nomination_Model
             PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
             throw new DatabaseException($result->toString());
         }
-        
+
         return $result;
     }
 
@@ -69,11 +69,10 @@ abstract class Nomination_Model
         $db = $this->getDb();
         $db->addWhere('id', $this->id);
         $result = $db->delete();
-        
+
         if(PHPWS_Error::logIfError($result)){
             throw new DatabaseException($result->toString());
         }
         return true;
     }
 }
-?>

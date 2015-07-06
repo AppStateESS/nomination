@@ -30,7 +30,7 @@ class AdminSettings extends \nomination\View {
 
         // Create factories
         $cmdFactory = new CommandFactory();
-        $vFactory = new ViewFactory();
+
 
         // Initialize form submit command
         $updateCmd = $cmdFactory->get('UpdateSettings');
@@ -86,4 +86,3 @@ class AdminSettings extends \nomination\View {
         return PHPWS_Template::process($tpl, 'nomination', 'admin/settings.tpl');
     }
 }
-?>

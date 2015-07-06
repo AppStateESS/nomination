@@ -2,8 +2,8 @@
   /**
    * NominationActor
    *
-   * A higher level model class.  
-   * Stores names, email and UniqueId utility 
+   * A higher level model class.
+   * Stores names, email and UniqueId utility
    * functions for Nominator and Reference.
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
@@ -25,7 +25,7 @@ abstract class NominationActor extends Nomination_Model
         $first = $this->getFirstName();
         $middle= (!empty($this->middle_name)) ? $this->getMiddleName() : '';
         $last  = $this->getLastName();
-        
+
         return $first.' '.$middle.' '.$last;
     }
 
@@ -39,10 +39,10 @@ abstract class NominationActor extends Nomination_Model
 
     /**
      * Username acts as salt.
-     * Useranme is prepended to a unique id based on
+     * Username is prepended to a unique id based on
      * current time in microseconds.
      *
-     * @return - unique_id
+     * @return unique_id
      */
     public static function generateUniqueId($username)
     {
@@ -52,13 +52,13 @@ abstract class NominationActor extends Nomination_Model
             PHPWS_Core::initModClass('nomination', 'exception/UniqueIdException.php');
             throw new UniqueIdException('Problem occured while generating unique ID.');
         }
-        
+
         return $uniqueId;
     }
 
     /**
      * Check if a unique id exists in nominator or reference table.
-     * 
+     *
      * @return boolean - if the combined SELECT count is greater than zero
      */
     private static function uniqueIdExists($id)
@@ -68,7 +68,7 @@ abstract class NominationActor extends Nomination_Model
 
         $nom_db = Nominator::getDb();
         $ref_db = Reference::getDb();
-        
+
         $nom_db->addWhere('unique_id', $id);
         $ref_db->addWhere('unique_id', $id);
 
@@ -79,7 +79,7 @@ abstract class NominationActor extends Nomination_Model
     {
         return preg_match("/".NOMINATION_EMAIL_DOMAIN."\z/i", $email);
     }
-    
+
     /**
      * Getters and Setters
      */
@@ -114,5 +114,3 @@ abstract class NominationActor extends Nomination_Model
         $this->relationship = $relation;
     }
 }
-
-?>

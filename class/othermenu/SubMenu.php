@@ -2,7 +2,7 @@
 
 PHPWS_Core::initModClass('nomination', 'othermenu/MenuItem.php');
 
-class SubMenu extends MenuItem implements arrayaccess 
+class SubMenu extends MenuItem implements arrayaccess
 {
   protected $container = array();
 
@@ -13,7 +13,7 @@ class SubMenu extends MenuItem implements arrayaccess
   {
     // find the menu they want to add an item to
     $menu = $this->getMenuByTag($parentTag);
-    
+
     // If tag isn't given then make one for them
     if(is_null($tag)){
       $tag = $menu->getTag() . '-item-' . $menu->getMenuItemCount();
@@ -21,7 +21,7 @@ class SubMenu extends MenuItem implements arrayaccess
 
     // Create the item
     $item = new MenuItem($text, $tag);
-    
+
     $menu[$tag] = $item;
   }
 
@@ -72,7 +72,7 @@ class SubMenu extends MenuItem implements arrayaccess
 
   /**
    * return the number of MenuItems in container
-   */ 
+   */
   public function getMenuItemCount()
   {
     $count = 0;
@@ -86,7 +86,7 @@ class SubMenu extends MenuItem implements arrayaccess
 
   /**
    * return the number of SubMenus in container
-   */ 
+   */
   public function getSubMenuCount()
   {
     $count = 0;
@@ -105,7 +105,7 @@ class SubMenu extends MenuItem implements arrayaccess
   public function show()
   {
     $tpl = array();
-    
+
     $tpl['MENU_TAG'] = $this->tag;
     $tpl['MENU_TEXT'] = $this->text;
 
@@ -139,4 +139,3 @@ class SubMenu extends MenuItem implements arrayaccess
     return isset($this->container[$offset]) ? $this->container[$offset] : null;
   }
 }
-?>

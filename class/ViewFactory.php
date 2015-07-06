@@ -1,6 +1,6 @@
 <?php
 
-  /** 
+  /**
    * ViewFactory.php
    *
    * ViewFactory stores path to Views directory and contains
@@ -14,7 +14,7 @@ PHPWS_Core::initModClass('nomination', 'AbstractFactory.php');
 class ViewFactory extends AbstractFactory
 {
     private $dir = 'view';
-   
+
     // inherited from parent
     public function getDirectory()
     {
@@ -35,4 +35,3 @@ class ViewFactory extends AbstractFactory
         throw new ViewNotFoundException("Could not initialize view {$name}");
     }
 }
-?>

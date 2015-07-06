@@ -1,9 +1,9 @@
 <?php
 
   /**
-   * If this page is displayed then the user probably typed 
+   * If this page is displayed then the user probably typed
    * something in wrong.
-   * 
+   *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
@@ -22,5 +22,3 @@ class FourOhFour extends \nomination\View
  Please <a href="mailto:bostrt@tux.appstate.edu">contact</a> us.';
     }
 }
-
-?>

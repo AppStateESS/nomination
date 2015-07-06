@@ -28,26 +28,25 @@ class RolloverView extends \nomination\View
         PHPWS_Core::initModClass('nomination', 'CommandFactory.php');
 
         $form = new PHPWS_Form('rollover');
-        
+
         // Get submit command
         $cmdFactory = new CommandFactory();
         $rolloverCmd = $cmdFactory->get('Rollover');
         $rolloverCmd->initForm($form);
 
         $tpl = array();
-        
+
         $period = Period::getCurrentPeriod();
         $tpl['CURRENT_PERIOD'] = $period->getYear();
         $tpl['NEXT_PERIOD'] = $period->getNextPeriodYear();
-        
+
         $form->addSubmit('submit', 'Perform Rollover');
 
         $form->mergeTemplate($tpl);
         $tpl = $form->getTemplate();
 
         Layout::addPageTitle('Rollover');
-        
+
         return PHPWS_Template::process($tpl, 'nomination', 'admin/rollover.tpl');
     }
 }
-?>

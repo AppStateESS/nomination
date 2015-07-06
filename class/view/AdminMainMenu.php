@@ -61,5 +61,3 @@ class AdminMainMenu extends nomination\View
         return $topMenu->show();
     }
 }
-
-?>

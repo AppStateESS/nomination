@@ -17,12 +17,10 @@ class ThankYouReference extends \nomination\View
     {
         return array('view' => 'ThankYouReference');
     }
-    
+
     public function display(Context $context)
     {
         Layout::addPageTitle('Thank you');
         return "<h3>Your letter of recommendation was successfully submitted.</h3>";
     }
 }
-
-?>

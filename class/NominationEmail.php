@@ -46,7 +46,6 @@ abstract class NominationEmail {
 
     public function __construct($subject, $message, $msgType)
     {
-        $this->list        = $this->getMembers();
         $this->subject     = $subject;
         $this->message     = $message;
         $this->messageType = $msgType;
@@ -59,7 +58,7 @@ abstract class NominationEmail {
         $mail = new PHPWS_Mail;
         $mail->sendIndividually(true);
 
-        $mail->addSendTo($recipient);
+        $mail->addSendTo($recipientEmail);
 
         $mail->setFrom($this->from);
         $mail->setSubject($this->subject);
@@ -202,4 +201,3 @@ abstract class NominationEmail {
     }
 
 }
-?>

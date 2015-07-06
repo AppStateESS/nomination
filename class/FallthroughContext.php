@@ -3,7 +3,7 @@
   /**
    * FallthroughContext
    *
-   *   Takes n objects and attempts to find the requested field in each 
+   *   Takes n objects and attempts to find the requested field in each
    * in the order they were added (FIFE).  Thus higher priority values
    * will override lower priority values.  Useful for figuring out whether
    * or not previously entered form data or database stored object state
@@ -52,4 +52,3 @@ class FallthroughContext extends Context {
         $this->others[] = $thing;
     }
 }
-?>

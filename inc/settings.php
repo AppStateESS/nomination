@@ -8,4 +8,3 @@ $settings['email_from_address'] = '';
 $settings['num_references_req'] = 3;
 $settings['signature'] = '';
 $settings['sig_position'] = '';
-?>

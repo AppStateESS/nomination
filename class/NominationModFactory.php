@@ -33,4 +33,3 @@ class NominationModFactory
         return NominationModFactory::$nomination;
     }
 }
-?>

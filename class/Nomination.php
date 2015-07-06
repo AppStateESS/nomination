@@ -74,7 +74,7 @@ class Nomination
         $this->nominator_phone       = $nominatorPhone;
         $this->nominator_email       = $nominatorEmail;
         $this->nominator_relation    = $nominatorRelation;
-        $this->nominatorUniqueId     = $nominatorUniqueId;
+        //$this->nominatorUniqueId     = $nominatorUniqueId;
 
         $this->category = $category;
         $this->period   = $period;
@@ -372,16 +372,11 @@ class Nomination
         // 1. has each reference uploaded a document?
         PHPWS_Core::initModClass('nomination','ReferenceFactory.php');
         PHPWS_Core::initModClass('nomination','Reference.php');
-        $numReferencesReq = Reference::getNumReferencesReq();
 
         $ref = new ReferenceFactory();
 
         //grab the references attached to this
         $references = $ref->getByNominationId($this->id);
-
-        var_dump(debug_backtrace());
-        exit;
-
 
         // foreach reference in references
         //   do they have a doc?
@@ -497,6 +492,8 @@ function reportRowForCSV($obj) {
     PHPWS_Core::initModClass('nomination', 'NominationFactory.php');
     $factory = new NominationFactory();
     $data = $factory->getNominationbyId($obj->getId());
+
+    $row = array();
 
     $row['banner_id']               = $data->getBannerId();
     $row['first_name']              = $data->getFirstName();

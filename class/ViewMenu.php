@@ -9,9 +9,9 @@ abstract class ViewMenu extends \nomination\View
     public function addViewByName($text, $view)
     {
         $vFactory = new ViewFactory();
-        
+
         $viewObj = $vFactory->get($view);
-        
+
         $this->addView($text, $viewObj);
     }
 
@@ -34,12 +34,10 @@ abstract class ViewMenu extends \nomination\View
         }
         return $tpl;
     }
-    
+
     public function display(Context $context)
     {
         $tpl = $this->buildTemplate();
         return PHPWS_Template::process($tpl, 'nomination', 'admin/menu.tpl');
     }
 }
-
-?>

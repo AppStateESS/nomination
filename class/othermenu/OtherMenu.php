@@ -16,7 +16,7 @@ class OtherMenu extends SubMenu
   {
     // find the menu they want to add an item to
     $menu = $this->getMenuByTag($parentTag);
-    
+
     // If tag isn't given then make one for them
     if(is_null($tag)){
       $tag = $menu->getTag() . '-item-' . $menu->getMenuItemCount();
@@ -24,7 +24,7 @@ class OtherMenu extends SubMenu
 
     // Create the item
     $item = new MenuItem($text, $tag);
-    
+
     $menu[$tag] = $item;
   }
 
@@ -50,16 +50,14 @@ class OtherMenu extends SubMenu
   public function show()
   {
     $tpl = array();
-    
+
     $tpl['TOP_MENU_TAG']  = $this->tag;
     $tpl['TOP_MENU_TEXT'] = $this->text;
 
     foreach($this->container as $item){
       $tpl['menu_items'][] = array('CONTENT' => $item->show());
     }
-    
+
     return PHPWS_Template::process($tpl, 'nomination', 'othermenu/menu.tpl');
   }
 }
-
-?>

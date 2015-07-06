@@ -34,7 +34,7 @@ class ReviewEmail extends \nomination\View {
         if(isset($this->message)){
             $vars['message'] = $this->message;
         }
-        
+
         return $vars;
     }
 
@@ -51,7 +51,6 @@ class ReviewEmail extends \nomination\View {
         }
 
         $data = $_SESSION['review'];
-        //test($data, 0);
 
         $cf = new CommandFactory;
         $backCmd = $cf->get('EditEmail');
@@ -68,11 +67,11 @@ class ReviewEmail extends \nomination\View {
         $back = new PHPWS_Form('back');
         $backCmd->initForm($back);
         $back->addSubmit('Edit');
-        
+
         $forward = new PHPWS_Form('forward');
         $submitCmd->initForm($forward);
         $forward->addSubmit('Send');
-        
+
         $lists = NominationEmail::getLists();
         $_SESSION['review']['list'] = $lists[$_SESSION['review']['list']];
         $data = array_change_key_case($_SESSION['review'], CASE_UPPER);
@@ -87,4 +86,3 @@ class ReviewEmail extends \nomination\View {
         return PHPWS_Template::process($data, 'nomination', 'admin/confirm_email.tpl');
     }
 }
-?>

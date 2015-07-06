@@ -101,5 +101,3 @@ class EmailView extends \nomination\View
         }
     }
 }
-
-?>

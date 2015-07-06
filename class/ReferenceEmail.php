@@ -33,9 +33,6 @@
         $vars['REF_EDIT_LINK'] = $reference->getEditLink();
         $vars['AWARD_TITLE'] = PHPWS_Settings::get('nomination', 'award_title');
 
-        // These have really stupid defaults, and don't need to be in settings.
-        //$vars['SIGNATURE'] = PHPWS_Settings::get('nomination', 'signature');
-        //$vars['SIG_POSITION'] = PHPWS_Settings::get('nomination', 'sig_position');
 
         $list = array($reference->getId());
         $subject = 'Reference Request: ' . PHPWS_Settings::get('nomination', 'award_title');
@@ -107,6 +104,3 @@
     }
 
   }
-
-
- ?>

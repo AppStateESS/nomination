@@ -12,8 +12,8 @@ namespace nomination;
  */
 
 abstract class View {
-    abstract function getRequestVars();
-    abstract function display(\Context $context);
+    public abstract function getRequestVars();
+    public abstract function display(\Context $context);
 
     public function initForm(\PHPWS_Form $form)
     {
@@ -69,9 +69,9 @@ abstract class View {
 	 * @see initForm
 	 * @see redirect
 	 */
-	function getURI(){
+	public function getURI(){
 		$uri = $_SERVER['SCRIPT_NAME'] . "?module=nomination";
-        $uri = 'index.php?module=nomination';
+    $uri = 'index.php?module=nomination';
 		foreach($this->getRequestVars() as $key=>$val) {
 			if(is_array($val)){
 				foreach($val as $key2=>$val2)
@@ -81,13 +81,13 @@ abstract class View {
 			}
 		}
 		return $uri;
-    }
+  }
 
-    function redirect(){
-        \NQ::close();
-        header("Location: ".$this->getURI());
-        exit();
-    }
+  public function redirect(){
+    \NQ::close();
+    header("Location: ".$this->getURI());
+    exit();
+  }
 }
 
 abstract class NomView extends View
@@ -111,4 +111,3 @@ abstract class NomView extends View
         return \PHPWS_Template::process($tpl, 'nomination', 'nomination.tpl');
     }
 }
-?>

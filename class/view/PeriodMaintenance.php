@@ -60,7 +60,6 @@ class PeriodMaintenance extends \nomination\View
             $form->setValue('nomination_period_end', $end);
 
             // Display period information
-            //$currYear = PHPWS_Settings::get('nomination', 'current_period');
             $tpl['CURRENT_PERIOD_YEAR'] = $period->getYear();
 
             // Link to rollover view
@@ -90,5 +89,3 @@ class PeriodMaintenance extends \nomination\View
         return PHPWS_Template::process($tpl, 'nomination', 'admin/period_maintenance.tpl');
     }
 }
-
-?>

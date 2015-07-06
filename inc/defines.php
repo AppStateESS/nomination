@@ -31,5 +31,3 @@ define('EMAIL_TEST_FLAG', FALSE);
 define('NOMINATOR', 'NTR');
 define('REFERENCE', 'REF');
 define('NOMINEE', 'NEE');
-
-?>

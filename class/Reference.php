@@ -45,7 +45,7 @@ class Reference
 
     /**
      * Get the link for a nominator to edit their nomination
-     * @return - URL for submitting letter
+     * @return URL for submitting letter
      */
     public function getEditLink()
     {
@@ -177,7 +177,7 @@ class Reference
      * Useranme is prepended to a unique id based on
      * current time in microseconds.
      *
-     * @return - unique_id
+     * @return unique_id
      */
     public static function generateUniqueId($username)
     {
@@ -210,4 +210,3 @@ class DBReference extends Reference {
      */
     public function __construct(){}
 }
-?>

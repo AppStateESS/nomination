@@ -17,7 +17,6 @@
      */
     public static function newNomination(Nomination $nom)
     {
-        //test('got here',1);
         $vars = array();
 
         $vars['CURRENT_DATE'] = date('F j, Y');
@@ -91,6 +90,3 @@
     }
 
   }
-
-
- ?>

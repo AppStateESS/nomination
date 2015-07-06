@@ -4,7 +4,7 @@
    * AdminMenu
    *
    * Side menu for administrators
-   * 
+   *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
@@ -23,16 +23,14 @@ class AdminMenu extends ViewMenu
         $this->addViewByName('Settings', 'AdminSettings');
         $this->addLink('Control Panel', 'index.php?module=controlpanel');
     }
-    
+
     public function getRequestVars()
     {
         return array('view' => 'AdminMenu');
     }
-    
+
     public function display(Context $context)
     {
         return parent::display($context);
     }
 }
-
-?>

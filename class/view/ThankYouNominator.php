@@ -16,5 +16,3 @@ class ThankYouNominator extends \nomination\View
         return "<h3>Your nomination was successfully submitted.</h3>";
     }
 }
-
-?>

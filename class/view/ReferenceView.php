@@ -44,4 +44,3 @@ class ReferenceView extends \nomination\View
       $this->id = $id;
     }
 }
-?>
