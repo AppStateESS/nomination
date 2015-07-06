@@ -18,7 +18,7 @@ class CancelNomination extends Command {
     public function getRequestVars()
     {
         $vars = array('action'=>'CancelNomination');
-        
+
         if(isset($this->unique_id)){
             $vars['unique_id'] = $this->unique_id;
         }
@@ -41,5 +41,3 @@ class CancelNomination extends Command {
         $context['after'] = $nomForm;
     }
 }
-
-?>

@@ -25,4 +25,3 @@ class AjaxDBPager extends DBPager {
         return array_diff_key(parent::getLinkValues(), $this->exclusionMap);
     }
 }
-?>

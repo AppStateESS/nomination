@@ -26,12 +26,9 @@ class CheckFile extends Command {
         $types = NominationDocument::getSupportedMimeTypes();
         if(!in_array($context['type'], $types)){
             $context['after']->setMessage('Invalid file type!');
-        }/* elseif($context['size'] > ini_get('upload_max_filesize')){
-            $context['after']->setMessage('File too large!');
-        } */else {
+        }else {
             $context['after']->setMessage(True);
         }
 
     }
 }
-?>

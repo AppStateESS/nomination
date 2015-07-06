@@ -106,7 +106,7 @@ class UpdateSettings extends Command {
                 PHPWS_Settings::set('nomination', $key, $value);
             }
             $result = PHPWS_Settings::save('nomination');
-            
+
             if(!is_null($result)){
                 throw new Exception('Something bad happened when settings were being saved.');
             }
@@ -118,4 +118,3 @@ class UpdateSettings extends Command {
     }
 
 }
-?>

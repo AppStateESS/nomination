@@ -30,13 +30,7 @@ function nomination_install(&$content)
         pulse\PulseFactory::save($ps);
     }
 
-    /*
-      PHPWS_Core::initModClass('nomination', 'NominationRolloverEmailPulse.php');
-      $pulse = new NominationRolloverEmailPulse();
-      $timeDiff = $period->getEndDate() - time();
-      $pulse->newFromNow($timeDiff);
-     * 
-     */
+
 
     // Create Committee group
     PHPWS_Core::initModClass('users', 'Group.php');
@@ -47,5 +41,3 @@ function nomination_install(&$content)
 
     return true;
 }
-
-?>

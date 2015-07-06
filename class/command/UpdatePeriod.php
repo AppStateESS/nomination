@@ -24,8 +24,6 @@ class UpdatePeriod extends Command
             throw new PermissionException('You are not allowed to do that!');
         }
 
-        $settingsMap = array();
-
         try{
             /**
              * Update start/end dates for nomination period
@@ -126,5 +124,3 @@ class UpdatePeriod extends Command
         return true;
     }
 }
-
-?>

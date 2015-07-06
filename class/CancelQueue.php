@@ -3,7 +3,7 @@
 /*
  * CancelQueue
  *
- *   Manages a queue of items which users have requested be canceled, 
+ *   Manages a queue of items which users have requested be canceled,
  * but which are still awaiting administrator approval.
  *
  * @author Daniel West <dwest at tux dot appstate dot edu>
@@ -110,5 +110,3 @@ class CancelQueue {
         return sizeof($result) > 0;
     }
 }
-
-?>

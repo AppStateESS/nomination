@@ -8,9 +8,9 @@
 
 abstract class AbstractFactory
 {
-    abstract function getDirectory();
-    abstract function throwIllegal($name);
-    abstract function throwNotFound($name);
+    public abstract function getDirectory();
+    public abstract function throwIllegal($name);
+    public abstract function throwNotFound($name);
 
     public function get($name=Null)
     {
@@ -37,4 +37,3 @@ abstract class AbstractFactory
         return $name;
     }
 }
-?>

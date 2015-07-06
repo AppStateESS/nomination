@@ -6,6 +6,7 @@
  *   Actually send emails.
  *
  * @author Daniel West <dwest at tux dot appstate dot edu>
+ * @author Chris Detsch
  * @package nomination
  */
 
@@ -73,8 +74,6 @@ class DoEmail extends Command {
               $mail = new CompleteNomineeEmail($context['subject'], $context['message'], $msgType);
               $mail->send();
             }
-            // $mail = new NominationEmail(NominationEmail::getListMembers($msgType), $context['subject'], $context['message'], $msgType);
-            // $mail->send();
             NQ::simple('nomination', NOMINATION_SUCCESS, 'Emails sent');
             $this->redirect();
 
@@ -84,4 +83,3 @@ class DoEmail extends Command {
         }
     }
 }
-?>

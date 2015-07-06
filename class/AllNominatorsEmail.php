@@ -22,7 +22,7 @@
      $db->addWhere('period', $period_id);
      $results = $db->select('col');
 
-     
+
      if(PHPWS_Error::logIfError($results) || is_null($results))
      {
        throw new DatabaseException('Could not retrieve requested mailing list');
@@ -40,11 +40,14 @@
      {
        $nomination = NominationFactory::getNominationbyId($id);
 
+       if(!isset($nomination))
+       {
+         throw new NominationException('The given nomination is null, id = ' . $id);
+       }
+
        $this->sendTo($nomination->getNominatorEmail());
        $this->logEmail($nomination, $nomination->getNominatorEmail(), $nomination->getId(), NOMINATOR);
      }
    }
 
  }
-
-?>

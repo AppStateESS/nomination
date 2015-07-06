@@ -76,7 +76,6 @@ class EditNomination extends Command
             $nomination->id = $nom_id;
             $nomination->load();
 
-            $savedObjs = array(); //used for cleanup
 
             /*************
              * Nominator *
@@ -136,7 +135,6 @@ class EditNomination extends Command
                 if($reference->getEmail() == $email){
                     // If email is same then just Update
                     $reference->setFirstName($first_name);
-                    $reference->setMiddleName($middle_name);
                     $reference->setLastName($last_name);
                     $reference->setDepartment($department);
                     $reference->setPhone($phone);
@@ -203,4 +201,3 @@ class EditNomination extends Command
         }
     }
 }
-?>

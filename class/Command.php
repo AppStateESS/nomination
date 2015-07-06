@@ -7,10 +7,10 @@
 
 abstract class Command
 {
-    protected $context;
+  protected $context;
 
-	abstract function getRequestVars();
-	abstract function execute(Context $context);
+	public abstract function getRequestVars();
+	public abstract function execute(Context $context);
 
 	/**
 	 * Initializes a {@link PHPWS_Form} with hidden values such that
@@ -27,32 +27,32 @@ abstract class Command
 	 * @see getURI
 	 * @see redirect
 	 */
-	function initForm(PHPWS_Form &$form)
+	public function initForm(PHPWS_Form &$form)
 	{
  		$moduleElement = $form->get('module');
  		if(PEAR::isError($moduleElement)){
 			$form->addHidden('module', 'nomination');
 		}
-		 
+
 		foreach($this->getRequestVars() as $key=>$val) {
 			$form->addHidden($key, $val);
 		}
 	}
 
-    /**
-     * Sets the context to its only parameter.  Useful for redirecting to a
-     * command while passing values from $_REQUEST.
-     *
-     * @param CommandContext A context containing information to be passed
-     * @return void
-     */
-    public function loadContext(CommandContext $context)
-    {
-        $context->unsetParam('module');
-        $context->unsetParam('action');
-        
-        $this->context = $context;
-    }
+  /**
+   * Sets the context to its only parameter.  Useful for redirecting to a
+   * command while passing values from $_REQUEST.
+   *
+   * @param CommandContext A context containing information to be passed
+   * @return void
+   */
+  public function loadContext(CommandContext $context)
+  {
+    $context->unsetParam('module');
+    $context->unsetParam('action');
+
+    $this->context = $context;
+  }
 
 	/**
 	 * Returns the absolute URI to this command.  If you want to create
@@ -69,7 +69,7 @@ abstract class Command
 	 * @see initForm
 	 * @see redirect
 	 */
-	function getURI(){
+	public function getURI(){
 		$uri = $_SERVER['SCRIPT_NAME'] . "?module=nomination";
 
 		foreach($this->getRequestVars() as $key=>$val) {
@@ -130,15 +130,13 @@ abstract class Command
 	 * @see getURI
 	 * @see initForm
 	 */
-	function redirect()
+	public function redirect()
 	{
 		$path = $this->getURI();
 		NQ::close();
-		 
+
 		header('HTTP/1.1 303 See Other');
 		header("Location: $path");
 		PLM::quit();
 	}
 }
-
-?>

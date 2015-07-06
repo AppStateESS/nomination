@@ -53,4 +53,3 @@ class DeleteNomination extends Command
         NQ::simple('nomination', NOMINATION_SUCCESS, 'Nomination deleted. Email sent.');
     }
 }
-?>

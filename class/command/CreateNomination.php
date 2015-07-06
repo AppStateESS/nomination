@@ -81,7 +81,7 @@ class CreateNomination extends Command
 
         // Check for missing required fields
         foreach($required as $key=>$value){
-            if(!isset($context[$value]) || $context[$value] == ""){// || $context[$value[0]] == ""){
+            if(!isset($context[$value]) || $context[$value] == ""){
                 $missing[] = $value;
             } else {
                 $entered[$key] = $context[$value];
@@ -125,17 +125,7 @@ class CreateNomination extends Command
 
         //check for bad email
         //TODO: check nominator and nominee emails, should not contain '@'
-        /*
-        if(){
-            $context['after'] = 'NominationForm';// Set after view to the form
-            $context['form_fail'] = True;// Set form fail
 
-            // Throw exception
-            PHPWS_Core::initModClass('nomination', 'exception/BadFormException.php');
-            //TODO be more specific about *which* email was bad
-            throw new BadFormException('Invalid Email(s). Please check that you have entered a valid email address.');
-        }
-        */
 
         // TODO: Check nominee email.. Should only be username, with '@appstate.edu' *excluded*
         // TODO: Check nominator email (if provided).. Should only be username, with '@appstate.edu' *excluded*
@@ -271,8 +261,6 @@ class CreateNomination extends Command
 
         $doc = new NominationDocument($nomination, 'nominator', 'statement', $_FILES['statement']);
         DocumentFactory::save($doc);
-
-        //$nomination->setNominatorDocId($doc->getId());
 
         /***************
          * Send Emails *
