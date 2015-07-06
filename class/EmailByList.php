@@ -29,13 +29,29 @@
          if($this->messageType === 'NEWREF')
          {
            $ref = ReferenceFactory::getReferenceById($id);
+
+           if(!isset($ref))
+           {
+             throw new NominationException('The given reference is null, unique id = ' . $id);
+           }
+
            $nomination = NominationFactory::getNominationbyId($ref->getNominationId());
+
+           if(!isset($nomination))
+           {
+             throw new NominationException('The given reference is null, unique id = ' . $ref->getNominationId());
+           }
            $this->sendTo($ref->getEmail());
            $this->logEmail($nomination, $ref->getEmail(), $id, 'REF');
          }
          else if($this->messageType === 'NEWNOM')
          {
            $nomination = NominationFactory::getNominationbyId($id);
+
+           if(!isset($nomination))
+           {
+             throw new NominationException('The given reference is null, unique id = ' . $id);
+           }
 
            $this->sendTo($nomination->getNominatorEmail());
            $this->logEmail($nomination, $nomination->getEmail(), $id, 'NTR');
@@ -44,6 +60,3 @@
      }
 
    }
-
-
-?>

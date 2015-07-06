@@ -22,13 +22,13 @@ class EmailLog
                                 $receiver_id, $receiver_type, $sent_on)
     {
       $this->id = $id;
-      $this->nomineeId = $nominee_id;
+      $this->nominee_id = $nominee_id;
       $this->message = $message;
-      $this->messageType = $message_type;
+      $this->message_type = $message_type;
       $this->subject = $subject;
-      $this->receiverId = $receiver_id;
-      $this->receiverType = $receiver_type;
-      $this->sentOn = $sent_on;
+      $this->receiver_id = $receiver_id;
+      $this->receiver_type = $receiver_type;
+      $this->sent_on = $sent_on;
     }
 
     /**
@@ -169,6 +169,3 @@ class DBEmailLog extends EmailLog {
 
     }
 }
-
-
-?>

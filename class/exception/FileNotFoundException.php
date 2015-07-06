@@ -8,5 +8,3 @@ class FileNotFoundException extends FileException
         parent::__construct($message, $code);
     }
 }
-
-?>

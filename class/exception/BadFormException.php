@@ -7,5 +7,3 @@ class BadFormException extends NominationException
         parent::__construct($message, $code);
     }
 }
-
-?>
