@@ -36,7 +36,7 @@ class Nomination
     public $nominator_phone;
     public $nominator_email;
     public $nominator_relation;
-    //private $nominatorUniqueId; // Unused so far, but needed for nomination editing
+    private $nominatorUniqueId; // Unused so far, but needed for nomination editing
 
 
     // Nomination metadata
@@ -50,7 +50,7 @@ class Nomination
 
 
     public function __construct($bannerId, $firstName, $middleName, $lastName, $email, $asubox, $position, $department, $yearsAtASU, $phone, $gpa, $class, $responsibility,
-                    $nominatorFirstName, $nominatorMiddleName, $nominatorLastName, $nominatorAddress, $nominatorPhone, $nominatorEmail, $nominatorRelation,
+                    $nominatorFirstName, $nominatorMiddleName, $nominatorLastName, $nominatorAddress, $nominatorPhone, $nominatorEmail, $nominatorRelation, $nominatorUniqueId,
                     $category, $period){
 
         $this->banner_id        = $bannerId;
@@ -74,7 +74,7 @@ class Nomination
         $this->nominator_phone       = $nominatorPhone;
         $this->nominator_email       = $nominatorEmail;
         $this->nominator_relation    = $nominatorRelation;
-        //$this->nominatorUniqueId     = $nominatorUniqueId;
+        $this->nominatorUniqueId     = $nominatorUniqueId;
 
         $this->category = $category;
         $this->period   = $period;
@@ -362,6 +362,47 @@ class Nomination
         $this->updated_on = $time;
     }
 
+    public function getUniqueId()
+    {
+      return $this->nominatorUniqueId;
+    }
+
+    public function setNominatorUniqueId($uniqueId)
+    {
+      $this->nominatorUniqueId = $uniqueId;
+    }
+
+    /**
+     * Username acts as salt.
+     * Username is prepended to a unique id based on
+     * current time in microseconds.
+     *
+     * @return unique_id
+     */
+    public static function generateUniqueId($banner)
+    {
+        $uniqueId = md5(uniqid($banner));
+        return $uniqueId;
+    }
+
+
+
+    /**
+     * Get the link for a nominator to edit their nomination
+     * @return URL for editting nomination
+     */
+    public function getEditLink()
+    {
+        $unique_id = $this->getUniqueId();
+
+        $host = $_SERVER['HTTP_HOST'];
+        $extra = $_SERVER['PHP_SELF'].'?module=nomination&view=NominationForm&unique_id=' . $unique_id;
+
+        $link = 'http://'.$host.$extra;
+
+        return $link;
+    }
+
     /**
      * Utilities
      */
@@ -544,4 +585,3 @@ function reportRowForCSV($obj) {
 
     return $row;
 }
-?>

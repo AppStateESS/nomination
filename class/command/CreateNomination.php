@@ -158,6 +158,7 @@ class CreateNomination extends Command
         $nominatorPhone        = $context['nominator_phone'];
         $nominatorEmail        = $context['nominator_email'] . '@appstate.edu';
         $nominatorRelation     = $context['nominator_relationship'];
+        $nominatorUniqueId     = Nomination::generateUniqueId($nomineeBannerId);
 
 
         /**************
@@ -171,7 +172,7 @@ class CreateNomination extends Command
                         $nomineeEmail, $nomineeAsubox, $nomineePosition, $nomineeDeptMajor, $nomineeYears,
                         $nomineePhone, $nomineeGpa, $nomineeClass, $nomineeResponsibility,
                         $nominatorFirstName, $nominatorMiddleName, $nominatorLastName, $nominatorAddress,
-                        $nominatorPhone, $nominatorEmail, $nominatorRelation, $category, $period_id);
+                        $nominatorPhone, $nominatorEmail, $nominatorRelation, $nominatorUniqueId, $category, $period_id);
         // Save the nomination to the db; If this works,
         // the factory will populate the $nomination with its database id.
         NominationFactory::save($nomination);

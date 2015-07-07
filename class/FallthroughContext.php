@@ -51,4 +51,48 @@ class FallthroughContext extends Context {
     {
         $this->others[] = $thing;
     }
+
+    public function restoreNominationForm($nomination)
+    {
+      $nom['nominee_banner_id'] = $nomination->getBannerId();
+      $nom['nominee_first_name'] = $nomination->getFirstName();
+      $nom['nominee_middle_name'] = $nomination->getMiddleName();
+      $nom['nominee_last_name'] = $nomination->getLastName();
+      $nom['nominee_email'] = $nomination->getEmail();
+      $nom['nominee_asubox'] = $nomination->getAsubox();
+      $nom['nominee_phone'] = $nomination->getPhone();
+      $nom['nominee_position'] = $nomination->getPosition();
+      $nom['nominee_major'] = $nomination->getDeptMajor();
+      $nom['nominee_gpa'] = $nomination->getGpa();
+      $nom['nominee_years'] = $nomination->getYearsAtASU();
+      $nom['nominee_responsibility'] = $nomination->getResponsibility();
+      $nom['nominee_class']  = $nomination->getClass();
+
+      $references = ReferenceFactory::getByNominationId($nomination->getId());
+
+      $i = 0;
+      foreach ($references as $ref) {
+        $nom['reference_first_name'][$i] = $ref->getFirstName();
+        $nom['reference_last_name'][$i] = $ref->getLastName();
+        $nom['reference_department'][$i] = $ref->getDepartment();
+        $nom['reference_phone'][$i] = $ref->getPhone();
+        $nom['reference_email'][$i] = $ref->getEmail();
+        $nom['reference_relationship'] = $ref->getRelationship();
+        $i++;
+      }
+
+      $nom['nominator_first_name'] = $nomination->getNominatorFirstName();
+      $nom['nominator_middle_name'] = $nomination->getNominatorMiddleName();
+      $nom['nominator_last_name'] = $nomination->getNominatorLastName();
+      $nom['nominator_address'] = $nomination->getNominatorAddress();
+      $nom['nominator_phone'] = $nomination->getNominatorPhone();
+      $nom['nominator_email'] = $nomination->getNominatorEmail();
+      $nom['nominator_relationship'] = $nomination->getNominatorRelation();
+
+
+
+      $this->addFallthrough($nom);
+    }
+
+
 }
