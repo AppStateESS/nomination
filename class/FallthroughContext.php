@@ -58,7 +58,7 @@ class FallthroughContext extends Context {
       $nom['nominee_first_name'] = $nomination->getFirstName();
       $nom['nominee_middle_name'] = $nomination->getMiddleName();
       $nom['nominee_last_name'] = $nomination->getLastName();
-      $nom['nominee_email'] = $nomination->getEmail();
+      $nom['nominee_email'] = preg_replace('/@appstate.edu/', '', $nomination->getEmail());
       $nom['nominee_asubox'] = $nomination->getAsubox();
       $nom['nominee_phone'] = $nomination->getPhone();
       $nom['nominee_position'] = $nomination->getPosition();
@@ -68,16 +68,20 @@ class FallthroughContext extends Context {
       $nom['nominee_responsibility'] = $nomination->getResponsibility();
       $nom['nominee_class']  = $nomination->getClass();
 
+      $nom['category'] = $nomination->getCategory();
+
       $references = ReferenceFactory::getByNominationId($nomination->getId());
 
       $i = 0;
-      foreach ($references as $ref) {
+      foreach ($references as $ref)
+      {
+        $nom['reference_id'][$i] = $ref->getId();
         $nom['reference_first_name'][$i] = $ref->getFirstName();
         $nom['reference_last_name'][$i] = $ref->getLastName();
         $nom['reference_department'][$i] = $ref->getDepartment();
         $nom['reference_phone'][$i] = $ref->getPhone();
         $nom['reference_email'][$i] = $ref->getEmail();
-        $nom['reference_relationship'] = $ref->getRelationship();
+        $nom['reference_relationship'][$i] = $ref->getRelationship();
         $i++;
       }
 
@@ -88,7 +92,6 @@ class FallthroughContext extends Context {
       $nom['nominator_phone'] = $nomination->getNominatorPhone();
       $nom['nominator_email'] = $nomination->getNominatorEmail();
       $nom['nominator_relationship'] = $nomination->getNominatorRelation();
-
 
 
       $this->addFallthrough($nom);

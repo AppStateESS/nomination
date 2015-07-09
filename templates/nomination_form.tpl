@@ -40,7 +40,7 @@
   <!-- BEGIN NOMINEE_BANNER_ID -->
   <div class="row">
     <label class="req">
-      {NOMINEE_BANNER_ID_LABEL}
+      Banner ID
     </label>
   </div>
   <div class="row">
@@ -86,7 +86,7 @@
 
   <div class="row">
     <label class="req">
-      {NOMINEE_EMAIL_LABEL}
+      ASU Email
     </label>
   </div>
   <div class="row">
@@ -94,9 +94,7 @@
       <div class="form-group">
         <div class="input-group">
           {NOMINEE_EMAIL}
-          <div class="input-group-addon">
-            @appstate.edu
-          </div>
+          {NOMINEE_ADD_ON}
         </div>
       </div>
     </div>
@@ -251,89 +249,262 @@
   </div>
 
 
-  <!-- BEGIN REFERENCES_REPEAT -->
+
   <div>
+    <!-- BEGIN REFERENCE_FIRST_NAME_0 -->
     <div class="row">
       <h4>
         Reference
       </h4>
     </div>
-    <!-- BEGIN REFERENCE_FIRST_NAME -->
     <div class="row">
       <label class="req">
-        {REFERENCE_FIRST_NAME__LABEL}
+        First Name
       </label>
     </div>
     <div class="row">
       <div class="col-md-8">
-        {REFERENCE_FIRST_NAME_}
+        {REFERENCE_FIRST_NAME_0}
       </div>
     </div>
-    <!-- END REFERENCE_FIRST_NAME -->
-    <!-- BEGIN REFERENCE_LAST_NAME -->
-    <div class="row">
-      <label class="req">
-        {REFERENCE_LAST_NAME__LABEL}
-      </label>
-    </div>
-    <div class="row">
-      <div class="col-md-8">
-        {REFERENCE_LAST_NAME_}
-      </div>
-    </div>
-    <!-- END REFERENCE_LAST_NAME -->
-    <!-- BEGIN REFERENCE_DEPARTMENT -->
-    <div class="row">
-      <label>
-        {REFERENCE_DEPARTMENT__LABEL}
-      </label>
-    </div>
-    <div class="row">
-      <div class="col-md-8">
-        {REFERENCE_DEPARTMENT_}
-      </div>
-    </div>
-    <!-- END REFERENCE_DEPARTMENT -->
-    <!-- BEGIN REFERENCE_PHONE -->
-    <div class="row">
-      <label class="req">
-        {REFERENCE_PHONE__LABEL}
-      </label>
-    </div>
-    <div class="row">
-      <div class="col-md-8">
-        {REFERENCE_PHONE_}
-      </div>
-    </div>
-    <!-- END REFERENCE_PHONE -->
-    <!-- BEGIN REFERENCE_EMAIL -->
-    <div class="row">
-      <label class="req">
-        {REFERENCE_EMAIL__LABEL}
-      </label>
-    </div>
-    <div class="row">
-      <div class="col-md-8">
-        {REFERENCE_EMAIL_}
-      </div>
-    </div>
-    <!-- END REFERENCE_EMAIL -->
-    <!-- BEGIN REFERENCE_RELATIONSHIP -->
-    <div class="row">
-      <label>
-        {REFERENCE_RELATIONSHIP__LABEL}
-      </label>
-    </div>
-    <div class="row">
-      <div class="col-md-8">
-        {REFERENCE_RELATIONSHIP_}
-      </div>
-    </div>
-    <!-- END REFERENCE_RELATIONSHIP -->
-    </div>
-    <!-- END REFERENCES_REPEAT -->
+    <!-- END REFERENCE_FIRST_NAME_0 -->
 
-    <!-- END REFERENCES_OVERALL -->
+    <!-- BEGIN REFERENCE_LAST_NAME_0 -->
+    <div class="row">
+      <label class="req">
+        Last Name
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {REFERENCE_LAST_NAME_0}
+      </div>
+    </div>
+    <!-- END REFERENCE_LAST_NAME_0 -->
+
+    <!-- BEGIN REFERENCE_DEPARTMENT_0 -->
+    <div class="row">
+      <label>
+        Department
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {REFERENCE_DEPARTMENT_0}
+      </div>
+    </div>
+    <!-- END REFERENCE_DEPARTMENT_0 -->
+
+    <!-- BEGIN REFERENCE_PHONE_0 -->
+    <div class="row">
+      <label class="req">
+        Phone Number
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {REFERENCE_PHONE_0}
+      </div>
+    </div>
+    <!-- END REFERENCE_PHONE_0 -->
+
+    <!-- BEGIN REFERENCE_EMAIL_0 -->
+    <div class="row">
+      <label class="req">
+        Email Address
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {REFERENCE_EMAIL_0}
+      </div>
+    </div>
+    <!-- END REFERENCE_EMAIL_0 -->
+
+    <!-- BEGIN REFERENCE_RELATIONSHIP_0 -->
+    <div class="row">
+      <label>
+        Relationship to Nominee
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {REFERENCE_RELATIONSHIP_0}
+      </div>
+    </div>
+    <!-- END REFERENCE_RELATIONSHIP_0 -->
+  </div>
+
+  <div>
+    <!-- BEGIN REFERENCE_FIRST_NAME_1 -->
+    <div class="row">
+      <h4>
+        Reference
+      </h4>
+    </div>
+    <div class="row">
+      <label class="req">
+        First Name
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {REFERENCE_FIRST_NAME_1}
+      </div>
+    </div>
+    <!-- END REFERENCE_FIRST_NAME_1 -->
+
+    <!-- BEGIN REFERENCE_LAST_NAME_1 -->
+    <div class="row">
+      <label class="req">
+        Last Name
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {REFERENCE_LAST_NAME_1}
+      </div>
+    </div>
+    <!-- END REFERENCE_LAST_NAME_1 -->
+
+    <!-- BEGIN REFERENCE_DEPARTMENT_1 -->
+    <div class="row">
+      <label>
+        Department
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {REFERENCE_DEPARTMENT_1}
+      </div>
+    </div>
+    <!-- END REFERENCE_DEPARTMENT_1 -->
+
+    <!-- BEGIN REFERENCE_PHONE_1 -->
+    <div class="row">
+      <label class="req">
+        Phone Number
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {REFERENCE_PHONE_1}
+      </div>
+    </div>
+    <!-- END REFERENCE_PHONE_1 -->
+
+    <!-- BEGIN REFERENCE_EMAIL_1 -->
+    <div class="row">
+      <label class="req">
+        Email Address
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {REFERENCE_EMAIL_1}
+      </div>
+    </div>
+    <!-- END REFERENCE_EMAIL_1 -->
+
+    <!-- BEGIN REFERENCE_RELATIONSHIP_1 -->
+    <div class="row">
+      <label>
+        Relationship to Nominee
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {REFERENCE_RELATIONSHIP_1}
+      </div>
+    </div>
+    <!-- END REFERENCE_RELATIONSHIP_1 -->
+  </div>
+
+  <div>
+    <!-- BEGIN REFERENCE_FIRST_NAME_2 -->
+    <div class="row">
+      <h4>
+        Reference
+      </h4>
+    </div>
+    <div class="row">
+      <label class="req">
+        First Name
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {REFERENCE_FIRST_NAME_2}
+      </div>
+    </div>
+    <!-- END REFERENCE_FIRST_NAME_2 -->
+    <!-- BEGIN REFERENCE_LAST_NAME_2 -->
+    <div class="row">
+      <label class="req">
+        Last Name
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {REFERENCE_LAST_NAME_2}
+      </div>
+    </div>
+    <!-- END REFERENCE_LAST_NAME_2 -->
+
+    <!-- BEGIN REFERENCE_DEPARTMENT_2 -->
+    <div class="row">
+      <label>
+        Department
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {REFERENCE_DEPARTMENT_2}
+      </div>
+    </div>
+    <!-- END REFERENCE_DEPARTMENT_2 -->
+
+    <!-- BEGIN REFERENCE_PHONE_2 -->
+    <div class="row">
+      <label class="req">
+        Phone Number
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {REFERENCE_PHONE_2}
+      </div>
+    </div>
+    <!-- END REFERENCE_PHONE_2 -->
+
+    <!-- BEGIN REFERENCE_EMAIL_2 -->
+    <div class="row">
+      <label class="req">
+        Email Address
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {REFERENCE_EMAIL_2}
+      </div>
+    </div>
+    <!-- END REFERENCE_EMAIL_2 -->
+
+    <!-- BEGIN REFERENCE_RELATIONSHIP_2 -->
+    <div class="row">
+      <label>
+        Relationship to Nominee
+      </label>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        {REFERENCE_RELATIONSHIP_2}
+      </div>
+    </div>
+    <!-- END REFERENCE_RELATIONSHIP_2 -->
+  </div>
+
+  <!-- END REFERENCES_OVERALL -->
 
     <!-- BEGIN STATEMENT -->
     <div class="row">
@@ -429,7 +600,7 @@
     <!-- BEGIN NOMINATOR_EMAIL -->
     <div class="row">
       <label class="req">
-        {NOMINATOR_EMAIL_LABEL}
+        ASU E-Mail
       </label>
     </div>
     <div class="row">
@@ -437,9 +608,7 @@
         <div class="col-md-8">
           <div class="input-group">
             {NOMINATOR_EMAIL}
-            <div class="input-group-addon">
-              @appstate.edu
-            </div>
+            {NOMINATOR_ADD_ON}
           </div>
         </div>
       </div>

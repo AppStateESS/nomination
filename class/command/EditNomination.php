@@ -21,6 +21,21 @@ class EditNomination extends Command
 {
     public $unique_id;
 
+    public static $requiredFields = array(
+                    'nominee_banner_id',
+                    'nominee_first_name',
+				    'nominee_last_name',
+				    'nominee_email',
+                    'nominee_phone',
+                    'nominee_gpa',
+                    'nominee_asubox',
+                    'nominee_class',
+				    'nominator_first_name',
+				    'nominator_last_name',
+				    'nominator_email',
+				    'nominator_phone',
+				    'nominator_address');
+
     public function getRequestVars()
     {
         $vars = array('action' => 'EditNomination', 'after' => 'ThankYouNominator');
@@ -34,170 +49,201 @@ class EditNomination extends Command
 
     public function execute(Context $context)
     {
-        $required_fields = NominationForm::$required;
-        $missing = array();
-        $entered = array();
+      $missing = array();
+      $entered = array();
 
-        /*****************
-         * Check  fields *
-         *****************/
-        foreach($required_fields as $key=>$value){
-            if(!isset($context[$value]) || $context[$value] == ""){
-                $missing[] = $value;
-            } else {
-                $entered[$key] = $context[$value];
-            }
+      // Figure out which fields are required
+      PHPWS_Core::initModClass('nomination', 'NominationFieldVisibility.php');
+      $vis = new NominationFieldVisibility();
+
+      $required = array();
+      foreach(self::$requiredFields as $field) {
+          if($vis->isVisible($field))
+          {
+            $required[] = $field;
+          }
+      }
+
+
+      /*****************
+       * Check  fields *
+      *****************/
+
+      // Check for missing required fields
+      foreach($required as $key=>$value){
+          if(!isset($context[$value]) || $context[$value] == ""){
+              $missing[] = $value;
+          } else {
+              $entered[$key] = $context[$value];
+          }
+      }
+
+
+      // If anything was missing, redirect back to the form
+      if(!empty($missing) || !Captcha::verify()){
+          // Notify the user that they must reselect their file
+          $missing[] = 'statement';
+
+          $context['after'] = 'NominationForm';// Set after view to the form
+          $context['missing'] = $missing;// Add missing fields to context
+          $context['form_fail'] = True;// Set form fail
+
+          // Throw exception
+          PHPWS_Core::initModClass('nomination', 'exception/BadFormException.php');
+          $missingFields = implode(', ', $missing);
+          throw new BadFormException('The following fields are missing: ' . $missingFields);
+      }
+
+      //check for bad email
+      //TODO: check nominator and nominee emails, should not contain '@'
+
+      $oldNomination = NominationFactory::getByNominatorUniqueId($context['nominator_unique_id']);
+
+
+      // TODO: Check nominee email.. Should only be username, with '@appstate.edu' *excluded*
+      // TODO: Check nominator email (if provided).. Should only be username, with '@appstate.edu' *excluded*
+
+      /***********
+       * Nominee *
+       ***********/
+      $nomineeBannerId    = $context['nominee_banner_id'];
+      $nomineeFirstName   = $context['nominee_first_name'];
+      $nomineeMiddleName  = $context['nominee_middle_name'];
+      $nomineeLastName    = $context['nominee_last_name'];
+      $nomineeAsubox      = $context['nominee_asubox'];
+      $nomineeEmail       = $context['nominee_email'] . '@appstate.edu';
+      $nomineePosition    = $context['nominee_position'];
+      $nomineeDeptMajor   = $context['nominee_department_major'];
+      $nomineeYears       = $context['nominee_years'];
+      $nomineePhone       = $context['nominee_phone'];
+      $nomineeGpa         = $context['nominee_gpa'];
+      $nomineeClass       = $context['nominee_class'];
+      $nomineeResponsibility = $context['nominee_responsibility']; // jeremy sorry you can fix it bro
+
+
+      /*************
+       * Nominator *
+       *************/
+      $nominatorFirstName    = $context['nominator_first_name'];
+      $nominatorMiddleName   = $context['nominator_middle_name'];
+      $nominatorLastName     = $context['nominator_last_name'];
+      $nominatorAddress      = $context['nominator_address'];
+      $nominatorPhone        = $context['nominator_phone'];
+      $nominatorEmail        = $context['nominator_email'] . '@appstate.edu';
+      $nominatorRelation     = $context['nominator_relationship'];
+      $nominatorUniqueId     = $context['nominator_unique_id'];
+
+
+      /**************
+       * Nomination *
+      **************/
+      $category = $context['category'];
+      $period = Period::getCurrentPeriod();
+      //we need this cause we're adding the period's "number" not the period object itself
+      $period_id = $period->getId();
+      $nomination = new Nomination($nomineeBannerId, $nomineeFirstName, $nomineeMiddleName, $nomineeLastName,
+                      $nomineeEmail, $nomineeAsubox, $nomineePosition, $nomineeDeptMajor, $nomineeYears,
+                      $nomineePhone, $nomineeGpa, $nomineeClass, $nomineeResponsibility,
+                      $nominatorFirstName, $nominatorMiddleName, $nominatorLastName, $nominatorAddress,
+                      $nominatorPhone, $nominatorEmail, $nominatorRelation, $nominatorUniqueId, $category, $period_id);
+      // Save the nomination to the db; If this works,
+      // the factory will populate the $nomination with its database id.
+
+      $nomination->setId($oldNomination->getId());
+      NominationFactory::save($nomination);
+
+
+
+      /**************
+       * References *
+       **************/
+      $numRefsReq = Reference::getNumReferencesReq();
+      $updatedRefsNeedEmail = array();
+
+      for($i = 0; $i < $numRefsReq; $i++)
+      {
+        $refId = $context['reference_id_'.$i];
+        $ref = ReferenceFactory::getReferenceById($refId);
+        $changed = 0;
+
+        if($ref->getFirstName() != $context['reference_first_name_'.$i])
+        {
+          $ref->setFirstName($context['reference_first_name_'.$i]);
+          $changed = 1;
         }
 
-        if(!empty($missing)){
-            // Set after view to the form
-            $context['after'] = 'NominationForm';
-
-            // Add missing fields to context
-            $context['missing'] = $missing;
-
-            // Set form fail
-            $context['form_fail'] = True;
-
-            // Throw exception
-            PHPWS_Core::initModClass('nomination', 'exception/BadFormException.php');
-            throw new BadFormException('Some fields are missing');
-
-        } else {
-            PHPWS_Core::initModClass('nomination', 'Nomination.php');
-            PHPWS_Core::initModClass('nomination', 'Nominator.php');
-            PHPWS_Core::initModClass('nomination', 'Nominee.php');
-            PHPWS_Core::initModClass('nomination', 'Reference.php');
-
-            $nomination = Nomination::getByNominatorUnique_Id($context['unique_id']);
-            //there is a lot of extra crap returned by the above function, and it's not an object...
-            $nom_id = $nomination['id'];
-            $nomination = new Nomination;
-            $nomination->id = $nom_id;
-            $nomination->load();
-
-
-            /*************
-             * Nominator *
-             *************/
-            $nominator               = $nomination->getMember($context['unique_id']);
-            $nominator->first_name   = $context['nominator_first_name'];
-            $nominator->middle_name  = $context['nominator_middle_name'];
-            $nominator->last_name    = $context['nominator_last_name'];
-            $nominator->address      = $context['nominator_address'];
-            $nominator->phone        = $context['nominator_phone'];
-            $nominator->email        = $context['nominator_email'];
-            $nominator->relationship = $context['nominator_relationship'];
-            $nominator->save();
-
-            /***********
-             * Nominee *
-             ***********/
-            $nominee              = $nominator->getNomination()->getNominee();
-            $nominee->first_name  = $context['nominee_first_name'];
-            $nominee->middle_name = $context['nominee_middle_name'];
-            $nominee->last_name   = $context['nominee_last_name'];
-            $nominee->email       = $context['nominee_email'];
-            $nominee->position    = $context['nominee_position'];
-            $nominee->major = $context['nominee_department_major'];
-            $nominee->years = $context['nominee_years'];
-            $nominee->save();
-
-            /*************
-             * Reference *
-             *************
-             *
-             * @pay-attention
-             * Facts:
-             *    - References can be edited.
-             *    - Three references are required all the time
-             * Only if the email is changed will we create a new reference and delete
-             * the old one, creating a new unique_id in the process.
-             */
-            for($i = 1; $i <= REFERENCE_COUNT; $i++){
-
-                // Build accessor methods
-                $get_ref_id = "getReferenceId".$i;
-                $set_ref_id = "setReferenceId".$i;
-
-                // Get data from form
-                $first_name     = $context['reference_first_name_'.$i];
-                $last_name      = $context['reference_last_name_'.$i];
-                $department     = $context['reference_department_'.$i];
-                $phone          = $context['reference_phone_'.$i];
-                $email          = $context['reference_email_'.$i];
-                $relation       = $context['reference_relationship_'.$i];
-
-                // Get matching Reference Object
-                $reference = new Reference($nomination->$get_ref_id());
-
-                // Check if email has changed...
-                if($reference->getEmail() == $email){
-                    // If email is same then just Update
-                    $reference->setFirstName($first_name);
-                    $reference->setLastName($last_name);
-                    $reference->setDepartment($department);
-                    $reference->setPhone($phone);
-                    $reference->setRelationship($relation);
-                    // DO NOT UPDATE ---> $reference->setEmail($email);
-
-                    $reference->save();
-                } else {
-                    // Delete document then old reference (In that order!)
-                    // Also delete all entries in nomination_email_log
-                    PHPWS_Core::initModClass('nomination', 'EmailMessage.php');
-                    EmailMessage::deleteMessages($reference, SHORT_Reference);
-
-                    NominationDocument::delete($reference->getUniqueId());
-                    $reference->delete();
-
-                    // Create reference
-                    $id = Reference::addReference($first_name, $middle_name,
-                                                  $last_name, $email, $phone,
-                                                  $department, $relation);
-                    $ref = new Reference($id);
-
-                    // Set the reference id
-                    $nomination->$set_ref_id($id);
-
-                    // save our new reference id
-                    $nomination->save();
-
-                    // Email new reference
-                    Nomination_Email::updateNominationReference($ref, $nominator, $nominee);
-                    NQ::simple('nomination', NOMINATION_SUCCESS, 'Email sent to '.$ref->getFullName());
-                }
-
-                // Update 'completed' status for nomination
-                $nomination->checkCompletion();
-            }
-
-            /**************
-             * Nomination *
-             **************/
-            $nomination->category = $context['category'];
-
-            $doc = new NominationDocument($nomination);
-            try{
-                // TODO: Remove old file
-                $doc->receiveFile('statement', 'nominator', $nominator->unique_id);
-            } catch( IllegalFileException $e ){
-                NQ::simple('nomination', NOMINATION_ERROR, $e->getMessage());
-                PHPWS_Core::initModClass('nomination', 'ViewFactory.php');
-                $vf = new ViewFactory();
-                $view = $vf->get('NominationForm');
-                $view->unique_id = $context['unique_id'];
-                $context['after'] = $view;
-                return;
-            } catch( FileException $e ){
-                //they don't have to upload a file every time, just the first
-            }
-
-            $nomination->save(); //save changes
-
-            // Send email
-            Nomination_Email::updateNominationNominator($nominator, $nominee);
-            NQ::simple('nomination', NOMINATION_SUCCESS, 'Form successfully updated.');
+        if($ref->getLastName() != $context['reference_last_name_'.$i])
+        {
+          $ref->setLastName($context['reference_last_name_'.$i]);
+          $changed = 1;
         }
+
+        if($ref->getDepartment() != $context['reference_department_'.$i])
+        {
+          $ref->setDepartment($context['reference_department_'.$i]);
+          $changed = 1;
+        }
+
+        if($ref->getPhone() != $context['reference_phone_'.$i])
+        {
+          $ref->setPhone($context['reference_phone_'.$i]);
+          $changed = 1;
+        }
+
+        if($ref->getEmail() != $context['reference_email_'.$i])
+        {
+          $ref->setEmail($context['reference_email_'.$i]);
+          array_push($updatedRefsNeedEmail, $refId);
+          $changed = 1;
+        }
+
+        if($ref->getRelationship() != $context['reference_relationship_'.$i])
+        {
+          $ref->setRelationship($context['reference_relationship_'.$i]);
+          $changed = 1;
+        }
+
+        if($changed)
+        {
+          ReferenceFactory::save($ref);
+        }
+
+      }
+
+
+      /******************************
+       * Statement / Document Upload *
+       ******************************/
+      PHPWS_Core::initModClass('nomination', 'exception/IllegalFileException.php');
+
+      // Make sure the $_FILES array some info on the file we're looking for
+      if(!isset($_FILES['statement']) || !is_uploaded_file($_FILES['statement']['tmp_name']))
+      {
+          PHPWS_Core::initModClass('nomination', 'exception/BadFormException.php');
+          throw new BadFormException('Please select a document to upload.');
+      }
+
+      // Sanity check on mime type for files the client may still have open
+      if($_FILES['statement']['type'] == 'application/octet-stream')
+      {
+          throw new IllegalFileException('Please save and close all word processors then re-submit file.');
+      }
+
+      $doc = new NominationDocument($nomination, 'nominator', 'statement', $_FILES['statement']);
+      DocumentFactory::save($doc);
+
+      /***************
+       * Send Emails *
+      ***************/
+
+      foreach($updatedRefsNeedEmail as $refId)
+      {
+          ReferenceFactory::getReferenceById($refId);
+          ReferenceEmail::updateNomination($ref, $nomination);
+      }
+
+      NQ::simple('Nomination', NOMINATION_SUCCESS, 'Form successfully submitted. Changes made.');
+
+
     }
 }
