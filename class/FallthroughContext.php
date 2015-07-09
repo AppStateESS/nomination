@@ -58,7 +58,7 @@ class FallthroughContext extends Context {
       $nom['nominee_first_name'] = $nomination->getFirstName();
       $nom['nominee_middle_name'] = $nomination->getMiddleName();
       $nom['nominee_last_name'] = $nomination->getLastName();
-      $nom['nominee_email'] = preg_replace('/@appstate.edu/', '', $nomination->getEmail());
+      $nom['nominee_email'] = preg_replace('/(.*)@.*appstate.edu/', '$1', $nomination->getEmail());
       $nom['nominee_asubox'] = $nomination->getAsubox();
       $nom['nominee_phone'] = $nomination->getPhone();
       $nom['nominee_position'] = $nomination->getPosition();
@@ -90,7 +90,7 @@ class FallthroughContext extends Context {
       $nom['nominator_last_name'] = $nomination->getNominatorLastName();
       $nom['nominator_address'] = $nomination->getNominatorAddress();
       $nom['nominator_phone'] = $nomination->getNominatorPhone();
-      $nom['nominator_email'] = $nomination->getNominatorEmail();
+      $nom['nominator_email'] = preg_replace('/(.*)@.*appstate.edu/', '$1', $nomination->getNominatorEmail());
       $nom['nominator_relationship'] = $nomination->getNominatorRelation();
 
 
