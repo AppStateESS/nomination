@@ -331,18 +331,13 @@ class NominationForm extends \nomination\View
             $tpl['REFERENCES_REPEAT'][] = $refForm->getTemplate();
         }
 
-        /*********************
-         * Document Download *
-         */
-
-        $tpl['FILES_DIR'] = PHPWS_SOURCE_HTTP;
-
         /*************
          * Statement *
         *************/
         if($vis->isVisible('statement')) {
             if(!isset($nomination)){
                 //$upload = new NominationDocument();
+                $tpl['FILES_DIR'] = PHPWS_SOURCE_HTTP;
                 $tpl['STATEMENT'] = NominationDocument::getFileWidget(null, 'statement', $form);
             } else {
                 //TODO fix editing
@@ -442,6 +437,7 @@ class NominationForm extends \nomination\View
         Layout::addPageTitle('Nomination Form');
 
         $result = PHPWS_Template::process($tpl, 'nomination', 'nomination_form.tpl');
+
 
 
         return $result;
