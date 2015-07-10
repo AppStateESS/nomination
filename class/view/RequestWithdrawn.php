@@ -1,6 +1,13 @@
 <?php
 
-PHPWS_Core::initModClass('nomination', 'View.php');
+/*
+ * RequestWithdrawn
+ *
+ *   Handles the view after a request to remove a nomination is withdrawn
+ *
+ * @author Chris Detsch
+ * @package nomination
+ */
 
 class RequestWithdrawn extends \nomination\View
 {

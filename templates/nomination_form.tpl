@@ -16,32 +16,6 @@
     </div>
     <!-- END withdraw -->
 
-  <!-- BEGIN resend -->
-
-    <div class="row">
-      <h3>Resend Notification Emails</h3>
-        {START_FORM}
-        <div class="checkbox">
-          {USERS_1}
-          {USERS_1_LABEL}
-        </div>
-        <div class='checkbox'>
-          {USERS_2}
-          {USERS_2_LABEL}
-        </div>
-        <div class="checkbox">
-          {USERS_3}
-          {USERS_3_LABEL}
-        </div>
-        <div class='checkbox'>
-          {USERS_4}
-          {USERS_4_LABEL}
-        </div>
-          <button type="submit" class="btn btn-lg btn-success">Resend</button>
-
-        {END_FORM}
-    </div>
-  <!-- END resend -->
 </div>
 <div class="row">
   <div class="col-md-12">

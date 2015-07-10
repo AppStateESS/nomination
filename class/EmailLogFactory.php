@@ -83,4 +83,22 @@ class EmailLogFactory {
         return $email;
     }
 
+    /**
+     * Delete nomination with the given id
+     *
+     * @param $id Nomination id
+     */
+    public static function deleteEmailLogByNomId($id)
+    {
+      if(!isset($id))
+      {
+          throw new InvalidArgumentException('Missing id.');
+      }
+
+      $db = new PHPWS_DB('nomination_email_log');
+
+      $db->addWhere('nominee_id', $id);
+      $db->delete();
+    }
+
 }

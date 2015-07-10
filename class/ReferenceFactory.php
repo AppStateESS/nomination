@@ -167,4 +167,22 @@ class ReferenceFactory {
         return $objs[0];
     }
 
+    /**
+     * Delete nomination with the given id
+     *
+     * @param $id Nomination id
+     */
+    public static function deleteRefByNomId($id)
+    {
+      if(!isset($id))
+      {
+          throw new InvalidArgumentException('Missing nomination id for deleteRefByNomId().');
+      }
+
+      $db = Reference::getDb();
+
+      $db->addWhere('nomination_id', $id);
+      $db->delete();
+    }
+
 }

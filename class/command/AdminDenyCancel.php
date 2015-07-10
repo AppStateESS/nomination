@@ -7,6 +7,8 @@
    * a nominator to delete their nomination.
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
+   * @author Chris Detsch
+   * @package nomination
    */
 
 PHPWS_Core::initModClass('nomination', 'Command.php');
@@ -35,7 +37,7 @@ class AdminDenyCancel extends Command
         PHPWS_Core::initModClass('nomination', 'Nomination.php');
         PHPWS_Core::initModClass('nomination', 'CancelQueue.php');
 
-        $nomination = new Nomination($context['nominationId']);
+        $nomination = NominationFactory::getNominationbyId($context['nominationId']);
         CancelQueue::remove($nomination);
     }
 }

@@ -6,6 +6,9 @@
    * Resend an email to reference, nominator, or nominee.
    * Admins can resend to anyone.
    *
+   * This class is likely no longer in use, uses some classes that
+   * no longer exist.
+   *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
@@ -45,7 +48,7 @@ class AdminResendEmail extends Command
         }
 
         PLM_Email::sendMessageObj($message);
-        
+
 
         if(isset($context['ajax'])){
             $context['after'] = new AjaxMessageView();

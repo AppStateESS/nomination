@@ -87,20 +87,6 @@ class NominationForm extends \nomination\View
                 $tpl['cancel']['CANCEL_BUTTON'] = $cancelForm->getTemplate();
             }
 
-
-
-            // Resend email form
-            $resendForm = new PHPWS_Form('resend_email_form');
-            $users = array('nominator'=>'Nominator (self)', 'ref_1'=>'Reference 1',
-                            'ref_2'=>'Reference 2', 'ref_3'=>'Reference 3');
-            $resendForm->addCheckAssoc('users', $users);
-            $resendForm->addSubmit('Submit');
-
-            $resendCmd = $cmdFactory->get('ResendEmail');
-            $resendCmd->setUniqueId($context['unique_id']);
-            $resendCmd->initForm($resendForm);
-
-            $tpl['resend']['RESEND_FORM'] = $resendForm->getTemplate();
         }
 
 
