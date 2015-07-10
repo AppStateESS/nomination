@@ -114,6 +114,8 @@ class UpdateSettings extends Command {
             NQ::simple('nomination', NOMINATION_ERROR, $e->getMessage());
             return;
         }
+
+
         NQ::simple('nomination', NOMINATION_SUCCESS, 'Settings saved.');
     }
 

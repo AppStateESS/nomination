@@ -1,31 +1,24 @@
-<div id="nomination-nomination-form">
-  <div id="maintenance" >
+<div class="col-md-12">
     <!-- BEGIN cancel -->
-    <div id="cancel" style="">
-      <h3 style="text-align: left;">Nomination Withdrawal Request</h3>
+    <div class="row">
+      <h3>Request Nomination Withdrawal</h3>
       {START_FORM}
-      {SUBMIT}
+      <button type="submit" class="btn btn-lg btn-danger">Request Cancellation</button>
       {END_FORM}
     </div>
     <!-- END cancel -->
-    <!-- BEGIN resend -->
-    <div id="resend" style="">
-      <h3 style="text-align: left;">Resend Notification Emails</h3>
+    <!-- BEGIN withdraw -->
+    <div class="row">
+      <h3>Cancel Nomination Withdrawal</h3>
       {START_FORM}
-      {USERS_1_LABEL}
-      {USERS_1}
-      {USERS_2_LABEL}
-      {USERS_2}<br />
-      {USERS_3_LABEL}
-      {USERS_3}
-      {USERS_4_LABEL}
-      {USERS_4}<br />
-      {SUBMIT}
+      <button type="submit" class="btn btn-lg btn-danger">Withdraw Request</button>
       {END_FORM}
     </div>
-    <!-- END resend -->
-  </div>
+    <!-- END withdraw -->
 
+</div>
+<div class="row">
+  <div class="col-md-12">
 
 {START_FORM}
 
@@ -44,7 +37,7 @@
     </label>
   </div>
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
       {NOMINEE_BANNER_ID}
     </div>
   </div>
@@ -57,7 +50,7 @@
     </label>
   </div>
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
       {NOMINEE_FIRST_NAME}
     </div>
   </div>
@@ -68,7 +61,7 @@
     </label>
   </div>
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
       {NOMINEE_MIDDLE_NAME}
     </div>
   </div>
@@ -79,7 +72,7 @@
     </label>
   </div>
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
       {NOMINEE_LAST_NAME}
     </div>
   </div>
@@ -90,7 +83,7 @@
     </label>
   </div>
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
       <div class="form-group">
         <div class="input-group">
           {NOMINEE_EMAIL}
@@ -107,7 +100,7 @@
     </label>
   </div>
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
       {NOMINEE_ASUBOX}
     </div>
   </div>
@@ -120,7 +113,7 @@
     </label>
   </div>
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
       {NOMINEE_PHONE}
     </div>
   </div>
@@ -133,7 +126,7 @@
     </label>
   </div>
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
       {NOMINEE_POSITION}
     </div>
   </div>
@@ -146,7 +139,7 @@
     </label>
   </div>
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
       {NOMINEE_DEPARTMENT_MAJOR}
     </div>
   <!-- END NOMINEE_DEPARTMENT_MAJOR -->
@@ -159,7 +152,7 @@
     </label>
   </div>
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
       {NOMINEE_GPA}
     </div>
   </div>
@@ -172,7 +165,7 @@
     </label>
   </div>
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
       {NOMINEE_CLASS}
     </div>
   </div>
@@ -185,7 +178,7 @@
     </label>
   </div>
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
       {NOMINEE_YEARS}
     </div>
   </div>
@@ -263,7 +256,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {REFERENCE_FIRST_NAME_0}
       </div>
     </div>
@@ -276,7 +269,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {REFERENCE_LAST_NAME_0}
       </div>
     </div>
@@ -289,7 +282,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {REFERENCE_DEPARTMENT_0}
       </div>
     </div>
@@ -302,7 +295,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {REFERENCE_PHONE_0}
       </div>
     </div>
@@ -315,7 +308,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {REFERENCE_EMAIL_0}
       </div>
     </div>
@@ -328,7 +321,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {REFERENCE_RELATIONSHIP_0}
       </div>
     </div>
@@ -348,7 +341,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {REFERENCE_FIRST_NAME_1}
       </div>
     </div>
@@ -361,7 +354,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {REFERENCE_LAST_NAME_1}
       </div>
     </div>
@@ -374,7 +367,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {REFERENCE_DEPARTMENT_1}
       </div>
     </div>
@@ -387,7 +380,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {REFERENCE_PHONE_1}
       </div>
     </div>
@@ -400,7 +393,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {REFERENCE_EMAIL_1}
       </div>
     </div>
@@ -413,7 +406,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {REFERENCE_RELATIONSHIP_1}
       </div>
     </div>
@@ -433,7 +426,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {REFERENCE_FIRST_NAME_2}
       </div>
     </div>
@@ -445,7 +438,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {REFERENCE_LAST_NAME_2}
       </div>
     </div>
@@ -458,7 +451,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {REFERENCE_DEPARTMENT_2}
       </div>
     </div>
@@ -471,7 +464,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {REFERENCE_PHONE_2}
       </div>
     </div>
@@ -484,7 +477,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {REFERENCE_EMAIL_2}
       </div>
     </div>
@@ -497,7 +490,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {REFERENCE_RELATIONSHIP_2}
       </div>
     </div>
@@ -539,7 +532,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {NOMINATOR_FIRST_NAME}
       </div>
     </div>
@@ -552,7 +545,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {NOMINATOR_MIDDLE_NAME}
       </div>
     </div>
@@ -565,7 +558,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {NOMINATOR_LAST_NAME}
       </div>
     </div>
@@ -578,7 +571,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {NOMINATOR_ADDRESS}
       </div>
     </div>
@@ -591,7 +584,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {NOMINATOR_PHONE}
       </div>
     </div>
@@ -605,7 +598,7 @@
     </div>
     <div class="row">
       <div class="form-group">
-        <div class="col-md-8">
+        <div class="col-md-6">
           <div class="input-group">
             {NOMINATOR_EMAIL}
             {NOMINATOR_ADD_ON}
@@ -622,7 +615,7 @@
       </label>
     </div>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
         {NOMINATOR_RELATIONSHIP}
       </div>
     </div>
@@ -649,9 +642,10 @@
     </div>
 
     <div class="row">
-      {SUBMIT}
+      <button type="submit" class="btn btn-lg btn-success">Submit Changes</button>
     </div>
 
     {END_FORM}
   </div>
+</div>
 </div>

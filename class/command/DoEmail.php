@@ -3,7 +3,7 @@
 /**
  * DoEmail
  *
- *   Actually send emails.
+ *   Actually send emails, based on what type of message it is.
  *
  * @author Daniel West <dwest at tux dot appstate dot edu>
  * @author Chris Detsch

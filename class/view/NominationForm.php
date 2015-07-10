@@ -66,34 +66,33 @@ class NominationForm extends \nomination\View
             // or remove the request to delete their nomination
             $cancelForm = new PHPWS_Form('cancel_nominationForm');
 
-            if(CancelQueue::contains($nomination->getId())){
+            if(CancelQueue::contains($nomination->getId()))
+            {
                 $cmd = $cmdFactory->get('WithdrawCancelNomination');
                 $cancelForm->addSubmit('Remove Request');
-            } else {
+                $cmd->unique_id = $context['unique_id'];
+
+                $cmd->initForm($cancelForm);
+
+                $tpl['withdraw']['WITHDRAW_BUTTON'] = $cancelForm->getTemplate();
+            }
+            else
+            {
                 $cmd = $cmdFactory->get('CancelNomination');
                 $cancelForm->addSubmit('Submit Request');
+                $cmd->unique_id = $context['unique_id'];
+
+                $cmd->initForm($cancelForm);
+
+                $tpl['cancel']['CANCEL_BUTTON'] = $cancelForm->getTemplate();
             }
-            $cmd->unique_id = $context['unique_id'];
-            $cmd->initForm($cancelForm);
 
-            $tpl['cancel']['CANCEL_BUTTON'] = $cancelForm->getTemplate();
-
-            // Resend email form
-            $resendForm = new PHPWS_Form('resend_email_form');
-            $users = array('nominator'=>'Nominator (self)', 'ref_1'=>'Reference 1',
-                            'ref_2'=>'Reference 2', 'ref_3'=>'Reference 3');
-            $resendForm->addCheckAssoc('users', $users);
-            $resendForm->addSubmit('Submit');
-
-            $resendCmd = $cmdFactory->get('ResendEmail');
-            $resendCmd->setUniqueId($context['unique_id']);
-            $resendCmd->initForm($resendForm);
-
-            $tpl['resend']['RESEND_FORM'] = $resendForm->getTemplate();
         }
 
 
         $form = new PHPWS_Form('nomination_form');
+
+
 
         // Decide which submission command to use
         if(!isset($c['unique_id'])){
@@ -104,6 +103,8 @@ class NominationForm extends \nomination\View
         }
 
         $submitCmd->initForm($form);
+
+
 
         $tpl['AWARD_TITLE'] = PHPWS_Settings::get('nomination', 'award_title');
         $currPeriod = Period::getCurrentPeriod();
@@ -120,6 +121,7 @@ class NominationForm extends \nomination\View
           $form->addHidden('nominator_unique_id', $context['unique_id']);
 
         }
+
 
         /****************
          * Nominee Info *
@@ -331,18 +333,13 @@ class NominationForm extends \nomination\View
             $tpl['REFERENCES_REPEAT'][] = $refForm->getTemplate();
         }
 
-        /*********************
-         * Document Download *
-         */
-
-        $tpl['FILES_DIR'] = PHPWS_SOURCE_HTTP;
-
         /*************
          * Statement *
         *************/
         if($vis->isVisible('statement')) {
             if(!isset($nomination)){
                 //$upload = new NominationDocument();
+                $tpl['FILES_DIR'] = PHPWS_SOURCE_HTTP;
                 $tpl['STATEMENT'] = NominationDocument::getFileWidget(null, 'statement', $form);
             } else {
                 //TODO fix editing
@@ -442,7 +439,6 @@ class NominationForm extends \nomination\View
         Layout::addPageTitle('Nomination Form');
 
         $result = PHPWS_Template::process($tpl, 'nomination', 'nomination_form.tpl');
-
 
         return $result;
     }

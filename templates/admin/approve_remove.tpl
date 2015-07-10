@@ -50,16 +50,25 @@ function checkApprove(){
 <div id="pending-removal" class="col-md-12">
 <table class="table table-hover table-striped">
   <tr>
-    <th>Nominee Name
+    <th>
+      Nominee
     </th>
-    <th>Actions
+    <th>
+      Nominator
+    </th>
+    <th>
+      Actions
     </th>
   </tr>
 <!-- BEGIN listrows -->
   <tr>
-    <td>{NAME}
+    <td>
+      {NOMINEE}
     </td>
-    <td><a class="view-pending-nom" id={NOMINATION}>View</a> |
+    <td>
+      {NOMINATOR}
+    </td>
+    <td>
       <span onclick="checkApprove()"><a>{APPROVE}</a></span> |
       <span onclick="checkDeny()"><a>{DENY}</a></span>
     </td>

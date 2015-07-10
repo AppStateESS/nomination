@@ -6,10 +6,9 @@
  * Check that all required fields in form are completed, if not
  * redirect back to form with neglected fields highlighted and
  * Notification at top of form.
- * If form checks out then create nominator, references,
- * nominee, and nomination.
+ * If form checks out then save the new nomination over the old
  *
- * @author Robert Bost <bostrt at tux dot appstate dot edu>
+ * @author Chris Detsch
  */
 
 PHPWS_Core::initModClass('nomination', 'Command.php');
@@ -87,7 +86,6 @@ class EditNomination extends Command
           $context['after'] = 'NominationForm';// Set after view to the form
           $context['missing'] = $missing;// Add missing fields to context
           $context['form_fail'] = True;// Set form fail
-
           // Throw exception
           PHPWS_Core::initModClass('nomination', 'exception/BadFormException.php');
           $missingFields = implode(', ', $missing);
@@ -211,27 +209,6 @@ class EditNomination extends Command
       }
 
 
-      /******************************
-       * Statement / Document Upload *
-       ******************************/
-      PHPWS_Core::initModClass('nomination', 'exception/IllegalFileException.php');
-
-      // Make sure the $_FILES array some info on the file we're looking for
-      if(!isset($_FILES['statement']) || !is_uploaded_file($_FILES['statement']['tmp_name']))
-      {
-          PHPWS_Core::initModClass('nomination', 'exception/BadFormException.php');
-          throw new BadFormException('Please select a document to upload.');
-      }
-
-      // Sanity check on mime type for files the client may still have open
-      if($_FILES['statement']['type'] == 'application/octet-stream')
-      {
-          throw new IllegalFileException('Please save and close all word processors then re-submit file.');
-      }
-
-      $doc = new NominationDocument($nomination, 'nominator', 'statement', $_FILES['statement']);
-      DocumentFactory::save($doc);
-
       /***************
        * Send Emails *
       ***************/
@@ -241,6 +218,7 @@ class EditNomination extends Command
           ReferenceFactory::getReferenceById($refId);
           ReferenceEmail::updateNomination($ref, $nomination);
       }
+
 
       NQ::simple('Nomination', NOMINATION_SUCCESS, 'Form successfully submitted. Changes made.');
 

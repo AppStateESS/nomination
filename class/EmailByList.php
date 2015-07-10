@@ -26,7 +26,7 @@
 
        foreach ($list as $id)
        {
-         if($this->messageType === 'NEWREF')
+         if($this->messageType === 'NEWREF' || $this->messageType === 'REFDEL')
          {
            $ref = ReferenceFactory::getReferenceById($id);
 
@@ -44,7 +44,7 @@
            $this->sendTo($ref->getEmail());
            $this->logEmail($nomination, $ref->getEmail(), $id, 'REF');
          }
-         else if($this->messageType === 'NEWNOM')
+         else if($this->messageType === 'NEWNOM' || $this->messageType === 'NOMDEL')
          {
            $nomination = NominationFactory::getNominationbyId($id);
 
@@ -54,7 +54,7 @@
            }
 
            $this->sendTo($nomination->getNominatorEmail());
-           $this->logEmail($nomination, $nomination->getEmail(), $id, 'NTR');
+           $this->logEmail($nomination, $nomination->getNominatorEmail(), $id, 'NTR');
          }
        }
      }

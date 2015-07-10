@@ -103,4 +103,35 @@
         $email->send();
     }
 
+    /**
+     * Sends a message to the nominator of nomination that has been removed
+     *
+     * @param $nominator Nominator
+     * @param $nominee Nominee
+     */
+    public static function removeNomination(Nomination $nomination)
+    {
+
+        $vars = array();
+
+        $vars['NAME'] = $nomination->getNominatorFirstName() . ' ' . $nomination->getNominatorLastName();
+        $vars['NOMINEE_NAME'] = $nomination->getFirstName() . ' ' . $nomination->getLastName();
+        $vars['AWARD_NAME'] = PHPWS_Settings::get('nomination', 'award_title');
+
+        $references = ReferenceFactory::getByNominationId($nomination->getId());
+
+        $list = array();
+        foreach ($references as $ref) {
+          array_push($list, $ref->getId());
+        }
+        $subject = 'Nomination Removal Request Approved';
+        $msg = PHPWS_Template::process($vars, 'nomination', 'email/removal_request_approved.tpl');
+        $msgType = 'REFDEL';
+
+        $email = new EmailByList($list, $subject, $msg, $msgType);
+
+        $email->send();
+
+    }
+
   }

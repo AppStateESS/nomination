@@ -57,7 +57,6 @@ class CreateNomination extends Command
 
     public function execute(Context $context)
     {
-
         $missing = array();
         $entered = array();
         $numReferencesReq = Reference::getNumReferencesReq();
@@ -267,6 +266,7 @@ class CreateNomination extends Command
         }
 
         $doc = new NominationDocument($nomination, 'nominator', 'statement', $_FILES['statement']);
+
         DocumentFactory::save($doc);
 
         /***************

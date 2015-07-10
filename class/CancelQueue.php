@@ -62,14 +62,15 @@ class CancelQueue {
 
         $tpl = array();
 
-        $omnom = new Nomination($this->nomination);
+        $nom = NominationFactory::getNominationbyId($this->nomination);
+
         $vf = new ViewFactory;
         $cf = new CommandFactory();
 
-        $tpl['NOMINATION']  = $this->nomination;
+        $tpl['NOMINATOR']  = $nom->getNominatorLink();
         $tpl['APPROVE'] = 'Approve';
         $tpl['DENY'] = 'Deny';
-        $tpl['NAME'] = $omnom->getNomineeName();
+        $tpl['NOMINEE'] = $nom->getNomineeLink();
 
         //get link to view nomination
         $view = $vf->get('NominationView');
@@ -78,7 +79,7 @@ class CancelQueue {
         // Approval form
         $approveForm = new PHPWS_Form('approve');
         $approve = $cf->get('DeleteNomination');
-        $approve->nominationId = $omnom->id;
+        $approve->nominationId = $nom->getId();
         $approve->initForm($approveForm);
         $apptpl = $approveForm->getTemplate();
         $tpl['START_APPRV_FORM'] = $apptpl['START_FORM'];
@@ -87,7 +88,7 @@ class CancelQueue {
         // Denial form
         $denyForm = new PHPWS_Form('deny');
         $deny = $cf->get('AdminDenyCancel');
-        $deny->nominationId = $omnom->id;
+        $deny->nominationId = $nom->getId();
         $deny->initForm($denyForm);
         $denytpl = $denyForm->getTemplate();
         $tpl['START_DENY_FORM'] = $denytpl['START_FORM'];

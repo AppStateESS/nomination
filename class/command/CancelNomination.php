@@ -17,7 +17,7 @@ class CancelNomination extends Command {
 
     public function getRequestVars()
     {
-        $vars = array('action'=>'CancelNomination');
+        $vars = array('action'=>'CancelNomination', 'after' => 'RemovalRequest');
 
         if(isset($this->unique_id)){
             $vars['unique_id'] = $this->unique_id;
@@ -28,16 +28,8 @@ class CancelNomination extends Command {
 
     public function execute(Context $context)
     {
-        $nom_id = Nomination::getByNominatorUnique_Id($context['unique_id']);
-        $omnom  = new Nomination;
-        $omnom->id = $nom_id['id'];
-        $omnom->load();
+        $nom = NominationFactory::getByNominatorUniqueId($context['unique_id']);
 
-        CancelQueue::add($omnom);
-
-        $vf = new ViewFactory();
-        $nomForm = $vf->get('NominationForm');
-        $nomForm->unique_id = $context['unique_id'];
-        $context['after'] = $nomForm;
+        CancelQueue::add($nom);
     }
 }

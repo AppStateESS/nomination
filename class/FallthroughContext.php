@@ -10,6 +10,7 @@
    * should be used to fill out the default values for a form.
    *
    * @author Daniel West <dwest at tux dot appstate dot edu>
+   * @author Chris Detsch
    * @package nomination
    */
 PHPWS_Core::initModClass('nomination', 'Context.php');
@@ -52,13 +53,20 @@ class FallthroughContext extends Context {
         $this->others[] = $thing;
     }
 
-    public function restoreNominationForm($nomination)
+    /**
+     * Retrieves all the data from a nomination so that the edit form
+     * can be filled back in, then calls the addFallthrough with the
+     * retrieved data in an array.
+     *
+     * @param Nomination nomination
+     */
+    public function restoreNominationForm(Nomination $nomination)
     {
       $nom['nominee_banner_id'] = $nomination->getBannerId();
       $nom['nominee_first_name'] = $nomination->getFirstName();
       $nom['nominee_middle_name'] = $nomination->getMiddleName();
       $nom['nominee_last_name'] = $nomination->getLastName();
-      $nom['nominee_email'] = preg_replace('/@appstate.edu/', '', $nomination->getEmail());
+      $nom['nominee_email'] = preg_replace('/(.*)@.*appstate.edu/', '$1', $nomination->getEmail());
       $nom['nominee_asubox'] = $nomination->getAsubox();
       $nom['nominee_phone'] = $nomination->getPhone();
       $nom['nominee_position'] = $nomination->getPosition();
@@ -90,7 +98,7 @@ class FallthroughContext extends Context {
       $nom['nominator_last_name'] = $nomination->getNominatorLastName();
       $nom['nominator_address'] = $nomination->getNominatorAddress();
       $nom['nominator_phone'] = $nomination->getNominatorPhone();
-      $nom['nominator_email'] = $nomination->getNominatorEmail();
+      $nom['nominator_email'] = preg_replace('/(.*)@.*appstate.edu/', '$1', $nomination->getNominatorEmail());
       $nom['nominator_relationship'] = $nomination->getNominatorRelation();
 
 

@@ -45,15 +45,15 @@
      * @param $nominator Nominator
      * @param $nominee Nominee
      */
-    public static function removeNomination(Nominator $nominator, Nominee $nominee)
+    public static function removeNomination(Nomination $nomination)
     {
         $vars = array();
 
-        $vars['NAME'] = $nominator->getFullname();
-        $vars['NOMINEE_NAME'] = $nominee->getFullName();
+        $vars['NAME'] = $nomination->getNominatorFirstName() . ' ' . $nomination->getNominatorLastName();
+        $vars['NOMINEE_NAME'] = $nomination->getFirstName() . ' ' . $nomination->getLastName();
         $vars['AWARD_NAME'] = PHPWS_Settings::get('nomination', 'award_title');
 
-        $list = array($nominator);
+        $list = array($nomination->getId());
         $subject = 'Nomination Removal Request Approved';
         $msg = PHPWS_Template::process($vars, 'nomination', 'email/removal_request_approved.tpl');
         $msgType = 'NOMDEL';

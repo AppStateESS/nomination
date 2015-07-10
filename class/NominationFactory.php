@@ -324,7 +324,8 @@ class NominationFactory {
      */
     public static function deleteNomination($id)
     {
-      if(!isset($id)){
+      if(!isset($id))
+      {
           throw new InvalidArgumentException('Missing id.');
       }
 

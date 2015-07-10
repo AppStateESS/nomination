@@ -19,7 +19,7 @@ class WithdrawCancelNomination extends Command
 
     public function getRequestVars()
     {
-        $vars = array('action' => 'WithdrawCancelNomination');
+        $vars = array('action' => 'WithdrawCancelNomination', 'after' => 'RequestWithdrawn');
 
         if(isset($this->unique_id)){
             $vars['unique_id'] = $this->unique_id;
@@ -30,14 +30,9 @@ class WithdrawCancelNomination extends Command
 
     public function execute(Context $context)
     {
-        $nom_id = Nomination::getByNominatorUnique_Id($context['unique_id']);
-        $omnom  = new Nomination($nom_id['id']);
 
-        CancelQueue::remove($omnom);
+        $nom = NominationFactory::getByNominatorUniqueId($context['unique_id']);
 
-        $vf = new ViewFactory();
-        $nomForm = $vf->get('NominationForm');
-        $nomForm->unique_id = $context['unique_id'];
-        $context['after'] = $nomForm;
+        CancelQueue::remove($nom);
     }
 }

@@ -2,13 +2,12 @@
   /**
    * DeleteNomination
    *
-   * Delete a nomination that has been placed in removal_request_queue.
-   * Also, delete the related references, nominator, all
-   * uploaded documents, and MAYBE nominee.
-   * Only delete the nominee if this was the only nomination
-   * for them.
+   * Delete a nomination that has been placed in cancel_queue.
+   * Also, delete the related references, nomination, and all
+   * uploaded documents.
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
+   * @author Chris Detsch
    */
 
 PHPWS_Core::initModClass('nomination', 'Command.php');
@@ -26,6 +25,7 @@ class DeleteNomination extends Command
 
     public function execute(Context $context)
     {
+
         if(!UserStatus::isAdmin()){
             throw new PermissionException('You are not allowd to do that!');
         }
@@ -35,21 +35,20 @@ class DeleteNomination extends Command
             throw new ContextException('Nomination ID is required');
         }
 
-        PHPWS_Core::initModClass('nomination', 'Nomination.php');
-        PHPWS_Core::initModClass('nomination', 'CancelQueue.php');
-        PHPWS_Core::initModClass('nomination', 'Nominator.php');
-        PHPWS_Core::initModClass('nomination', 'NominationEmail.php');
+        $nomination = NominationFactory::getNominationbyId($context['nominationId']);
 
-        $nomination = new Nomination($context['nominationId']);
+        // Send an email
+        NominatorEmail::removeNomination($nomination);
+        ReferenceEmail::removeNomination($nomination);
 
+        //TODO Delete all relevant nomination data
+
+        EmailLogFactory::deleteEmailLogByNomId($nomination->getId());
+        ReferenceFactory::deleteRefByNomId($nomination->getId());
+        NominationFactory::deleteNomination($nomination->getId());
         // Delete removal request from queue
         CancelQueue::approve($nomination);
 
-        // Send an email
-        $nominator = $nomination->getNominator();
-        Nomination_Email::removeNominationNominator($nominator, $nomination->getNominee());
-
-        $nomination->deleteForReal();
         NQ::simple('nomination', NOMINATION_SUCCESS, 'Nomination deleted. Email sent.');
     }
 }
