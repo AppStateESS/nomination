@@ -40,16 +40,16 @@ class DeleteNomination extends Command
         PHPWS_Core::initModClass('nomination', 'Nominator.php');
         PHPWS_Core::initModClass('nomination', 'NominationEmail.php');
 
-        $nomination = new Nomination($context['nominationId']);
+        $nomination = NominationFactory::getNominationbyId($context['nominationId']);
 
         // Delete removal request from queue
         CancelQueue::approve($nomination);
 
         // Send an email
-        $nominator = $nomination->getNominator();
-        Nomination_Email::removeNominationNominator($nominator, $nomination->getNominee());
+        NominatorEmail::removeNomination($nomination);
 
-        $nomination->deleteForReal();
+        //TODO Delete all relevant nomination data
+        //$nomination->deleteForReal();
         NQ::simple('nomination', NOMINATION_SUCCESS, 'Nomination deleted. Email sent.');
     }
 }

@@ -57,7 +57,6 @@ class CreateNomination extends Command
 
     public function execute(Context $context)
     {
-
         $missing = array();
         $entered = array();
         $numReferencesReq = Reference::getNumReferencesReq();

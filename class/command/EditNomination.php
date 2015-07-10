@@ -87,7 +87,8 @@ class EditNomination extends Command
           $context['after'] = 'NominationForm';// Set after view to the form
           $context['missing'] = $missing;// Add missing fields to context
           $context['form_fail'] = True;// Set form fail
-
+          var_dump("missing statement exception");
+          exit();
           // Throw exception
           PHPWS_Core::initModClass('nomination', 'exception/BadFormException.php');
           $missingFields = implode(', ', $missing);
@@ -211,26 +212,31 @@ class EditNomination extends Command
       }
 
 
-      /******************************
-       * Statement / Document Upload *
-       ******************************/
-      PHPWS_Core::initModClass('nomination', 'exception/IllegalFileException.php');
+      // /******************************
+      //  * Statement / Document Upload *
+      //  ******************************/
+      // PHPWS_Core::initModClass('nomination', 'exception/IllegalFileException.php');
+      //
+      // // Make sure the $_FILES array some info on the file we're looking for
+      // if(!isset($_FILES['statement']) || !is_uploaded_file($_FILES['statement']['tmp_name']))
+      // {
+      //     PHPWS_Core::initModClass('nomination', 'exception/BadFormException.php');
+      //     throw new BadFormException('Please select a document to upload.');
+      //
+      // }
+      //
+      // // Sanity check on mime type for files the client may still have open
+      // if($_FILES['statement']['type'] == 'application/octet-stream')
+      // {
+      //   var_dump($nomination);
+      //   exit();
+      //     throw new IllegalFileException('Please save and close all word processors then re-submit file.');
+      // }
+      //
+      // $doc = new NominationDocument($nomination, 'nominator', 'statement', $_FILES['statement']);
+      // DocumentFactory::save($doc);
 
-      // Make sure the $_FILES array some info on the file we're looking for
-      if(!isset($_FILES['statement']) || !is_uploaded_file($_FILES['statement']['tmp_name']))
-      {
-          PHPWS_Core::initModClass('nomination', 'exception/BadFormException.php');
-          throw new BadFormException('Please select a document to upload.');
-      }
 
-      // Sanity check on mime type for files the client may still have open
-      if($_FILES['statement']['type'] == 'application/octet-stream')
-      {
-          throw new IllegalFileException('Please save and close all word processors then re-submit file.');
-      }
-
-      $doc = new NominationDocument($nomination, 'nominator', 'statement', $_FILES['statement']);
-      DocumentFactory::save($doc);
 
       /***************
        * Send Emails *
@@ -241,6 +247,10 @@ class EditNomination extends Command
           ReferenceFactory::getReferenceById($refId);
           ReferenceEmail::updateNomination($ref, $nomination);
       }
+
+      var_dump($this);
+      var_dump($context);
+      exit();
 
       NQ::simple('Nomination', NOMINATION_SUCCESS, 'Form successfully submitted. Changes made.');
 

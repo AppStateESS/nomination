@@ -66,17 +66,28 @@ class NominationForm extends \nomination\View
             // or remove the request to delete their nomination
             $cancelForm = new PHPWS_Form('cancel_nominationForm');
 
-            if(CancelQueue::contains($nomination->getId())){
+            if(CancelQueue::contains($nomination->getId()))
+            {
                 $cmd = $cmdFactory->get('WithdrawCancelNomination');
                 $cancelForm->addSubmit('Remove Request');
-            } else {
+                $cmd->unique_id = $context['unique_id'];
+
+                $cmd->initForm($cancelForm);
+
+                $tpl['withdraw']['WITHDRAW_BUTTON'] = $cancelForm->getTemplate();
+            }
+            else
+            {
                 $cmd = $cmdFactory->get('CancelNomination');
                 $cancelForm->addSubmit('Submit Request');
-            }
-            $cmd->unique_id = $context['unique_id'];
-            $cmd->initForm($cancelForm);
+                $cmd->unique_id = $context['unique_id'];
 
-            $tpl['cancel']['CANCEL_BUTTON'] = $cancelForm->getTemplate();
+                $cmd->initForm($cancelForm);
+
+                $tpl['cancel']['CANCEL_BUTTON'] = $cancelForm->getTemplate();
+            }
+
+
 
             // Resend email form
             $resendForm = new PHPWS_Form('resend_email_form');
@@ -95,6 +106,8 @@ class NominationForm extends \nomination\View
 
         $form = new PHPWS_Form('nomination_form');
 
+
+
         // Decide which submission command to use
         if(!isset($c['unique_id'])){
             $submitCmd = $cmdFactory->get('CreateNomination');
@@ -104,6 +117,8 @@ class NominationForm extends \nomination\View
         }
 
         $submitCmd->initForm($form);
+
+
 
         $tpl['AWARD_TITLE'] = PHPWS_Settings::get('nomination', 'award_title');
         $currPeriod = Period::getCurrentPeriod();
@@ -120,6 +135,7 @@ class NominationForm extends \nomination\View
           $form->addHidden('nominator_unique_id', $context['unique_id']);
 
         }
+
 
         /****************
          * Nominee Info *
@@ -437,8 +453,6 @@ class NominationForm extends \nomination\View
         Layout::addPageTitle('Nomination Form');
 
         $result = PHPWS_Template::process($tpl, 'nomination', 'nomination_form.tpl');
-
-
 
         return $result;
     }
