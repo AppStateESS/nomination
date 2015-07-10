@@ -73,7 +73,6 @@ class Nominee extends NominationActor
 
             return $result;
         }
-        return null;
     }
 
 
@@ -172,4 +171,3 @@ class Nominee extends NominationActor
         return $nominee;
     }
 }
-?>

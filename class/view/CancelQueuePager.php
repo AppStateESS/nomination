@@ -36,5 +36,3 @@ class CancelQueuePager extends \nomination\View {
         return $pager->get();
     }
 }
-
-?>

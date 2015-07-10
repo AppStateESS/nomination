@@ -98,5 +98,3 @@ class NominationFieldVisibility
         $this->visibility = $this->loadVisibility();
     }
 }
-
-?>

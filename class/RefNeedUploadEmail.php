@@ -42,12 +42,21 @@
      {
        $reference = ReferenceFactory::getReferenceById($id);
 
+       if(!isset($reference))
+       {
+         throw new NominationException('The given reference is null, id = ' . $id);
+       }
+
        $nomination = NominationFactory::getNominationbyId($reference->getNominationId());
+
+       if(!isset($nomination))
+       {
+         throw new NominationException('The given nomination is null, id = ' . $reference->getNominationId())
+       }
+
        $this->sendTo($reference->getEmail());
        $this->logEmail($nomination, $reference->getEmail(), $id, REFERENCE);
      }
    }
 
  }
-
-?>

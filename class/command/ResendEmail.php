@@ -69,5 +69,3 @@ class ResendEmail extends Command
         $this->unique_id = $unique_id;
     }
 }
-
-?>

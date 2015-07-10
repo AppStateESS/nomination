@@ -26,25 +26,28 @@ class NominationNotificationView
     {
         NQ::simple('nomination', NOMINATION_ERROR, $message);
         NQ::close();
-        //header("Location: index.php?module=nomination"); // This is not smart. It causes redirect loops if *anything* goes wrong.
+
         exit();
     }
 
     public function show()
     {
-		if(empty($this->notifications)) {
-			return '';
-		}
-		$tpl = array();
-		$tpl['NOTIFICATIONS'] = array();
-		foreach($this->notifications as $notification) {
-		    
-			if(!$notification instanceof Notification) {
-				throw new InvalidArgumentException('Something was pushed onto the NQ that was not a Notification.');
-			}
-			$type = self::resolveType($notification);
-			$tpl['NOTIFICATIONS'][][$type] = $notification->toString();
-		}
+		    if(empty($this->notifications))
+        {
+			       return '';
+		    }
+		    $tpl = array();
+		    $tpl['NOTIFICATIONS'] = array();
+		    foreach($this->notifications as $notification)
+        {
+			       if(!$notification instanceof Notification)
+             {
+				           throw new InvalidArgumentException('Something was pushed onto the NQ that was not a Notification.');
+			       }
+
+			       $type = self::resolveType($notification);
+			       $tpl['NOTIFICATIONS'][][$type] = $notification->toString();
+		    }
         $content = PHPWS_Template::process($tpl, 'nomination', 'NotificationView.tpl');
 
         javascript('jquery');
@@ -52,7 +55,7 @@ class NominationNotificationView
 
         return $content;
     }
-    
+
     public function resolveType(Notification $notification)
     {
         switch($notification->getType()){
@@ -67,4 +70,3 @@ class NominationNotificationView
         }
     }
 }
-?>

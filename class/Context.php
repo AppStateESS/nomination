@@ -41,4 +41,3 @@ class Context implements ArrayAccess
         return $this->container;
     }
 }
-?>

@@ -13,7 +13,7 @@
 PHPWS_Core::initModClass('nomination', 'Command.php');
 
 class SubmitReviewEmail extends Command {
-    
+
     public function getRequestVars()
     {
         $vars = array('action'=>'SubmitReviewEmail');
@@ -40,4 +40,3 @@ class SubmitReviewEmail extends Command {
         $context['after'] = 'ReviewEmail';
     }
 }
-?>

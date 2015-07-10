@@ -102,4 +102,3 @@ class EmailMessage extends Nomination_Model
         return $this->message;
     }
 }
-?>

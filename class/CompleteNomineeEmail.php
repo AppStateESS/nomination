@@ -37,11 +37,14 @@
      foreach ($list as $id)
      {
        $nomination = NominationFactory::getNominationId($id);
+
+       if(!isset($nomination))
+       {
+         throw new NominationException('The given reference is null, unique id = ' . $id);
+       }
        $this->sendTo($nomination->getEmail());
        $this->logEmail($nomination, $nomination->getEmail(), $id, NOMINEE);
      }
    }
 
  }
-
-?>

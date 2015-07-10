@@ -28,9 +28,17 @@ class SubmitRecommendation extends Command {
     {
         // Get this reference
         $ref = ReferenceFactory::getByUniqueId($context['unique_id']);
+        if(!isset($ref))
+        {
+          throw new NominationException('The given reference is null, unique id = ' . $context['unique_id']);
+        }
 
         // Get the corresponding nomination
         $nomination = NominationFactory::getNominationById($ref->getNominationId());
+        if(!isset($nomination))
+        {
+          throw new NominationException('The given nomination is null, id = ' . $ref->getNominationId());
+        }
 
         PHPWS_Core::initModClass('nomination', 'exception/IllegalFileException.php');
 
@@ -51,7 +59,9 @@ class SubmitRecommendation extends Command {
 
         // Save the ID of the document with the Reference object
         $ref->setDocId($doc->getId());
+
         ReferenceFactory::save($ref);
+
 
         // Check if nomination is completed now...
         // TODO
@@ -66,4 +76,3 @@ class SubmitRecommendation extends Command {
         NQ::simple('nomination', NOMINATION_SUCCESS, 'Thank you!');
     }
 }
-?>

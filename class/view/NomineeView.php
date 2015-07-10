@@ -21,7 +21,7 @@ class NomineeView extends \nomination\View {
         if(!(UserStatus::isCommitteeMember() || UserStatus::isAdmin())){
             throw new PermissionException('You are not allowed to see that!');
         }
-        
+
         $tpl = array();
 
 	PHPWS_Core::initModClass('nomination', 'NominationFactory.php');
@@ -39,12 +39,12 @@ class NomineeView extends \nomination\View {
         $db->addOrder('winner desc');
 	//	test($db->select(),1);
 	$results = $db->getObjects('DBNomination');
-	
-        
+
+
         if(PHPWS_Error::logIfError($results)){
             PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
             throw new DatabaseException('Database asploded');
-        } 
+        }
         if(is_null($results) || empty($results)){
             PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
             throw new DatabaseException('Invalid Nominee ID');
@@ -63,7 +63,7 @@ class NomineeView extends \nomination\View {
 
             $nomination_is_winner = $nominee->isWinner();
             if($nomination_is_winner)$nomIsWinner = True;
-            
+
             if(UserStatus::isAdmin()){
                 $icon = $nominee->isWinner() ? 'mod/nomination/img/tango/actions/list-remove-red.png':
                     'mod/nomination/img/tango/actions/list-add-green.png';
@@ -79,7 +79,7 @@ class NomineeView extends \nomination\View {
                                           'AWARD_ICON' => PHPWS_SOURCE_HTTP.$award_icon,
                                           'DOWN_PNG_HACK' => PHPWS_SOURCE_HTTP."mod/nomination/img/arrow_down.png");
 
-	    
+
             // pass this to javascript
             $jsVars['collapse'][] = array('NUM' => $num, 'ID' => $nominee->getId());
             $jsVars['winner'][] = array('NUM' => $num, 'ID' => $nominee->getId(), 'WINNER' => $nominee->isWinner());
@@ -88,7 +88,7 @@ class NomineeView extends \nomination\View {
 
         javascript('jquery');
         // JS Collapse; Admin and Committee
-        javascriptMod('nomination', 'nomCollapse', 
+        javascriptMod('nomination', 'nomCollapse',
                       array('noms' => json_encode($jsVars['collapse']),
                             'PHPWS_SOURCE_HTTP' => PHPWS_SOURCE_HTTP));
         // Full path is needed for images
@@ -103,7 +103,7 @@ class NomineeView extends \nomination\View {
             // If nomination is winner then set the winner flag beside the
             // nominee's name in big letters
             if($nomIsWinner) $tpl['WINNER'] = '(Winner)';
-            
+
             return PHPWS_Template::process($tpl, 'nomination', 'admin/nominee.tpl');
         }
         return PHPWS_Template::process($tpl, 'nomination', 'committee/nominee.tpl');
@@ -115,10 +115,9 @@ class NomineeView extends \nomination\View {
 
         return $vars;
     }
-    
+
     public function setNominationId($id){
       $this->nominationId = $id;
     }
-    
+
 }
-?>

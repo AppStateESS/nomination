@@ -13,4 +13,3 @@ $link[] = array('label'       => _('Nomination Module'),
                 'image'       => 'tango/mimetypes/application-certificate.png',
                 'tab'         => 'admin'
                 );
-?>

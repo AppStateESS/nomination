@@ -167,5 +167,3 @@ function nomination_update($content, $currentVersion)
     }
     return TRUE;
 }
-
-?>

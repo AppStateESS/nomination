@@ -59,4 +59,3 @@ class SendEmail extends \nomination\View {
         return PHPWS_Template::process($form->getTemplate(), 'nomination', 'admin/email_form.tpl');
     }
 }
-?>

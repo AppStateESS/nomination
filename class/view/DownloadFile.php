@@ -36,17 +36,11 @@ class DownloadFile extends \nomination\View {
 
     public function display(Context $context)
     {
-        //$omnom = new Nomination;
-        //$omnom->id = $context['nomination'];
-        //$omnom->load();
-
         $omnom = new NominationFactory();
         $omnom = $omnom->getNominationbyId($context['nomination']);
 
-        //$doc = new NominationDocument($omnom);
         $doc = new DocumentFactory();
         $doc = $doc->getDocumentById($context['unique_id']);
         $doc->newSendFile($context['unique_id']);
     }
 }
-?>

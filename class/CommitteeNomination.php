@@ -22,5 +22,3 @@ class CommitteeNomination extends NominationMod
         Layout::add($userView->display($this->context));
     }
 }
-
-?>

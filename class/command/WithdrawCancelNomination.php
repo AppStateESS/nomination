@@ -7,7 +7,7 @@
    * Removes from CancelQueue.
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
-   */ 
+   */
 
 PHPWS_Core::initModClass('nomination', 'Command.php');
 PHPWS_Core::initModClass('nomination', 'CancelQueue.php');
@@ -16,15 +16,15 @@ PHPWS_Core::initModClass('nomination', 'Nomination.php');
 class WithdrawCancelNomination extends Command
 {
     public $unique_id;
-    
+
     public function getRequestVars()
     {
         $vars = array('action' => 'WithdrawCancelNomination');
-        
+
         if(isset($this->unique_id)){
             $vars['unique_id'] = $this->unique_id;
         }
-        
+
         return $vars;
     }
 
@@ -41,7 +41,3 @@ class WithdrawCancelNomination extends Command
         $context['after'] = $nomForm;
     }
 }
-
-
-
-?>

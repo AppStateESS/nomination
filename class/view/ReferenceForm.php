@@ -58,6 +58,7 @@ class ReferenceForm extends \nomination\View {
 
         $form->addHidden('unique_id', $context['unique_id']);
 
+        $tpl = array();
         $tpl['RECOMMENDATION'] = NominationDocument::getFileWidget(null, 'recommendation', $form);
         $tpl['STUDENT'] = $nom->getFullName();
 
@@ -69,4 +70,3 @@ class ReferenceForm extends \nomination\View {
         return PHPWS_Template::process($form->getTemplate(), 'nomination', 'reference_form.tpl');
     }
 }
-?>

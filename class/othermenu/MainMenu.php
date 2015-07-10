@@ -20,14 +20,10 @@ class MainMenu extends OtherMenu
     public function show()
     {
         $tpl = array();
-        
+
         foreach($this->container as $item){
             // Show each item
-            if($item instanceof NewRow){
-                $tpl['menus'][] = array('CONTENT' => $item->show());
-            } else {
-                $tpl['menus'][] = array('CONTENT' => $item->show());
-            }
+            $tpl['menus'][] = array('CONTENT' => $item->show());
         }
         Layout::addStyle('nomination', 'othermenu/css/style.css');
         return PHPWS_Template::process($tpl, 'nomination', 'othermenu/main_menu.tpl');
@@ -38,10 +34,7 @@ class MainMenu extends OtherMenu
 // See templates/main_menu.tpl
 class NewColumn
 {
-    function show(){
+    public function show(){
         return "</div><div class='main-menu'>";
     }
 }
-
-
-?>

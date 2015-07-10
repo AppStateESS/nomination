@@ -56,14 +56,17 @@ class NominationForm extends \nomination\View
         */
         if(isset($context['unique_id'])){
             //setup the fallthrough context
-            $nomination = Nomination::getByNominatorUnique_Id($context['unique_id']);
-            $c->addFallthrough($nomination);
+            $nomination = NominationFactory::getByNominatorUniqueId($context['unique_id']);
+
+            $c->restoreNominationForm($nomination);
+
+            $edit = 1;
 
             //...and add a button for the nominator to cancel their nomination
             // or remove the request to delete their nomination
             $cancelForm = new PHPWS_Form('cancel_nominationForm');
 
-            if(CancelQueue::contains($nomination['id'])){
+            if(CancelQueue::contains($nomination->getId())){
                 $cmd = $cmdFactory->get('WithdrawCancelNomination');
                 $cancelForm->addSubmit('Remove Request');
             } else {
@@ -89,6 +92,7 @@ class NominationForm extends \nomination\View
             $tpl['resend']['RESEND_FORM'] = $resendForm->getTemplate();
         }
 
+
         $form = new PHPWS_Form('nomination_form');
 
         // Decide which submission command to use
@@ -110,6 +114,13 @@ class NominationForm extends \nomination\View
         PHPWS_Core::initModClass('nomination', 'NominationFieldVisibility.php');
         $vis = new NominationFieldVisibility();
 
+
+        if(isset($context['unique_id']))
+        {
+          $form->addHidden('nominator_unique_id', $context['unique_id']);
+
+        }
+
         /****************
          * Nominee Info *
         ****************/
@@ -129,10 +140,18 @@ class NominationForm extends \nomination\View
         $form->addCssClass('nominee_last_name', 'form-control');
         $form->setLabel('nominee_last_name', 'Last name');
 
-        $form->addText('nominee_email',
-                        isset($c['nominee_email']) ? $c['nominee_email'] : '');
-        $form->addCssClass('nominee_email', 'form-control');
-        $form->setLabel('nominee_email', 'ASU Email');
+        if($edit && !UserStatus::isAdmin())
+        {
+          $tpl['NOMINEE_EMAIL'] = '<label>' . $c['nominee_email'] . '</label>';
+        }
+        else
+        {
+          $form->addText('nominee_email',
+                          isset($c['nominee_email']) ? $c['nominee_email'] : '');
+          $form->addCssClass('nominee_email', 'form-control');
+          $tpl['NOMINEE_ADD_ON'] = '<div class="input-group-addon">@appstate.edu</div>';
+        }
+
 
         if($vis->isVisible('nominee_asubox')) {
             $form->addText('nominee_asubox',
@@ -170,25 +189,35 @@ class NominationForm extends \nomination\View
         }
 
         if($vis->isVisible('nominee_banner_id')) {
-            $form->addText('nominee_banner_id');
-            $form->addCssClass('nominee_banner_id', 'form-control');
-            $form->setlabel('nominee_banner_id', 'Banner ID');
+            if($edit && !UserStatus::isAdmin())
+            {
+              $tpl['NOMINEE_BANNER_ID'] = '<label> ' . $c['nominee_banner_id'] . '</label>';
+            }
+            else
+            {
+              $form->addText('nominee_banner_id',
+                              isset($c['nominee_banner_id']) ? $c['nominee_banner_id'] : '');
+              $form->addCssClass('nominee_banner_id', 'form-control');
+            }
         }
         if($vis->isVisible('nominee_phone')) {
-            $form->addText('nominee_phone');
+            $form->addText('nominee_phone',
+                            isset($c['nominee_phone']) ? $c['nominee_phone'] : '');
             $form->addCssClass('nominee_phone', 'form-control');
             $form->setLabel('nominee_phone', 'Phone Number');
         }
         if($vis->isVisible('nominee_gpa')) {
-            $form->addText('nominee_gpa');
+            $form->addText('nominee_gpa',
+                            isset($c['nominee_gpa']) ? $c['nominee_gpa'] : '');
             $form->addCssClass('nominee_gpa', 'form-control');
             $form->setLabel('nominee_gpa', 'GPA');
         }
         if($vis->isVisible('nominee_class')) {
             $form->addDropBox('nominee_class', array(-1=>'Select', 'fr'=>'Freshmen', 'so'=>'Sophomore', 'jr'=>'Junior', 'sr'=>'Senior', 'grad'=>'Graduate'));
-            $form->setMatch('nominee_class', -1);
+            $form->setMatch('nominee_class', isset($c['nominee_class']) ? $c['nominee_class'] : -1);
             $form->setLabel('nominee_class', 'Class');
             $form->addCssClass('nominee_class', 'form-control');
+
         }
 
 
@@ -211,45 +240,92 @@ class NominationForm extends \nomination\View
          * so that multiple fields with the same name can be submitted.
          */
         $numRefsReq = Reference::getNumReferencesReq();
-        for($i = 1; $i <= $numRefsReq; $i++){
+        for($i = 0; $i < $numRefsReq; $i++){
             $refForm = new PHPWS_Form('nomination_form'); // NB: Must have the same form name
 
-            if($vis->isVisible('reference_first_name')) {
-                $refForm->addText('reference_first_name[]',
-                                isset($c['reference_first_name_'.$i]) ? $c['reference_first_name_'.$i] : '');
-                $refForm->setLabel('reference_first_name[]', 'First Name: ');
-                $refForm->addCssClass('reference_first_name[]', 'form-control');
+            if($vis->isVisible('reference_first_name'))
+            {
+              if($edit && !UserStatus::isAdmin())
+              {
+                $tpl['REFERENCE_FIRST_NAME_' . $i] = '<label>'. $c['reference_first_name'][$i] . '</label>';
+              }
+              else {
+                $form->addHidden('reference_id_' . $i, $c['reference_id'][$i]);
+                $form->addText('reference_first_name_' . $i,
+                                isset($c['reference_first_name'][$i]) ? $c['reference_first_name'][$i] : '');
+                $form->addCssClass('reference_first_name_' . $i, 'form-control');
+              }
             }
 
-            if($vis->isVisible('reference_last_name')) {
-                $refForm->addText('reference_last_name[]',
-                                isset($c['reference_last_name_'.$i]) ? $c['reference_last_name_'.$i] : '');
-                $refForm->setLabel('reference_last_name[]', 'Last Name: ');
-                $refForm->addCssClass('reference_last_name[]', 'form-control');
+            if($vis->isVisible('reference_last_name'))
+            {
+              if($edit && !UserStatus::isAdmin())
+              {
+                $tpl['REFERENCE_LAST_NAME_' . $i] = '<label>' . $c['reference_last_name'][$i] . '</label>';
+              }
+              else
+              {
+                $form->addText('reference_last_name_' . $i,
+                                isset($c['reference_last_name'][$i]) ? $c['reference_last_name'][$i] : '');
+                $form->addCssClass('reference_last_name_'. $i, 'form-control');
+              }
             }
 
-            if($vis->isVisible('reference_department')) {
-                $refForm->addText('reference_department[]', isset($c['reference_department_'.$i]) ? $c['reference_department_'.$i] : '');
-                $refForm->setLabel('reference_department[]', 'Department: ');
-                $refForm->addCssClass('reference_department[]', 'form-control');
+            if($vis->isVisible('reference_department'))
+            {
+              if($edit && !UserStatus::isAdmin())
+              {
+                $tpl['REFERENCE_DEPARTMENT_'.$i] = '<label>' . $c['reference_department'][$i] . '</label>';
+              }
+              else
+              {
+                $form->addText('reference_department_' . $i,
+                                isset($c['reference_department'][$i]) ? $c['reference_department'][$i] : '');
+                $form->addCssClass('reference_department_' . $i, 'form-control');
+              }
             }
 
-            if($vis->isVisible('reference_email')) {
-                $refForm->addText('reference_email[]', isset($c['reference_email_'.$i]) ? $c['reference_email_'.$i] : '');
-                $refForm->setLabel('reference_email[]', 'Email: ');
-                $refForm->addCssClass('reference_email[]', 'form-control');
+            if($vis->isVisible('reference_email'))
+            {
+              if($edit && !UserStatus::isAdmin())
+              {
+                $tpl['REFERENCE_EMAIL_'.$i] = '<label>' . $c['reference_email'][$i] . '</label>';
+              }
+              else
+              {
+                $form->addText('reference_email_' . $i,
+                                isset($c['reference_email'][$i]) ? $c['reference_email'][$i] : '');
+                $form->addCssClass('reference_email_' . $i, 'form-control');
+              }
             }
 
-            if($vis->isVisible('reference_phone')) {
-                $refForm->addText('reference_phone[]', isset($c['reference_phone_'.$i]) ? $c['reference_phone_'.$i] : '');
-                $refForm->setLabel('reference_phone[]', 'Telephone: ');
-                $refForm->addCssClass('reference_phone[]', 'form-control');
+            if($vis->isVisible('reference_phone'))
+            {
+              if($edit && !UserStatus::isAdmin())
+              {
+                $tpl['REFERENCE_PHONE_'.$i] = '<label>' . $c['reference_phone'][$i] . '</label>';
+              }
+              else
+              {
+                $form->addText('reference_phone_' . $i,
+                                isset($c['reference_phone'][$i]) ? $c['reference_phone'][$i] : '');
+                $form->addCssClass('reference_phone_' . $i, 'form-control');
+              }
             }
 
-            if($vis->isVisible('reference_relationship')) {
-                $refForm->addText('reference_relationship[]', isset($c['reference_relationship_'.$i]) ? $c['reference_relationship_'.$i] : '');
-                $refForm->setLabel('reference_relationship[]', 'Relation to Nominee: ');
-                $refForm->addCssClass('reference_relationship[]', 'form-control');
+            if($vis->isVisible('reference_relationship'))
+            {
+              if($edit && !UserStatus::isAdmin())
+              {
+                $tpl['REFERENCE_RELATIONSHIP_'.$i] = '<label>' . $c['reference_relationship'][$i] . '</label>';
+              }
+              else
+              {
+                $form->addText('reference_relationship_' . $i,
+                                isset($c['reference_relationship'][$i]) ? $c['reference_relationship'][$i] : '');
+                $form->addCssClass('reference_relationship_' . $i, 'form-control');
+              }
+
             }
 
             $tpl['REFERENCES_REPEAT'][] = $refForm->getTemplate();
@@ -271,13 +347,13 @@ class NominationForm extends \nomination\View
             } else {
                 //TODO fix editing
                 $omnom = new Nomination;
-                $omnom->id = $nomination['id'];
-                $omnom->load();
-                $upload = new NominationDocument($omnom);
-                $nominator = new Nominator($omnom->nominator_id);
-                $omnom->doc_id = $nominator->doc_id;
-                $tpl['STATEMENT'] = $upload->getFileWidget('statement', $form,
-                                $context['unique_id']);
+                $omnom->id = $nomination->getId();
+                // $omnom->load();
+                // $upload = new NominationDocument($omnom);
+                // $nominator = new Nominator($omnom->nominator_id);
+                // $omnom->doc_id = $nominator->doc_id;
+                // $tpl['STATEMENT'] = $upload->getFileWidget('statement', $form,
+                //                 $context['unique_id']);
             }
         }
 
@@ -320,10 +396,17 @@ class NominationForm extends \nomination\View
         }
 
         if($vis->isVisible('nominator_email')) {
-            $form->addText('nominator_email',
-                            isset($c['nominator_email']) ? $c['nominator_email'] : '');
-            $form->setLabel('nominator_email', 'ASU E-Mail: ');
-            $form->addCssClass('nominator_email', 'form-control');
+            if($edit && !UserStatus::isAdmin())
+            {
+              $tpl['NOMINATOR_EMAIL'] = '<label>' . $c['nominator_email'] . '</label>';
+            }
+            else
+            {
+              $form->addText('nominator_email',
+                              isset($c['nominator_email']) ? $c['nominator_email'] : '');
+              $form->addCssClass('nominator_email', 'form-control');
+              $tpl['NOMINATOR_ADD_ON'] = '<div class="input-group-addon">@appstate.edu</div>';
+            }
         }
 
         if($vis->isVisible('nominator_relationship')) {
@@ -351,6 +434,7 @@ class NominationForm extends \nomination\View
 
         $form->addSubmit('submit', 'Submit');
 
+
         // Showtime!
         $form->mergeTemplate($tpl);
         $tpl = $form->getTemplate();
@@ -359,7 +443,7 @@ class NominationForm extends \nomination\View
 
         $result = PHPWS_Template::process($tpl, 'nomination', 'nomination_form.tpl');
 
+
         return $result;
     }
 }
-?>

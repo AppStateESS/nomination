@@ -13,7 +13,7 @@ class MenuItem
   public function show()
   {
     $tpl = array();
-    
+
     $tpl['TAG'] = $this->tag;
     $tpl['TEXT'] = $this->text;
 
@@ -27,5 +27,3 @@ class MenuItem
     return $this->tag;
   }
 }
-
-?>

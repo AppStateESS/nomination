@@ -30,15 +30,6 @@ class Rollover extends Command
         PHPWS_Core::initModClass('nomination', 'Period.php');
         PHPWS_Core::initModClass('nomination', 'EmailMessage.php');
 
-
-        // Check for errors when deleting
-        foreach($results as $actor=>$result){
-            if(in_array(False, $result)){
-                PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
-                throw new DatabaseException('Error occured deleting '.$actor. ' for nomination ');
-            }
-        }
-
         // Change period
         $newYear = Period::getNextPeriodYear();
 
@@ -61,5 +52,3 @@ class Rollover extends Command
         NQ::simple('nomination', NOMINATION_SUCCESS, 'Current period is now '.$newYear);
     }
 }
-
-?>

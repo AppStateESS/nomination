@@ -22,5 +22,3 @@ class Null extends \nomination\View
                          Maybe it's another drill.</h2>");
     }
 }
-
-?>

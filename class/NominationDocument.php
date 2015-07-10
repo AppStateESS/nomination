@@ -178,7 +178,7 @@ class NominationDocument {
     public function getNomination() {
         return $this->nomination;
     }
-    
+
     public function setNominationById($id) {
         PHPWS_Core::initModClass('nomination', 'NominationFactory.php');
         $nom = new NominationFactory();
@@ -309,7 +309,7 @@ class NominationDocument {
         if (PHPWS_Error::logIfError($result)) {
             throw new DatabaseException($result->toString());
         }
-        
+
         header('Content-type: ' . $result['mime_type']);
         header('Content-Disposition: attachment; filename="' . $result['file_name'] . '"');
         $fullPath = PHPWS_Settings::get('nomination', 'file_dir') . $result['file_path'] . $result['file_name'];
@@ -502,4 +502,3 @@ class DBNominationDocument extends NominationDocument {
      */
     public function __construct() {}
 }
-?>

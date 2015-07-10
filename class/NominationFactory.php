@@ -59,7 +59,7 @@ class NominationFactory {
         $nom->setNominatorEmail($result['nominator_email']);
         $nom->setNominatorPhone($result['nominator_phone']);
         $nom->setNominatorAddress($result['nominator_address']);
-        //$nom->setNominatorUniqueId($result['nominator_unique_id']);
+        $nom->setNominatorUniqueId($result['nominator_unique_id']);
         $nom->setNominatorRelation($result['nominator_relation']);
         $nom->setComplete($result['complete']);
         $nom->setPeriod($result['period']);
@@ -96,6 +96,7 @@ class NominationFactory {
         $db->addValue('nominator_phone', $nom->getNominatorPhone());
         $db->addValue('nominator_email', $nom->getNominatorEmail());
         $db->addValue('nominator_relation', $nom->getNominatorRelation());
+        $db->addValue('nominator_unique_id', $nom->getUniqueId());
 
         $db->addValue('category', $nom->getCategory());
         $db->addValue('period', $nom->getPeriod());
@@ -103,6 +104,7 @@ class NominationFactory {
         $db->addValue('winner', $nom->getWinner());
         $db->addValue('added_on', $nom->getAddedOn());
         $db->addValue('updated_on', time());
+
 
         $id = $nom->getId();
         if(!isset($id) || is_null($id)) {
@@ -133,65 +135,55 @@ class NominationFactory {
      * @return array - Return an array representation of a Nomination
      */
     public static function getByNominatorUniqueId($unique_id){
-        $db = Nomination::getDb();
+      if(!isset($unique_id)){
+          throw new InvalidArgumentException('Missing unique id.');
+      }
 
-        $db->addJoin('left', 'nomination_nomination', 'nomination_nominator', 'nominator_id', 'id');
-        $db->addWhere('nomination_nominator.unique_id', $unique_id);
+      $db = new PHPWS_DB('nomination_nomination');
+      $db->addWhere('nominator_unique_id', $unique_id);
 
-        $results = $db->select('row');
+      $result = $db->select('row');
 
-        if(PHPWS_Error::logIfError($results) || sizeof($results) == 0){
-            throw new DatabaseException('No results');
-        }
+      if(PHPWS_Error::logIfError($result)){
+          PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
+          throw new DatabaseException($result->toString());
+      }
 
-        $db = new PHPWS_DB('nomination_nominee');
-        $db->addWhere('id', $results);
-        $nominee = $db->select('row');
+      if(count($result) == 0){
+          return null;
+      }
 
-        if(PHPWS_Error::logIfError($results) || sizeof($results) == 0){
-            throw new DatabaseException('Nomination with no nominee?');
-        }
+      $nom = new DBNomination();
+      $nom->setId($result['id']);
+      $nom->setBannerId($result['banner_id']);
+      $nom->setFirstName($result['first_name']);
+      $nom->setMiddleName($result['middle_name']);
+      $nom->setLastName($result['last_name']);
+      $nom->setEmail($result['email']);
+      $nom->setAsuBox($result['asubox']);
+      $nom->setPosition($result['position']);
+      $nom->setDeptMajor($result['department_major']);
+      $nom->setYearsAtASU($result['years_at_asu']);
+      $nom->setPhone($result['phone']);
+      $nom->setGpa($result['gpa']);
+      $nom->setClass($result['class']);
+      $nom->setResponsibility($result['responsibility']);
+      $nom->setCategory($result['category']);
+      $nom->setNominatorFirstName($result['nominator_first_name']);
+      $nom->setNominatorMiddleName($result['nominator_middle_name']);
+      $nom->setNominatorLastName($result['nominator_last_name']);
+      $nom->setNominatorEmail($result['nominator_email']);
+      $nom->setNominatorPhone($result['nominator_phone']);
+      $nom->setNominatorAddress($result['nominator_address']);
+      $nom->setNominatorUniqueId($result['nominator_unique_id']);
+      $nom->setNominatorRelation($result['nominator_relation']);
+      $nom->setComplete($result['complete']);
+      $nom->setPeriod($result['period']);
+      $nom->setAddedOn($result['added_on']);
+      $nom->setUpdatedOn($result['updated_on']);
+      $nom->setWinner($result['winner']);
 
-        foreach($nominee as $key=>$nominee_field){
-            $results['nominee_'.$key] = $nominee_field;
-        }
-
-        $db = new PHPWS_DB('nomination_reference');
-        $db->addWhere('id', $results['reference_id_1'], NULL, 'or');
-        $db->addWhere('id', $results['reference_id_2'], NULL, 'or');
-        $db->addWhere('id', $results['reference_id_3'], NULL, 'or');
-        $db->setIndexBy('id');
-
-        $references = $db->select();
-
-        if(PHPWS_Error::logIfError($references)){
-            throw new DatabaseException('Insufficient References on file!');
-        }
-
-        for($i=0; $i < 3; $i++){ //magic number is the number of references, change iff that changes
-            $key = 'reference_id_'.($i+1);
-            if(isset($results[$key]) && !is_null($results[$key])){
-                foreach($references[$results[$key]] as $field_name=>$field_value){
-                    if($field_name != 'id')
-                        $results['reference_'.$field_name.'_'.($i+1)] = $field_value;;
-                }
-            }
-        }
-
-        $db = new PHPWS_DB('nomination_nominator');
-        $db->addWhere('id', $results['nominator_id']);
-
-        $nominator = $db->select('row');
-
-        if(PHPWS_Error::logIfError($nominator) || sizeof($nominator) == 0){
-            throw new DatabaseException('Nomination without nominator?');
-        }
-
-        foreach($nominator as $field_name=>$field_value){
-            $results['nominator_'.$field_name] = $field_value;
-        }
-
-        return $results;
+      return $nom;
     }
 
     /**
@@ -342,8 +334,6 @@ class NominationFactory {
       $db->delete();
     }
 
-    
+
 
 }
-
-?>

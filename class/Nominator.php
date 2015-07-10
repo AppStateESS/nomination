@@ -61,9 +61,6 @@ class Nominator extends NominationActor
             // No relationship was given.
             $relationship = "N/A";
         }
-        if(empty($department)){
-            $department = "N/A";
-        }
 
         // Create a new nominator
         $nominator = new Nominator();
@@ -117,7 +114,7 @@ class Nominator extends NominationActor
     /**
      * Get link to view nominator. Use nominator's full
      * for text on link
-     * @return - HTML link
+     * @return HTML link
      */
     public function getLink(){
         $name = $this->getFullName();
@@ -132,7 +129,7 @@ class Nominator extends NominationActor
 
     /**
      * Get the link for a nominator to edit their nomination
-     * @return - URL for editting nomination
+     * @return URL for editting nomination
      */
     public function getEditLink()
     {
@@ -167,7 +164,7 @@ class Nominator extends NominationActor
     /**
      * Get the date of submission for a nomination that
      * the nominator submitted
-     * @return - Unix time stamp
+     * @return Unix time stamp
      */
     public function getSubmissionDate()
     {
@@ -187,12 +184,11 @@ class Nominator extends NominationActor
 
     /**
      * Get the matching nomination for this nominator
-     * @return - Nomination
+     * @return Nomination
      */
     public function getNomination()
     {
         $db = new PHPWS_DB('nomination_nomination');
-        //$db->addWhere('nominator_id', $this->id);
         $db->addWhere('id', $this->id);
         $result = $db->getObjects('Nomination');
 
@@ -215,7 +211,7 @@ class Nominator extends NominationActor
      *******************/
     /**
      * Get nominator by a unique_id
-     * @return - Nominator
+     * @return Nominator
      */
     public static function getByUniqueId($unique_id)
     {
@@ -233,5 +229,3 @@ class Nominator extends NominationActor
     }
 
 }
-
-?>

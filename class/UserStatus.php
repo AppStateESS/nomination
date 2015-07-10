@@ -92,5 +92,3 @@ class UserStatus
 	    return '<a href="'.$auth->logout_link.'">Logout</a>';
 	}
 }
-
-?>

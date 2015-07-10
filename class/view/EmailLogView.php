@@ -61,5 +61,3 @@ class EmailLogView extends \nomination\View
         return $pager->get();
     }
 }
-
-?>

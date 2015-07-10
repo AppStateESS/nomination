@@ -46,11 +46,11 @@ class NominationView extends \nomination\View {
         $db->addWhere('nomination_id', $context['id']);
         $db->addWhere('description', 'statement');
         $nominatorDocId = $db->select('row');
-        
+
         if(PHPWS_Error::logIfError($nominatorDocId)) {
             throw new DatabaseException('Database is broken, please try again');
     	}
-        
+
         $doc = new DocumentFactory();
         $doc = $doc->getDocumentById($nominatorDocId);
         $tpl['NOMINATOR_STATEMENT'] = $doc->getDownloadLink($nominatorDocId, 'Download Statement');
@@ -61,11 +61,11 @@ class NominationView extends \nomination\View {
         $db->setTable('nomination_reference');
     	$db->addWhere('nomination_id', $nomination->id);
         $result = $db->select();
-	    
+
         if(PHPWS_Error::logIfError($result) || sizeof($result) == 0){
             throw new DatabaseException('Database is broken, please try again');
     	}
-	    
+
         // Fill the references array with references
         $numRefs = PHPWS_Settings::get('nomination', 'num_references_req');
     	for($i = 0; $i < $numRefs; $i++){
@@ -85,7 +85,7 @@ class NominationView extends \nomination\View {
 	        $refArray['REFERENCE_ID'] = $references[$i]->getId();
     	    $refArray['REFERENCE_NAME'] = $references[$i]->getFullName();
     	    $refArray['REFERENCE_RELATION'] = $references[$i]->getRelationship();
-    	    
+
             if(is_null($references[$i]->getDocId())) {
     	        $refArray['REFERENCE_DOWNLOAD'] = 'No file uploaded';
             } else {
@@ -93,7 +93,7 @@ class NominationView extends \nomination\View {
                 $doc = $doc->getDocumentById($references[$i]->getDocId());
                 $refArray['REFERENCE_DOWNLOAD'] = $doc->getDownloadLink($references[$i]->getDocId(), 'Download Statement');
             }
-            
+
             $tpl['references'][] = $refArray;
         }
 
@@ -110,4 +110,3 @@ class NominationView extends \nomination\View {
         }
     }
 }
-?>

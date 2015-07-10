@@ -17,7 +17,6 @@
      */
     public static function newNomination(Nomination $nom)
     {
-        //test('got here',1);
         $vars = array();
 
         $vars['CURRENT_DATE'] = date('F j, Y');
@@ -26,7 +25,7 @@
         $vars['AWARD_NAME'] = PHPWS_Settings::get('nomination', 'award_title');
         $period = Period::getCurrentPeriod();
         $vars['END_DATE'] = $period->getReadableEndDate();
-        //$vars['EDIT_LINK'] = $nominator->getEditLink(); //TODO nominator editing
+        $vars['EDIT_LINK'] = $nom->getEditLink(); //TODO nominator editing
 
         $vars['SIGNATURE'] = PHPWS_Settings::get('nomination', 'signature');
         $vars['SIG_POSITION'] = PHPWS_Settings::get('nomination', 'sig_position');
@@ -91,6 +90,3 @@
     }
 
   }
-
-
- ?>

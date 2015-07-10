@@ -8,5 +8,3 @@ class IllegalFileException extends FileException
         parent::__construct($message, $code);
     }
 }
-
-?>

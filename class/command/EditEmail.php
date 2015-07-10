@@ -56,4 +56,3 @@ class EditEmail extends Command {
         $context['after'] = 'SendEmail';
     }
 }
-?>

@@ -34,11 +34,7 @@ class EmailLogFactory {
         $id = $email->getId();
         if(!isset($id) || is_null($id)) {
             $result = $db->insert();
-            // if(!PHPWS_Error::isError($result)){
-            //     // If everything worked, insert() will return the new database id,
-            //     // So, we need to set that on the object for later
-            //     $ref->setId($result);
-            // }
+
         }else{
             $db->addWhere('id', $id);
             $result = $db->update();
@@ -58,7 +54,7 @@ class EmailLogFactory {
      */
     public static function getById($id){
 
-        
+
         $db = new PHPWS_DB('nomination_email_log');
 
         $db->addWhere('id', $id);
@@ -88,5 +84,3 @@ class EmailLogFactory {
     }
 
 }
-
-?>

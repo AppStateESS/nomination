@@ -2,8 +2,8 @@
 
   /**
    * AdminWithdraw Cancel
-   * 
-   * This command is for an admin to deny the request of 
+   *
+   * This command is for an admin to deny the request of
    * a nominator to delete their nomination.
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
@@ -19,11 +19,11 @@ class AdminDenyCancel extends Command
     {
         $vars = array('action' => 'AdminDenyCancel',
                       'after' => 'CancelQueuePager');
-        
+
         if(isset($this->nominationId)){
             $vars['nominationId'] = $this->nominationId;
         }
-        
+
         return $vars;
     }
 
@@ -39,4 +39,3 @@ class AdminDenyCancel extends Command
         CancelQueue::remove($nomination);
     }
 }
-?>

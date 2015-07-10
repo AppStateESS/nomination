@@ -14,7 +14,7 @@ PHPWS_Core::initModClass('nomination', 'AbstractFactory.php');
 class CommandFactory extends AbstractFactory
 {
     private $dir = 'command';
-   
+
     // inherited from parent
     public function getDirectory()
     {
@@ -35,4 +35,3 @@ class CommandFactory extends AbstractFactory
         throw new CommandNotFoundException("Could not initialize command {$name}");
     }
 }
-?>

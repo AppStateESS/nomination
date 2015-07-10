@@ -4,7 +4,7 @@
    * SetWinnerStatus
    *
    * Set a given nomination to winner/loser.
-   * Do not allow setting status if nomination isn't 
+   * Do not allow setting status if nomination isn't
    * for current period.
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
@@ -23,7 +23,7 @@ class SetWinnerStatus extends Command
     {
         return array('action' => 'SetWinnerStatus');
     }
-    
+
     public function execute(Context $context)
     {
         if(!UserStatus::isAdmin()){
@@ -34,6 +34,11 @@ class SetWinnerStatus extends Command
         $status = $context['status'];
         $factory = new NominationFactory();
         $nomination = $factory->getNominationById($context['id']);
+
+        if(!isset($nomination))
+        {
+          throw new NominationException('The given nomination is null, id = ' . $context['id']);
+        }
 
         $db = new PHPWS_DB('nomination_period');
         $db->addWhere('id', $nomination->getPeriod());
@@ -54,4 +59,3 @@ class SetWinnerStatus extends Command
         }
     }
 }
-?>

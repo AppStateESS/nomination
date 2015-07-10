@@ -36,7 +36,7 @@ class Nomination
     public $nominator_phone;
     public $nominator_email;
     public $nominator_relation;
-    //private $nominatorUniqueId; // Unused so far, but needed for nomination editing
+    private $nominatorUniqueId; // Unused so far, but needed for nomination editing
 
 
     // Nomination metadata
@@ -50,7 +50,7 @@ class Nomination
 
 
     public function __construct($bannerId, $firstName, $middleName, $lastName, $email, $asubox, $position, $department, $yearsAtASU, $phone, $gpa, $class, $responsibility,
-                    $nominatorFirstName, $nominatorMiddleName, $nominatorLastName, $nominatorAddress, $nominatorPhone, $nominatorEmail, $nominatorRelation,
+                    $nominatorFirstName, $nominatorMiddleName, $nominatorLastName, $nominatorAddress, $nominatorPhone, $nominatorEmail, $nominatorRelation, $nominatorUniqueId,
                     $category, $period){
 
         $this->banner_id        = $bannerId;
@@ -362,6 +362,47 @@ class Nomination
         $this->updated_on = $time;
     }
 
+    public function getUniqueId()
+    {
+      return $this->nominatorUniqueId;
+    }
+
+    public function setNominatorUniqueId($uniqueId)
+    {
+      $this->nominatorUniqueId = $uniqueId;
+    }
+
+    /**
+     * Username acts as salt.
+     * Username is prepended to a unique id based on
+     * current time in microseconds.
+     *
+     * @return unique_id
+     */
+    public static function generateUniqueId($banner)
+    {
+        $uniqueId = md5(uniqid($banner));
+        return $uniqueId;
+    }
+
+
+
+    /**
+     * Get the link for a nominator to edit their nomination
+     * @return URL for editting nomination
+     */
+    public function getEditLink()
+    {
+        $unique_id = $this->getUniqueId();
+
+        $host = $_SERVER['HTTP_HOST'];
+        $extra = $_SERVER['PHP_SELF'].'?module=nomination&view=NominationForm&unique_id=' . $unique_id;
+
+        $link = 'http://'.$host.$extra;
+
+        return $link;
+    }
+
     /**
      * Utilities
      */
@@ -372,16 +413,11 @@ class Nomination
         // 1. has each reference uploaded a document?
         PHPWS_Core::initModClass('nomination','ReferenceFactory.php');
         PHPWS_Core::initModClass('nomination','Reference.php');
-        $numReferencesReq = Reference::getNumReferencesReq();
 
         $ref = new ReferenceFactory();
 
         //grab the references attached to this
         $references = $ref->getByNominationId($this->id);
-
-        var_dump(debug_backtrace());
-        exit;
-
 
         // foreach reference in references
         //   do they have a doc?
@@ -498,6 +534,8 @@ function reportRowForCSV($obj) {
     $factory = new NominationFactory();
     $data = $factory->getNominationbyId($obj->getId());
 
+    $row = array();
+
     $row['banner_id']               = $data->getBannerId();
     $row['first_name']              = $data->getFirstName();
     $row['middle_name']             = $data->getMiddleName();
@@ -547,4 +585,3 @@ function reportRowForCSV($obj) {
 
     return $row;
 }
-?>

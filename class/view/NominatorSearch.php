@@ -51,9 +51,9 @@ class NominatorSearch extends \nomination\View
     public function getPager($searchString="")
     {
         PHPWS_Core::initModClass('nomination', 'Period.php');
-	    PHPWS_Core::initModClass('nomination', 'Nomination.php');
-        //$pager = new DBPager(NOMINATOR_TABLE, 'Nominator');
-	    $pager = new DBPager('nomination_nomination', 'DBNomination');
+	      PHPWS_Core::initModClass('nomination', 'Nomination.php');
+
+	      $pager = new DBPager('nomination_nomination', 'DBNomination');
         $pager->setModule('nomination');
         $pager->setTemplate('admin/nominator_search_results.tpl');
         $pager->setEmptyMessage('No matching nominators found');
@@ -62,7 +62,7 @@ class NominatorSearch extends \nomination\View
         $pager->db->addWhere('first_name', "%".$searchString."%", "like", 'or', 'search');
         $pager->db->addWhere('middle_name', "%".$searchString."%", "like", 'or', 'search');
         $pager->db->addWhere('last_name', "%".$searchString."%", "like", 'or', 'search');
-        //$pager->db->addWhere('email', "%".$searchString."%", "like", 'or', 'search');
+
         // New search fields
         $pager->db->addWhere('nominator_email', "%".$searchString."%", "like", 'or', 'search');
         $pager->db->addWhere('nominator_first_name', "%".$searchString."%", "like", 'or', 'search');
@@ -74,23 +74,13 @@ class NominatorSearch extends \nomination\View
             $pager->db->addWhere('nomination_nomination.complete', TRUE);
         }
 
-	    //these fields don't exist anymore
-        //$pager->db->addJoin('left', 'nomination_nominator', 'nomination_nomination', 'id', 'nominator_id');
-        //$pager->db->addWhere('nomination_nomination.period', Period::getCurrentPeriodYear());
 	      $pager->db->addJoin('left', 'nomination_nomination', 'nomination_period', 'period', 'id');
         $pager->db->addWhere('nomination_period.year', Period::getCurrentPeriodYear());
-
-
-	    //these fields don't exist anymore
-	    // $pager->joinResult('id', 'nomination_nomination', 'nominator_id', 'added_on', 'added_on');
 
         $pager->addSortHeader('first_name', 'First');
         $pager->addSortHeader('middle_name', 'Middle');
         $pager->addSortHeader('last_name', 'Last');
-        //$pager->addSortHeader('added_on', 'Submission Date');
-        //$pager->addSortHeader('nominee_link', 'Nominee');
         $pager->addRowTags('rowTags');
         return $pager->get();
     }
 }
-?>

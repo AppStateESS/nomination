@@ -6,11 +6,11 @@ PHPWS_Core::initModClass('nomination', 'ViewFactory.php');
 class AdminNomination extends NominationMod
 {
     protected $defaultView = 'AdminMainMenu';
-    
+
     public function process()
     {
         parent::process();
-        
+
         $vFactory = new ViewFactory();
 
         $userView = $vFactory->get('UserView');
@@ -20,7 +20,5 @@ class AdminNomination extends NominationMod
         $userView->addSideMenu($sideMenu->display($this->context));
         Layout::add($userView->display($this->context));
     }
-    
-}
 
-?>
+}

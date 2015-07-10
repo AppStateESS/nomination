@@ -8,5 +8,3 @@ class UniqueIdException extends NominationException
         parent::__construct($message, $code);
     }
 }
-
-?>

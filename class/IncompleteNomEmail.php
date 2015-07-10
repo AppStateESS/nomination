@@ -40,11 +40,15 @@
      foreach ($list as $id)
      {
        $nomination = NominationFactory::getNominationbyId($id);
+
+       if(!isset($nomination))
+       {
+         throw new NominationException('The given nomination is null, id = ' . $id);
+       }
+
        $this->sendTo($nomination->getNominatorEmail());
        $this->logEmail($nomination, $nomination->getNominatorEmail(), $id, NOMINATOR);
      }
    }
 
  }
-
-?>

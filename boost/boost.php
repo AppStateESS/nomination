@@ -14,4 +14,3 @@ $file_dir     = FALSE;
 $about        = TRUE;
 $priority     = 50;
 $dependency   = TRUE;
-?>

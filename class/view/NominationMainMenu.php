@@ -16,8 +16,7 @@ class NominationMainMenu extends MainMenu
     {
         $vFactory = new ViewFactory();
         $view = $vFactory->get($name);
-        
+
         $this->addMenuItem($view->getLink($text), $tag, $parentTag);
     }
 }
-?>

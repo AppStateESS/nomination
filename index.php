@@ -15,5 +15,3 @@ PHPWS_Core::initModClass('nomination', 'NominationModFactory.php');
 
 $controller = NominationModFactory::getNomination();
 $controller->process();
-
-?>
