@@ -27,6 +27,7 @@ define('NEWREF', 'New Reference');
 define('UPDNOM', 'Updated nomination');
 define('REFUPL', 'Reference document upload');
 define('NOMDEL', 'Removal request approved');
+define('REFDEL', 'Removal request approved');
 
 define('ALLNOM', 'All nominators');
 define('NOMCPL', 'Nominators with complete nomination');

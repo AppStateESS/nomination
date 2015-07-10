@@ -111,19 +111,27 @@
      */
     public static function removeNomination(Nomination $nomination)
     {
+
         $vars = array();
 
         $vars['NAME'] = $nomination->getNominatorFirstName() . ' ' . $nomination->getNominatorLastName();
         $vars['NOMINEE_NAME'] = $nomination->getFirstName() . ' ' . $nomination->getLastName();
         $vars['AWARD_NAME'] = PHPWS_Settings::get('nomination', 'award_title');
 
-        $list = array($nomination->getId());
+        $references = ReferenceFactory::getByNominationId($nomination->getId());
+
+        $list = array();
+        foreach ($references as $ref) {
+          array_push($list, $ref->getId());
+        }
         $subject = 'Nomination Removal Request Approved';
         $msg = PHPWS_Template::process($vars, 'nomination', 'email/removal_request_approved.tpl');
-        $msgType = 'NOMDEL';
+        $msgType = 'REFDEL';
 
         $email = new EmailByList($list, $subject, $msg, $msgType);
+
         $email->send();
+
     }
 
   }

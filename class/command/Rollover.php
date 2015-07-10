@@ -3,8 +3,7 @@
   /**
    * Rollover
    *
-   * Change current period to new period.  Delete all
-   * non-winning nominations.
+   * Change current period to new period.
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */

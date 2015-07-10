@@ -266,6 +266,7 @@ class CreateNomination extends Command
         }
 
         $doc = new NominationDocument($nomination, 'nominator', 'statement', $_FILES['statement']);
+
         DocumentFactory::save($doc);
 
         /***************

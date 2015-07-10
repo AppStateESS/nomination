@@ -10,6 +10,7 @@
    * should be used to fill out the default values for a form.
    *
    * @author Daniel West <dwest at tux dot appstate dot edu>
+   * @author Chris Detsch
    * @package nomination
    */
 PHPWS_Core::initModClass('nomination', 'Context.php');
@@ -52,7 +53,14 @@ class FallthroughContext extends Context {
         $this->others[] = $thing;
     }
 
-    public function restoreNominationForm($nomination)
+    /**
+     * Retrieves all the data from a nomination so that the edit form
+     * can be filled back in, then calls the addFallthrough with the
+     * retrieved data in an array.
+     *
+     * @param Nomination nomination
+     */
+    public function restoreNominationForm(Nomination $nomination)
     {
       $nom['nominee_banner_id'] = $nomination->getBannerId();
       $nom['nominee_first_name'] = $nomination->getFirstName();

@@ -37,9 +37,6 @@ class DeleteNomination extends Command
 
         $nomination = NominationFactory::getNominationbyId($context['nominationId']);
 
-        // Delete removal request from queue
-        CancelQueue::approve($nomination);
-
         // Send an email
         NominatorEmail::removeNomination($nomination);
         ReferenceEmail::removeNomination($nomination);
