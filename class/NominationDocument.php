@@ -192,8 +192,6 @@ class NominationDocument {
     public function setUploadedBy($uploader) {
         if ($uploader == 'nominator' || $uploader == 'reference') {
             $this->uploadedBy = $uploader;
-        } else {
-            //TODO Maybe throw an error here?
         }
     }
 
@@ -275,7 +273,7 @@ class NominationDocument {
     /**
      * Returns a string containing the file name's extention, or null if one could not be found.
      *
-     * @param String $FileName The file name
+     * @param String $fileName The file name
      * @return String file's extension
      */
     public static function getFileExtension($fileName)
@@ -360,6 +358,7 @@ class NominationDocument {
         $form->setEncode(true);
         $file_desc = self::getFileDesc($doc);
 
+        $tpl = array();
         $tpl['NAME']      = $name;
         $tpl['TITLE']     = $file_desc->getTitle();
         $tpl['NEW_TITLE'] = 'Letter';

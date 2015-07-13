@@ -58,6 +58,11 @@ class NominationForm extends \nomination\View
             //setup the fallthrough context
             $nomination = NominationFactory::getByNominatorUniqueId($context['unique_id']);
 
+            if(!isset($nomination))
+            {
+              throw new NominationException('The given nomination is null, unique_id = ' . $context['unique_id']);
+            }
+
             $c->restoreNominationForm($nomination);
 
             $edit = 1;
@@ -338,19 +343,13 @@ class NominationForm extends \nomination\View
         *************/
         if($vis->isVisible('statement')) {
             if(!isset($nomination)){
-                //$upload = new NominationDocument();
                 $tpl['FILES_DIR'] = PHPWS_SOURCE_HTTP;
                 $tpl['STATEMENT'] = NominationDocument::getFileWidget(null, 'statement', $form);
             } else {
                 //TODO fix editing
                 $omnom = new Nomination;
                 $omnom->id = $nomination->getId();
-                // $omnom->load();
-                // $upload = new NominationDocument($omnom);
-                // $nominator = new Nominator($omnom->nominator_id);
-                // $omnom->doc_id = $nominator->doc_id;
-                // $tpl['STATEMENT'] = $upload->getFileWidget('statement', $form,
-                //                 $context['unique_id']);
+
             }
         }
 
@@ -416,7 +415,6 @@ class NominationForm extends \nomination\View
          * Captcha *
         ***********/
 
-//        $tpl = $refForm->getTemplate();
         $tpl['CAPTCHA_IMAGE'] = Captcha::get();
 
         // Check if we were redirected back to this

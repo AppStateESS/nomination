@@ -34,29 +34,11 @@ class NomineeView extends \nomination\View {
         $tpl['YEARS']       = $nominee->getYearsAtASU();
         $tpl['EMAIL']       = $nominee->getEmailLink();
 
-	/*        $db = new PHPWS_DB('nomination_nomination');
-        $db->addWhere('id', $nominee->id);
-        $db->addOrder('winner desc');
-	//	test($db->select(),1);
-	$results = $db->getObjects('DBNomination');
 
-
-        if(PHPWS_Error::logIfError($results)){
-            PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
-            throw new DatabaseException('Database asploded');
-        }
-        if(is_null($results) || empty($results)){
-            PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
-            throw new DatabaseException('Invalid Nominee ID');
-        }
-	*/
         $num = 0;
         $jsVars = array();
         $nomIsWinner = False;
-	//        foreach($results as $nomination){
-	//	foreach($nominee as $nomination){
             $num++;
-	    //            $context['id'] = $nomination->getId();
 	    $context['id'] = $nominee->getId();
             PHPWS_Core::initModClass('nomination', 'view/NominationView.php');
             $nominationView = new NominationView();

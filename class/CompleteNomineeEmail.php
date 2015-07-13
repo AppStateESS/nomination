@@ -36,7 +36,7 @@
 
      foreach ($list as $id)
      {
-       $nomination = NominationFactory::getNominationId($id);
+       $nomination = NominationFactory::getNominationbyId($id);
 
        if(!isset($nomination))
        {

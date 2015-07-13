@@ -79,8 +79,6 @@ class PeriodMaintenance extends \nomination\View
 
         $tpl['HELP_ICON'] = PHPWS_SOURCE_HTTP."mod/nomination/img/tango/apps/help-browser.png";
 
-        //$form->addSubmit('Update Period');
-
         $form->mergeTemplate($tpl);
         $tpl = $form->getTemplate();
 

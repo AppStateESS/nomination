@@ -62,6 +62,7 @@ class FallthroughContext extends Context {
      */
     public function restoreNominationForm(Nomination $nomination)
     {
+      $nom = array();
       $nom['nominee_banner_id'] = $nomination->getBannerId();
       $nom['nominee_first_name'] = $nomination->getFirstName();
       $nom['nominee_middle_name'] = $nomination->getMiddleName();

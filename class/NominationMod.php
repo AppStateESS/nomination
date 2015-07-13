@@ -60,7 +60,7 @@ abstract class NominationMod
 
         try{
             $this->context['nq'] = $nv->show();
-        } catch (InvalidArgmentException $e){
+        } catch (InvalidArgumentException $e){
             NominationNotificationView::immediateError($e->getMessage());
         }
 
@@ -70,11 +70,9 @@ abstract class NominationMod
         $view = isset($this->context['view']) ? $this->context['view'] : $this->defaultView;
 
         // Get view from factory and show it
-        //try{
+
             $theView = $vFactory->get($view);
             $this->content = $theView->display($this->context);
-        //} catch (Exception $e){
-            //NominationNotificationView::immediateError($e->getMessage());
-        //}
+
     }
 }
