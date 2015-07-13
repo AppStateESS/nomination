@@ -69,9 +69,9 @@ class SubmitRecommendation extends Command {
 
         // Send notification email
         // TODO
-        //$nominee = $nomination->getNominee();
-        //$ref = Reference::getByUniqueId($context['unique_id']);
-        //Nomination_Email::uploadDocumentReference($ref, $nominee);
+
+        $ref = ReferenceFactory::getByUniqueId($context['unique_id']);
+        ReferenceEmail::uploadDocument($ref);
 
         NQ::simple('nomination', NOMINATION_SUCCESS, 'Thank you!');
     }

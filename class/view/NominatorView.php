@@ -2,10 +2,10 @@
 
   /**
    * NominatorView
-   * 
-   * See details about a nominator. 
+   *
+   * See details about a nominator.
    * Supports Ajax
-   */ 
+   */
 
 PHPWS_Core::initModClass('nomination', 'View.php');
 PHPWS_Core::initModClass('nomination', 'Context.php');
@@ -13,7 +13,7 @@ PHPWS_Core::initModClass('nomination', 'Nominator.php');
 PHPWS_Core::initModClass('nomination', 'Nomination.php');
 PHPWS_Core::initModClass('nomination', 'NominationFactory.php');
 
-class NominatorView extends \nomination\View 
+class NominatorView extends \nomination\View
 {
     public $nominationId;
 
@@ -44,7 +44,6 @@ class NominatorView extends \nomination\View
         $tpl['EMAIL']   = $nominator->getNominatorEmailLink();
         $tpl['PHONE']   = $nominator->getNominatorPhone();
         $tpl['ADDRESS'] = $nominator->getNominatorAddress();
-        //$tpl['RELATIONSHIP'] = $nominator->getRelationship();
 
         if(isset($context['ajax'])){
             echo PHPWS_Template::process($tpl, 'nomination', 'admin/nominator.tpl');
@@ -55,4 +54,3 @@ class NominatorView extends \nomination\View
         }
     }
 }
-?>

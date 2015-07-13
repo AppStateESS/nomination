@@ -37,6 +37,11 @@ class DeleteNomination extends Command
 
         $nomination = NominationFactory::getNominationbyId($context['nominationId']);
 
+        if(!isset($nomination))
+        {
+          throw new NominationException('The given nomination is null, id = ' . $id);
+        }
+
         // Send an email
         NominatorEmail::removeNomination($nomination);
         ReferenceEmail::removeNomination($nomination);

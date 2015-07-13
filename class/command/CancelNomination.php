@@ -30,6 +30,11 @@ class CancelNomination extends Command {
     {
         $nom = NominationFactory::getByNominatorUniqueId($context['unique_id']);
 
+        if(!isset($nom))
+        {
+          throw new NominationException('The given nomination is null, id = ' . $context['unique_id']);
+        }
+
         CancelQueue::add($nom);
     }
 }

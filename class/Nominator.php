@@ -15,7 +15,6 @@
 PHPWS_Core::initModClass('nomination', 'NominationActor.php');
 PHPWS_Core::initModClass('nomination', 'ViewFactory.php');
 
-//define('NOMINATOR_TABLE', 'nomination_nominator');
 define('NOMINATOR_TABLE', 'nomination_nomination');
 
 class Nominator extends NominationActor

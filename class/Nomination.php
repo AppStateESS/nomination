@@ -481,25 +481,12 @@ class Nomination
     // Row tags for DBPager
     public function rowTags() {
 
-        /*$nominee = $this->getNominee();
-         $nominator = $this->getNominator();
-        $period = $this->getPeriodYear();
-
-        $tpl= array('NOMINEE_LINK' => $nominee->getLink(),
-                        'NOMINATOR_LINK' => $nominator->getLink(),
-                        'PERIOD' => $period);
-
-
-        return $tpl;
-        */
-
         //get nominee link
         //get nominee email
 
         $tpl             = array();
         $tpl['NOMINEE_LINK']     = $this->getNomineeLink();
         $tpl['NOMINATOR_LINK']   = $this->getNominatorLink();
-        //$tpl['NOMINATOR_LINK']   = $this->getNominatorFullName();
         return $tpl;
     }
 }

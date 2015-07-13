@@ -51,7 +51,7 @@
 
        if(!isset($nomination))
        {
-         throw new NominationException('The given nomination is null, id = ' . $reference->getNominationId())
+         throw new NominationException('The given nomination is null, id = ' . $reference->getNominationId());
        }
 
        $this->sendTo($reference->getEmail());

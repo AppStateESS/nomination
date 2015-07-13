@@ -194,7 +194,7 @@ class NominationFactory {
      */
     public static function getByReferenceUniqueId($unique_id)
     {
-        $db = self::getDb();
+        $db = new PHPWS_DB('nomination_nomination');
         $db->addTable('nomination_reference');
         $db->addWhere('reference_id_1', 'nomination_reference.id', NULL, 'or', 'ref');
         $db->addWhere('reference_id_2', 'nomination_reference.id', NULL, 'or', 'ref');

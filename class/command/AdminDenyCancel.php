@@ -38,6 +38,12 @@ class AdminDenyCancel extends Command
         PHPWS_Core::initModClass('nomination', 'CancelQueue.php');
 
         $nomination = NominationFactory::getNominationbyId($context['nominationId']);
+
+        if(!isset($nomination))
+        {
+          throw new NominationException('The given nomination is null, id = ' . $context['nominationId']);
+        }
+
         CancelQueue::remove($nomination);
     }
 }

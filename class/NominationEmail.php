@@ -72,6 +72,7 @@ abstract class NominationEmail {
     }
 
     // Build NominationEmail from EmailMessage and send it.
+    // This may be a deprecated method
     public static function sendMessageObj(EmailMessage $msg)
     {
         switch($msg->receiver_type)

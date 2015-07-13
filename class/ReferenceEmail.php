@@ -50,13 +50,14 @@
      * @param $reference Reference
      * @param $nominee Nominee
      */
-    public static function uploadDocument(Reference $reference, Nominee $nominee)
+    public static function uploadDocument(Reference $reference)
     {
         $vars = array();
 
         $vars['CURRENT_DATE'] = date('F j, Y');
         $vars['NAME'] = $reference->getFullName();
-        $vars['NOMINEE_NAME'] = $nominee->getFullName();
+        $nom = NominationFactory::getNominationbyId($reference->getNominationId());
+        $vars['NOMINEE_NAME'] = $nom->getFirstName() . ' ' . $nom->getLastName();
         $vars['AWARD_NAME'] = PHPWS_Settings::get('nomination', 'award_title');
         $period = Period::getCurrentPeriod();
         $vars['END_DATE'] = $period->getReadableEndDate();
@@ -78,7 +79,7 @@
      * @param $nominee Nominee
      * @param $nominator Nominator
      */
-    public static function updateNomination(Reference $reference, Nominator $nominator, Nominee $nominee)
+    public static function updateNomination(Reference $reference, Nomination $nomination)
     {
         $vars = array();
 
@@ -88,8 +89,8 @@
         $vars['REF_PHONE'] = $reference->getPhone();
         $vars['REF_DEPARTMENT'] = $reference->getDepartment();
         $vars['REF_RELATION'] = $reference->getRelationship();
-        $vars['NOMINEE_NAME'] = $nominee->getFullName();
-        $vars['NOMINATOR_NAME'] = $nominator->getFullName();
+        $vars['NOMINEE_NAME'] = $nomination->getFirstName() . ' ' $nomination->getLastName();
+        $vars['NOMINATOR_NAME'] = $nomination->getNominatorFirstName() . ' ' $nomination->getNominatorLastName();
         $period = Period::getCurrentPeriod();
         $vars['END_DATE'] = $period->getReadableEndDate();
         $vars['REF_EDIT_LINK'] = $reference->getEditLink();

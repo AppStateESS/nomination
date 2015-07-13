@@ -74,7 +74,7 @@ class CancelQueue {
 
         //get link to view nomination
         $view = $vf->get('NominationView');
-        $view->nominationId = $omnom->id;
+        $view->nominationId = $nom->id;
 
         // Approval form
         $approveForm = new PHPWS_Form('approve');
