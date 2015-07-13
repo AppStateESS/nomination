@@ -215,7 +215,7 @@ class EditNomination extends Command
 
       foreach($updatedRefsNeedEmail as $refId)
       {
-          ReferenceFactory::getReferenceById($refId);
+          $ref = ReferenceFactory::getReferenceById($refId);
           ReferenceEmail::updateNomination($ref, $nomination);
       }
 
