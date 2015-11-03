@@ -12,7 +12,10 @@ PHPWS_Core::initModClass('nomination', 'NominationDocument.php');
 PHPWS_Core::initModClass('nomination', 'CommandFactory.php');
 PHPWS_Core::initModClass('nomination', 'FallthroughContext.php');
 PHPWS_Core::initModClass('nomination', 'CancelQueue.php');
-PHPWS_CORE::initCoreClass('Captcha.php');
+PHPWS_Core::initModClass('nomination', 'Period.php');
+
+PHPWS_Core::initCoreClass('Captcha.php');
+PHPWS_Core::initCoreClass('Form.php');
 
 class NominationForm extends \nomination\View
 {
@@ -34,19 +37,21 @@ class NominationForm extends \nomination\View
         $cmdFactory = new CommandFactory();
 
         // Check if nomination period has ended or hasn't started yet
-        PHPWS_Core::initModClass('nomination', 'Period.php');
-        if(Period::isOver()){
-            $currPeriod = Period::getCurrentPeriod();
+
+        $currPeriod = Period::getCurrentPeriod();
+
+        if($currPeriod === null) {
+            return '<h2>There is no nomination time period configured. Please contact the site administrators.</h2>';
+        }
+        $currPeriod = Period::getCurrentPeriod();
+
+        if(Period::isOver()) {
             $end = $currPeriod->getReadableEndDate();
             return '<h2>The nomination ended on '.$end.'.</h2>';
-        }
-        else if(!Period::hasBegun()){
-            $currPeriod = Period::getCurrentPeriod();
+        } else if(!Period::hasBegun()) {
             $begin = $currPeriod->getReadableStartDate();
             return '<h2>The nomination period will begin on '.$begin.'.</h2>';
         }
-
-        PHPWS_Core::initCoreClass('Form.php');
 
         $c = new FallthroughContext(array());
         $c->addFallthrough($context);
@@ -54,12 +59,11 @@ class NominationForm extends \nomination\View
         /**
          * These forms are displayed if the Nominator is editing the nomination
         */
-        if(isset($context['unique_id'])){
+        if(isset($context['unique_id'])) {
             //setup the fallthrough context
             $nomination = NominationFactory::getByNominatorUniqueId($context['unique_id']);
 
-            if(!isset($nomination))
-            {
+            if(!isset($nomination)) {
               throw new NominationException('The given nomination is null, unique_id = ' . $context['unique_id']);
             }
 
@@ -71,8 +75,7 @@ class NominationForm extends \nomination\View
             // or remove the request to delete their nomination
             $cancelForm = new PHPWS_Form('cancel_nominationForm');
 
-            if(CancelQueue::contains($nomination->getId()))
-            {
+            if(CancelQueue::contains($nomination->getId())) {
                 $cmd = $cmdFactory->get('WithdrawCancelNomination');
                 $cancelForm->addSubmit('Remove Request');
                 $cmd->unique_id = $context['unique_id'];
@@ -80,9 +83,7 @@ class NominationForm extends \nomination\View
                 $cmd->initForm($cancelForm);
 
                 $tpl['withdraw']['WITHDRAW_BUTTON'] = $cancelForm->getTemplate();
-            }
-            else
-            {
+            } else {
                 $cmd = $cmdFactory->get('CancelNomination');
                 $cancelForm->addSubmit('Submit Request');
                 $cmd->unique_id = $context['unique_id'];
@@ -121,8 +122,7 @@ class NominationForm extends \nomination\View
         $vis = new NominationFieldVisibility();
 
 
-        if(isset($context['unique_id']))
-        {
+        if(isset($context['unique_id'])) {
           $form->addHidden('nominator_unique_id', $context['unique_id']);
 
         }
@@ -147,12 +147,9 @@ class NominationForm extends \nomination\View
         $form->addCssClass('nominee_last_name', 'form-control');
         $form->setLabel('nominee_last_name', 'Last name');
 
-        if($edit && !UserStatus::isAdmin())
-        {
+        if($edit && !UserStatus::isAdmin()) {
           $tpl['NOMINEE_EMAIL'] = '<label>' . $c['nominee_email'] . '</label>';
-        }
-        else
-        {
+        } else {
           $form->addText('nominee_email',
                           isset($c['nominee_email']) ? $c['nominee_email'] : '');
           $form->addCssClass('nominee_email', 'form-control');
@@ -199,9 +196,7 @@ class NominationForm extends \nomination\View
             if($edit && !UserStatus::isAdmin())
             {
               $tpl['NOMINEE_BANNER_ID'] = '<label> ' . $c['nominee_banner_id'] . '</label>';
-            }
-            else
-            {
+            } else {
               $form->addText('nominee_banner_id',
                               isset($c['nominee_banner_id']) ? $c['nominee_banner_id'] : '');
               $form->addCssClass('nominee_banner_id', 'form-control');
@@ -247,16 +242,14 @@ class NominationForm extends \nomination\View
          * so that multiple fields with the same name can be submitted.
          */
         $numRefsReq = Reference::getNumReferencesReq();
-        for($i = 0; $i < $numRefsReq; $i++){
+        for($i = 0; $i < $numRefsReq; $i++) {
             $refForm = new PHPWS_Form('nomination_form'); // NB: Must have the same form name
 
-            if($vis->isVisible('reference_first_name'))
-            {
+            if($vis->isVisible('reference_first_name')) {
               if($edit && !UserStatus::isAdmin())
               {
                 $tpl['REFERENCE_FIRST_NAME_' . $i] = '<label>'. $c['reference_first_name'][$i] . '</label>';
-              }
-              else {
+              } else {
                 $form->addHidden('reference_id_' . $i, $c['reference_id'][$i]);
                 $form->addText('reference_first_name_' . $i,
                                 isset($c['reference_first_name'][$i]) ? $c['reference_first_name'][$i] : '');
@@ -264,70 +257,51 @@ class NominationForm extends \nomination\View
               }
             }
 
-            if($vis->isVisible('reference_last_name'))
-            {
-              if($edit && !UserStatus::isAdmin())
+            if($vis->isVisible('reference_last_name')) {
+                if($edit && !UserStatus::isAdmin())
               {
                 $tpl['REFERENCE_LAST_NAME_' . $i] = '<label>' . $c['reference_last_name'][$i] . '</label>';
-              }
-              else
-              {
+              } else {
                 $form->addText('reference_last_name_' . $i,
                                 isset($c['reference_last_name'][$i]) ? $c['reference_last_name'][$i] : '');
                 $form->addCssClass('reference_last_name_'. $i, 'form-control');
               }
             }
 
-            if($vis->isVisible('reference_department'))
-            {
-              if($edit && !UserStatus::isAdmin())
-              {
+            if($vis->isVisible('reference_department')) {
+              if($edit && !UserStatus::isAdmin()) {
                 $tpl['REFERENCE_DEPARTMENT_'.$i] = '<label>' . $c['reference_department'][$i] . '</label>';
-              }
-              else
-              {
+              } else {
                 $form->addText('reference_department_' . $i,
                                 isset($c['reference_department'][$i]) ? $c['reference_department'][$i] : '');
                 $form->addCssClass('reference_department_' . $i, 'form-control');
               }
             }
 
-            if($vis->isVisible('reference_email'))
-            {
-              if($edit && !UserStatus::isAdmin())
-              {
+            if($vis->isVisible('reference_email')) {
+              if($edit && !UserStatus::isAdmin()) {
                 $tpl['REFERENCE_EMAIL_'.$i] = '<label>' . $c['reference_email'][$i] . '</label>';
-              }
-              else
-              {
+              } else {
                 $form->addText('reference_email_' . $i,
                                 isset($c['reference_email'][$i]) ? $c['reference_email'][$i] : '');
                 $form->addCssClass('reference_email_' . $i, 'form-control');
               }
             }
 
-            if($vis->isVisible('reference_phone'))
-            {
-              if($edit && !UserStatus::isAdmin())
-              {
+            if($vis->isVisible('reference_phone')) {
+              if($edit && !UserStatus::isAdmin()) {
                 $tpl['REFERENCE_PHONE_'.$i] = '<label>' . $c['reference_phone'][$i] . '</label>';
-              }
-              else
-              {
+              } else {
                 $form->addText('reference_phone_' . $i,
                                 isset($c['reference_phone'][$i]) ? $c['reference_phone'][$i] : '');
                 $form->addCssClass('reference_phone_' . $i, 'form-control');
               }
             }
 
-            if($vis->isVisible('reference_relationship'))
-            {
-              if($edit && !UserStatus::isAdmin())
-              {
+            if($vis->isVisible('reference_relationship')) {
+              if($edit && !UserStatus::isAdmin()) {
                 $tpl['REFERENCE_RELATIONSHIP_'.$i] = '<label>' . $c['reference_relationship'][$i] . '</label>';
-              }
-              else
-              {
+              } else {
                 $form->addText('reference_relationship_' . $i,
                                 isset($c['reference_relationship'][$i]) ? $c['reference_relationship'][$i] : '');
                 $form->addCssClass('reference_relationship_' . $i, 'form-control');
@@ -342,14 +316,13 @@ class NominationForm extends \nomination\View
          * Statement *
         *************/
         if($vis->isVisible('statement')) {
-            if(!isset($nomination)){
+            if(!isset($nomination)) {
                 $tpl['FILES_DIR'] = PHPWS_SOURCE_HTTP;
                 $tpl['STATEMENT'] = NominationDocument::getFileWidget(null, 'statement', $form);
             } else {
                 //TODO fix editing
                 $omnom = new Nomination;
                 $omnom->id = $nomination->getId();
-
             }
         }
 
@@ -429,8 +402,6 @@ class NominationForm extends \nomination\View
 
         $form->addSubmit('submit', 'Submit');
 
-
-        // Showtime!
         $form->mergeTemplate($tpl);
         $tpl = $form->getTemplate();
 
