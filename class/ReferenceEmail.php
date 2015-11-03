@@ -89,8 +89,8 @@
         $vars['REF_PHONE'] = $reference->getPhone();
         $vars['REF_DEPARTMENT'] = $reference->getDepartment();
         $vars['REF_RELATION'] = $reference->getRelationship();
-        $vars['NOMINEE_NAME'] = $nomination->getFirstName() . ' ' $nomination->getLastName();
-        $vars['NOMINATOR_NAME'] = $nomination->getNominatorFirstName() . ' ' $nomination->getNominatorLastName();
+        $vars['NOMINEE_NAME'] = $nomination->getFirstName() . ' ' . $nomination->getLastName();
+        $vars['NOMINATOR_NAME'] = $nomination->getNominatorFirstName() . ' ' . $nomination->getNominatorLastName();
         $period = Period::getCurrentPeriod();
         $vars['END_DATE'] = $period->getReadableEndDate();
         $vars['REF_EDIT_LINK'] = $reference->getEditLink();
