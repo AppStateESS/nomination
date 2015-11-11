@@ -1,4 +1,11 @@
 <?php
+namespace nomination\view;
+
+use nomination\Context;
+use nomination\Nominator;
+use nomination\Nomination;
+use nomination\NominationFactory;
+use nomination\UserStatus;
 
   /**
    * NominatorView
@@ -6,13 +13,6 @@
    * See details about a nominator.
    * Supports Ajax
    */
-
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'Context.php');
-PHPWS_Core::initModClass('nomination', 'Nominator.php');
-PHPWS_Core::initModClass('nomination', 'Nomination.php');
-PHPWS_Core::initModClass('nomination', 'NominationFactory.php');
-
 class NominatorView extends \nomination\View
 {
     public $nominationId;
@@ -32,7 +32,7 @@ class NominatorView extends \nomination\View
     public function display(Context $context)
     {
         if(!(UserStatus::isCommitteeMember() || UserStatus::isAdmin())){
-            throw new PermissionException('You are not allowed to see that!');
+            throw new \nomination\exception\PermissionException('You are not allowed to see that!');
         }
 
         $tpl = array();
@@ -46,11 +46,11 @@ class NominatorView extends \nomination\View
         $tpl['ADDRESS'] = $nominator->getNominatorAddress();
 
         if(isset($context['ajax'])){
-            echo PHPWS_Template::process($tpl, 'nomination', 'admin/nominator.tpl');
+            echo \PHPWS_Template::process($tpl, 'nomination', 'admin/nominator.tpl');
             exit();
         } else {
-            Layout::addPageTitle('Nominator View');
-            return PHPWS_Template::process($tpl, 'nomination', 'admin/nominator.tpl');
+            \Layout::addPageTitle('Nominator View');
+            return \PHPWS_Template::process($tpl, 'nomination', 'admin/nominator.tpl');
         }
     }
 }

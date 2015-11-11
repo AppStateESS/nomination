@@ -9,8 +9,6 @@
    * @author Daniel West <dwest at tux dot appstate dot edu>
    * @package nomination
    */
-PHPWS_Core::initModClass('nomination', 'View.php');
-
 class AjaxMessageView extends \nomination\View {
     protected $message;
 

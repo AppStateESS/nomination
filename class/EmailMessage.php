@@ -1,6 +1,5 @@
 <?php
-
-PHPWS_Core::initModClass('nomination', 'Nomination_Model.php');
+namespace nomination;
 
 // DB Table
 define('EMAIL_MESSAGE_TABLE', 'nomination_email_log');
@@ -17,7 +16,7 @@ class EmailMessage extends Nomination_Model
 
     public function getDb()
     {
-        return new PHPWS_DB(EMAIL_MESSAGE_TABLE);
+        return new \PHPWS_DB(EMAIL_MESSAGE_TABLE);
     }
 
     // Delete all emails for the nominator, reference, or nominee
@@ -36,30 +35,24 @@ class EmailMessage extends Nomination_Model
     // For EmailLogView
     public function rowTags()
     {
-        PHPWS_Core::initModClass('nomination', 'Nominee.php');
-
         $tpl      = array();
         $nominee  = new Nominee($this->nominee_id);
 
-        PHPWS_Core::initModClass('nomination', 'NominationEmail.php');
         $recvr;
         $recvr_type;
 
         // Receiver is Reference
         if($this->receiver_type == SHORT_Reference){
-            PHPWS_Core::initModClass('nomination', 'Reference.php');
             $recvr = new Reference($this->receiver_id);
             $recvr_type = 'Reference';
         }
         // Recevier is Nominator
         else if($this->receiver_type == SHORT_Nominator){
-            PHPWS_Core::initModClass('nomination', 'Nominator.php');
             $recvr = new Nominator($this->receiver_id);
             $recvr_type = 'Nominator';
         }
         // Receiver is Nominee
         else if($this->receiver_type == SHORT_Nominee){
-            PHPWS_Core::initModClass('nomination', 'Nominee.php');
             $recvr = new Nominee($this->receiver_id);
             $recvr_type = 'Nominee';
         }

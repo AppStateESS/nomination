@@ -1,21 +1,22 @@
 <?php
+namespace nomination\view;
 
-  /**
-   * ReferenceForm
-   *
-   *   Allows References to submit their letter of recommendation.
-   *
-   * @author Daniel West <dwest at tux dot appstate dot edu>
-   * @author Jeremy Booker
-   * @package nomination
-   */
+use \nomination\NominationDocument;
+use \nomination\CommandFactory;
+use \nomination\Context;
+use \nomination\NominationFactory;
+use \nomination\ReferenceFactory;
+use \nomination\ViewFactory;
 
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'NominationDocument.php');
-PHPWS_Core::initModClass('nomination', 'CommandFactory.php');
-PHPWS_Core::initModClass('nomination', 'NominationFactory.php');
-PHPWS_Core::initModClass('nomination', 'ReferenceFactory.php');
-
+/**
+ * ReferenceForm
+ *
+ *   Allows References to submit their letter of recommendation.
+ *
+ * @author Daniel West <dwest at tux dot appstate dot edu>
+ * @author Jeremy Booker
+ * @package nomination
+ */
 class ReferenceForm extends \nomination\View {
 
     public function getRequestVars()
@@ -33,7 +34,7 @@ class ReferenceForm extends \nomination\View {
     {
         $factory = new CommandFactory;
         $submitCmd = $factory->get('SubmitRecommendation');
-        $form = new PHPWS_Form('reference_form');
+        $form = new \PHPWS_Form('reference_form');
         $submitCmd->initForm($form);
 
         // Check if unique_id is in context
@@ -65,8 +66,8 @@ class ReferenceForm extends \nomination\View {
         $form->addSubmit('submit', 'Submit');
         $form->mergeTemplate($tpl);
 
-        Layout::addPageTitle('Reference Form');
+        \Layout::addPageTitle('Reference Form');
 
-        return PHPWS_Template::process($form->getTemplate(), 'nomination', 'reference_form.tpl');
+        return \PHPWS_Template::process($form->getTemplate(), 'nomination', 'reference_form.tpl');
     }
 }

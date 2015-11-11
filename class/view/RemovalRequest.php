@@ -1,6 +1,7 @@
 <?php
+namespace nomination\view;
 
-PHPWS_Core::initModClass('nomination', 'View.php');
+use \nomination\Context;
 
 class RemovalRequest extends \nomination\View
 {
@@ -12,7 +13,7 @@ class RemovalRequest extends \nomination\View
 
     public function display(Context $context)
     {
-        Layout::addPageTitle('Thank you');
+        \Layout::addPageTitle('Thank you');
         return "<h3>Removal Request Received and Pending</h3>";
     }
 }

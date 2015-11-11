@@ -1,8 +1,5 @@
 <?php
-
-PHPWS_Core::initModClass('nomination', 'NominationActor.php');
-PHPWS_Core::initModClass('nomination', 'view/NomineeView.php');
-PHPWS_Core::initModClass('nomination', 'Period.php');
+namespace nomination;
 
 define('NOMINEE_TABLE', 'nomination_nominee');
 
@@ -21,9 +18,11 @@ class Nominee extends NominationActor
     public $major;
     public $years;
 
+    const TABLE = nomination_nominee;
+
     public function getDb()
     {
-        return new PHPWS_DB(NOMINEE_TABLE);
+        return new PHPWS_DB(self::TABLE);
     }
 
 
@@ -127,8 +126,6 @@ class Nominee extends NominationActor
      */
     public function getNominationCount()
     {
-        PHPWS_Core::initModClass('nomination', 'Nomination.php');
-
         $db = Nomination::getDb();
         $db->addWhere('nominee_id', $this->id);
         return $db->count();
@@ -149,7 +146,7 @@ class Nominee extends NominationActor
         $count = $db->count();
 
         # check for db error or zero results
-        if(PHPWS_Error::logIfError($count) || $count == 0){
+        if(\PHPWS_Error::logIfError($count) || $count == 0){
             return false;
         }
 

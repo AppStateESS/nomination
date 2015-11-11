@@ -1,4 +1,21 @@
 <?php
+namespace nomination\view;
+
+use \nomination\Context;
+use \nomination\CommandFactory;
+use \nomination\Period;
+use \nomination\NominationFactory;
+use \nomination\CancelQueue;
+use \nomination\NominationFieldVisibility;
+use \nomination\UserStatus;
+use \nomination\Reference;
+use \nomination\Nomination;
+use \nomination\NominationDocument;
+use \nomination\FallthroughContext;
+
+\PHPWS_Core::initCoreClass('Captcha.php');
+\PHPWS_Core::initCoreClass('Form.php');
+
 /**
 * NominationForm - View class to handle creating the nomination form fields
 *
@@ -6,17 +23,6 @@
 * @author Jeremy Booker
 * @package nomination
 */
-
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'NominationDocument.php');
-PHPWS_Core::initModClass('nomination', 'CommandFactory.php');
-PHPWS_Core::initModClass('nomination', 'FallthroughContext.php');
-PHPWS_Core::initModClass('nomination', 'CancelQueue.php');
-PHPWS_Core::initModClass('nomination', 'Period.php');
-
-PHPWS_Core::initCoreClass('Captcha.php');
-PHPWS_Core::initCoreClass('Form.php');
-
 class NominationForm extends \nomination\View
 {
 
@@ -64,16 +70,16 @@ class NominationForm extends \nomination\View
             $nomination = NominationFactory::getByNominatorUniqueId($context['unique_id']);
 
             if(!isset($nomination)) {
-                throw new NominationException('The given nomination is null, unique_id = ' . $context['unique_id']);
+                throw new \nomination\exception\NominationException('The given nomination is null, unique_id = ' . $context['unique_id']);
             }
 
             $c->restoreNominationForm($nomination);
 
-            $edit = 1;
+            $edit = true;
 
             //...and add a button for the nominator to cancel their nomination
             // or remove the request to delete their nomination
-            $cancelForm = new PHPWS_Form('cancel_nominationForm');
+            $cancelForm = new \PHPWS_Form('cancel_nominationForm');
 
             if(CancelQueue::contains($nomination->getId())) {
                 $cmd = $cmdFactory->get('WithdrawCancelNomination');
@@ -93,12 +99,12 @@ class NominationForm extends \nomination\View
                 $tpl['cancel']['CANCEL_BUTTON'] = $cancelForm->getTemplate();
             }
 
+        } else {
+            $edit = false;
         }
 
 
-        $form = new PHPWS_Form('nomination_form');
-
-
+        $form = new \PHPWS_Form('nomination_form');
 
         // Decide which submission command to use
         if(!isset($c['unique_id'])){
@@ -112,13 +118,12 @@ class NominationForm extends \nomination\View
 
 
 
-        $tpl['AWARD_TITLE'] = PHPWS_Settings::get('nomination', 'award_title');
+        $tpl['AWARD_TITLE'] = \PHPWS_Settings::get('nomination', 'award_title');
         $currPeriod = Period::getCurrentPeriod();
         $tpl['PERIOD_END'] = $currPeriod->getReadableEndDate();
-        $tpl['NUM_REFS'] = PHPWS_Settings::get('nomination', 'num_references_req');
+        $tpl['NUM_REFS'] = \PHPWS_Settings::get('nomination', 'num_references_req');
 
 
-        PHPWS_Core::initModClass('nomination', 'NominationFieldVisibility.php');
         $vis = new NominationFieldVisibility();
 
 
@@ -243,7 +248,7 @@ class NominationForm extends \nomination\View
         */
         $numRefsReq = Reference::getNumReferencesReq();
         for($i = 0; $i < $numRefsReq; $i++) {
-            $refForm = new PHPWS_Form('nomination_form'); // NB: Must have the same form name
+            $refForm = new \PHPWS_Form('nomination_form'); // NB: Must have the same form name
 
             if($vis->isVisible('reference_first_name')) {
                 if($edit && !UserStatus::isAdmin())
@@ -388,7 +393,7 @@ class NominationForm extends \nomination\View
         * Captcha *
         ***********/
 
-        $tpl['CAPTCHA_IMAGE'] = Captcha::get();
+        $tpl['CAPTCHA_IMAGE'] = \Captcha::get();
 
         // Check if we were redirected back to this
         // form because some fields were not entered
@@ -405,9 +410,9 @@ class NominationForm extends \nomination\View
         $form->mergeTemplate($tpl);
         $tpl = $form->getTemplate();
 
-        Layout::addPageTitle('Nomination Form');
+        \Layout::addPageTitle('Nomination Form');
 
-        $result = PHPWS_Template::process($tpl, 'nomination', 'nomination_form.tpl');
+        $result = \PHPWS_Template::process($tpl, 'nomination', 'nomination_form.tpl');
 
         return $result;
     }

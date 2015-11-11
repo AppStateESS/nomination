@@ -1,17 +1,17 @@
 <?php
+namespace nomination\view;
 
-  /**
-   * UserView
-   *
-   * This is a container view used by everyone (Guests, Committee, Admins,...)
-   *
-   * @author Robert Bost <bostrt at tux dot appstate dot edu>
-   */
+use \nomination\Context;
+use \nomination\UserStatus;
 
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'UserStatus.php');
-
-
+/**
+ * UserView
+ *
+ * This is a container view used by everyone (Guests, Committee, Admins,...)
+ *
+ * @author Robert Bost <bostrt at tux dot appstate dot edu>
+ * @package nomination;
+ */
 class UserView extends \nomination\NomView
 {
     private $sideMenu;
@@ -34,6 +34,6 @@ class UserView extends \nomination\NomView
         $tpl['MAIN'] = $this->getMain();
         $tpl['MENU'] = $this->sideMenu;
         $tpl['USER_STATUS'] = UserStatus::getDisplay();
-        return $this->displayNomination(PHPWS_Template::process($tpl, 'nomination', 'user.tpl'));
+        return $this->displayNomination(\PHPWS_Template::process($tpl, 'nomination', 'user.tpl'));
     }
 }

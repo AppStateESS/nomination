@@ -1,8 +1,7 @@
 <?php
+namespace nomination\othermenu;
 
-PHPWS_Core::initModClass('nomination', 'othermenu/MenuItem.php');
-
-class SubMenu extends MenuItem implements arrayaccess
+class SubMenu extends MenuItem implements \ArrayAccess
 {
   protected $container = array();
 
@@ -52,7 +51,7 @@ class SubMenu extends MenuItem implements arrayaccess
 	return $this;
       } else {
 	// If tag matches and $this isn't a SubMenu
-	throw new Exception('Tag is used by MenuItem.');
+	throw new \Exception('Tag is used by MenuItem.');
       }
     }
     // Check container for sub menu
@@ -113,7 +112,7 @@ class SubMenu extends MenuItem implements arrayaccess
       $tpl['menu_items'][] = array('CONTENT' => $item->show());
     }
 
-    return PHPWS_Template::process($tpl, 'nomination', 'othermenu/submenu.tpl');
+    return \PHPWS_Template::process($tpl, 'nomination', 'othermenu/submenu.tpl');
   }
 
   public function toString()

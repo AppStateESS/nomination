@@ -1,4 +1,5 @@
 <?php
+namespace nomination;
 
 /*
  * CancelQueue
@@ -10,20 +11,17 @@
  * @package nomination
  */
 
-PHPWS_Core::initModClass('nomination', 'Nomination.php');
-PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
-
 class CancelQueue {
     public $nomination;
 
     public static function add(Nomination $n)
     {
-        $db = new PHPWS_DB('nomination_cancel_queue');
+        $db = new \PHPWS_DB('nomination_cancel_queue');
         $db->addValue('nomination', $n->id);
         $result = $db->insert();
 
-        if(PHPWS_Error::logIfError($result)){
-            throw new DatabaseException($result->toString());
+        if(\PHPWS_Error::logIfError($result)){
+            throw new exception\DatabaseException($result->toString());
         }
 
         return true;
@@ -45,12 +43,12 @@ class CancelQueue {
 
     public static function remove(Nomination $n)
     {
-        $db = new PHPWS_DB('nomination_cancel_queue');
+        $db = new \PHPWS_DB('nomination_cancel_queue');
         $db->addWhere('nomination', $n->id);
         $result = $db->delete();
 
-        if(PHPWS_Error::logIfError($result)){
-            throw new DatabaseException($result->toString());
+        if(\PHPWS_Error::logIfError($result)){
+            throw new exception\DatabaseException($result->toString());
         }
 
         return true;
@@ -58,8 +56,6 @@ class CancelQueue {
 
     public function rowTags()
     {
-        PHPWS_Core::initModClass('nomination', 'CommandFactory.php');
-
         $tpl = array();
 
         $nom = NominationFactory::getNominationbyId($this->nomination);
@@ -100,12 +96,12 @@ class CancelQueue {
     }
 
     public function contains($id){
-        $db = new PHPWS_DB('nomination_cancel_queue');
+        $db = new \PHPWS_DB('nomination_cancel_queue');
         $db->addWhere('nomination', $id);
         $result = $db->select();
 
-        if(PHPWS_Error::logIfError($result)){
-            throw new DatabaseException($result->toString());
+        if(\PHPWS_Error::logIfError($result)){
+            throw new exception\DatabaseException($result->toString());
         }
 
         return sizeof($result) > 0;

@@ -1,5 +1,5 @@
 <?php
-PHPWS_Core::initModClass('nomination', 'exception/NominationException.php');
+namespace nomination\exception;
 
 class BadFormException extends NominationException
 {

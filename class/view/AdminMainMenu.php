@@ -1,8 +1,10 @@
 <?php
+namespace nomination\view;
 
-PHPWS_Core::initModClass('nomination', 'View.php');
+use \nomination\Context;
+use \nomination\UserStatus;
 
-class AdminMainMenu extends nomination\View
+class AdminMainMenu extends \nomination\View
 {
     public function getRequestVars()
     {
@@ -12,11 +14,11 @@ class AdminMainMenu extends nomination\View
     public function display(Context $context)
     {
         if(!UserStatus::isAdmin()){
-            throw new PermissionException('You are not allowed to see that!');
+            throw new \nomination\exception\PermissionException('You are not allowed to see that!');
         }
 
-        PHPWS_Core::initModClass('nomination', 'Period.php');
-        $vFactory = new ViewFactory();
+        \PHPWS_Core::initModClass('nomination', 'Period.php');
+        $vFactory = new \nomination\ViewFactory();
 
         $topMenu = $vFactory->get('NominationMainMenu');
 
@@ -56,7 +58,7 @@ class AdminMainMenu extends nomination\View
         $topMenu->addMenuItemByName('CancelQueuePager', 'Removal Requests',
                                     'nom_removal', 'administration');
 
-        Layout::addPageTitle('Admin Main Menu');
+        \Layout::addPageTitle('Admin Main Menu');
 
         return $topMenu->show();
     }

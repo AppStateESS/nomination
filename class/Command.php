@@ -1,4 +1,5 @@
 <?php
+namespace nomination;
 
 /**
  * Nomination Command
@@ -7,7 +8,7 @@
 
 abstract class Command
 {
-  protected $context;
+    protected $context;
 
 	public abstract function getRequestVars();
 	public abstract function execute(Context $context);
@@ -27,10 +28,10 @@ abstract class Command
 	 * @see getURI
 	 * @see redirect
 	 */
-	public function initForm(PHPWS_Form &$form)
+	public function initForm(\PHPWS_Form &$form)
 	{
- 		$moduleElement = $form->get('module');
- 		if(PEAR::isError($moduleElement)){
+        $moduleElement = $form->get('module');
+        if(\PEAR::isError($moduleElement)){
 			$form->addHidden('module', 'nomination');
 		}
 
@@ -107,7 +108,7 @@ abstract class Command
 	 */
 	public function getLink($text, $target = NULL, $cssClass = NULL, $title = NULL)
 	{
-		return PHPWS_Text::moduleLink(dgettext('nomination', $text), 'nomination', $this->getRequestVars(), $target, $title, $cssClass);
+		return \PHPWS_Text::moduleLink(dgettext('nomination', $text), 'nomination', $this->getRequestVars(), $target, $title, $cssClass);
 	}
 
 	/**
@@ -137,6 +138,7 @@ abstract class Command
 
 		header('HTTP/1.1 303 See Other');
 		header("Location: $path");
+        //TODO PLM?
 		PLM::quit();
 	}
 }

@@ -1,4 +1,5 @@
 <?php
+namespace nomination;
 
   /**
    * CommandFactory.php
@@ -8,9 +9,6 @@
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
-
-PHPWS_Core::initModClass('nomination', 'AbstractFactory.php');
-
 class CommandFactory extends AbstractFactory
 {
     private $dir = 'command';
@@ -24,14 +22,12 @@ class CommandFactory extends AbstractFactory
     // inherited from parent
     public function throwIllegal($name)
     {
-        PHPWS_Core::initModClass('nomination', 'exception/IllegalCommandException.php');
-        throw new IllegalCommandException("Illegal characters found in command {$name}");
+        throw new exception\IllegalCommandException("Illegal characters found in command {$name}");
     }
 
     // inherited from parent
     public function throwNotFound($name)
     {
-        PHPWS_Core::initModClass('nomination', 'exception/CommandNotFoundException.php');
-        throw new CommandNotFoundException("Could not initialize command {$name}");
+        throw new exception\CommandNotFoundException("Could not initialize command {$name}");
     }
 }

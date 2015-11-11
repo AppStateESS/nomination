@@ -1,4 +1,5 @@
 <?php
+namespace nomination\othermenu;
 
 /**
  * Menu
@@ -7,9 +8,6 @@
  *
  * @author Robert Bost <bostrt at gmail dot com>
  */
-
-PHPWS_Core::initModClass('nomination', 'othermenu/SubMenu.php');
-
 class OtherMenu extends SubMenu
 {
   public function addMenuItem($text, $tag=null, $parentTag=null)
@@ -58,6 +56,6 @@ class OtherMenu extends SubMenu
       $tpl['menu_items'][] = array('CONTENT' => $item->show());
     }
 
-    return PHPWS_Template::process($tpl, 'nomination', 'othermenu/menu.tpl');
+    return \PHPWS_Template::process($tpl, 'nomination', 'othermenu/menu.tpl');
   }
 }

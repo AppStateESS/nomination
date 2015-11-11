@@ -1,4 +1,6 @@
 <?php
+namespace nomination\othermenu;
+
 class MenuItem
 {
   protected $tag;
@@ -17,7 +19,7 @@ class MenuItem
     $tpl['TAG'] = $this->tag;
     $tpl['TEXT'] = $this->text;
 
-    return PHPWS_Template::process($tpl, 'nomination', 'othermenu/menuitem.tpl');
+    return \PHPWS_Template::process($tpl, 'nomination', 'othermenu/menuitem.tpl');
   }
 
   public function getText(){

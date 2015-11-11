@@ -1,4 +1,5 @@
 <?php
+namespace nomination\command;
 
 /**
  * UpdatePeriod - Controller class to handle updating/saving a period's settings/attributes.

@@ -1,4 +1,5 @@
 <?php
+namespace nomination\view;
 
   /**
    * WinnersView
@@ -7,11 +8,8 @@
    * current and past nomination periods.
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
+   * @package nomination
    */
-
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initCoreClass('DBPager.php');
-
 class WinnersView extends \nomination\View
 {
     public function getRequestVars()
@@ -22,14 +20,10 @@ class WinnersView extends \nomination\View
     public function display(Context $context)
     {
         if(!UserStatus::isAdmin()){
-            throw new PermissionException('You are not allowed to see this!');
+            throw new \nomination\exception\PermissionException('You are not allowed to see this!');
         }
 
-        PHPWS_Core::initModClass('nomination', 'Nomination.php');
-        PHPWS_Core::initModClass('nomination', 'Nominee.php');
-        PHPWS_Core::initModClass('nomination', 'Nominator.php');
-
-        $pager = new DBpager('nomination_nomination', 'Nomination');
+        $pager = new \DBpager('nomination_nomination', '\nomination\Nomination');
         $pager->setModule('nomination');
         $pager->setTemplate('admin/winners.tpl');
         $pager->setEmptyMessage('No Winners Yet');

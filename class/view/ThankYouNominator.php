@@ -1,6 +1,7 @@
 <?php
+namespace nomination\view;
 
-PHPWS_Core::initModClass('nomination', 'View.php');
+use \nomination\Context;
 
 class ThankYouNominator extends \nomination\View
 {
@@ -12,7 +13,7 @@ class ThankYouNominator extends \nomination\View
 
     public function display(Context $context)
     {
-        Layout::addPageTitle('Thank you');
+        \Layout::addPageTitle('Thank you');
         return "<h3>Nomination Form Successfully Submitted</h3>";
     }
 }

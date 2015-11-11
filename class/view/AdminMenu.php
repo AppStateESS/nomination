@@ -1,21 +1,23 @@
 <?php
+namespace nomination\view;
 
-  /**
-   * AdminMenu
-   *
-   * Side menu for administrators
-   *
-   * @author Robert Bost <bostrt at tux dot appstate dot edu>
-   */
+use \nomination\UserStatus;
+use \nomination\Context;
 
-PHPWS_Core::initModClass('nomination', 'ViewMenu.php');
-
-class AdminMenu extends ViewMenu
+/**
+ * AdminMenu
+ *
+ * Side menu for administrators
+ *
+ * @author Robert Bost <bostrt at tux dot appstate dot edu>
+ * @package nomination
+ */
+class AdminMenu extends \nomination\ViewMenu
 {
     public function __construct()
     {
         if(!UserStatus::isAdmin()){
-            throw new PermissionException('You do not have permission to look at this!');
+            throw new \nomination\exception\PermissionException('You do not have permission to look at this!');
         }
         $this->addViewByName('Main Menu', 'AdminMainMenu');
         $this->addViewByName('Nominees', 'NomineeSearch');

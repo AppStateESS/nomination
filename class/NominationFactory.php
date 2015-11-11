@@ -1,6 +1,5 @@
 <?php
-
-PHPWS_Core::initModClass('nomination', 'Nomination.php');
+namespace nomination;
 
 /**
  * NominationFactory - Static methods for loading a nomination object
@@ -20,17 +19,17 @@ class NominationFactory {
     public static function getNominationbyId($id)
     {
         if(!isset($id)){
-            throw new InvalidArgumentException('Missing id.');
+            throw new \InvalidArgumentException('Missing id.');
         }
 
-        $db = new PHPWS_DB('nomination_nomination');
+        $db = new \PHPWS_DB('nomination_nomination');
         $db->addWhere('id', $id);
 
         $result = $db->select('row');
 
-        if(PHPWS_Error::logIfError($result)){
-            PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
-            throw new DatabaseException($result->toString());
+        if(\PHPWS_Error::logIfError($result)){
+            \PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
+            throw new exception\DatabaseException($result->toString());
         }
 
         if(count($result) == 0){
@@ -73,7 +72,7 @@ class NominationFactory {
 
     public static function save(Nomination $nom)
     {
-        $db = new PHPWS_DB('nomination_nomination');
+        $db = new \PHPWS_DB('nomination_nomination');
 
         $db->addValue('banner_id', $nom->getBannerId());
         $db->addValue('first_name', $nom->getFirstName());
@@ -109,7 +108,7 @@ class NominationFactory {
         $id = $nom->getId();
         if(!isset($id) || is_null($id)) {
             $result = $db->insert();
-            if(!PHPWS_Error::isError($result)){
+            if(!\PHPWS_Error::isError($result)){
                 // If everything worked, insert() will return the new database id,
                 // So, we need to set that on the object for later
                 $nom->setId($result);
@@ -119,8 +118,8 @@ class NominationFactory {
             $result = $db->update();
         }
 
-        if(PHPWS_Error::logIfError($result)){
-            throw new Exception('DatabaseException: Failed to save nomnation.' . $result->toString());
+        if(\PHPWS_Error::logIfError($result)){
+            throw new \Exception('DatabaseException: Failed to save nomnation.' . $result->toString());
         }
     }
 
@@ -136,17 +135,16 @@ class NominationFactory {
      */
     public static function getByNominatorUniqueId($unique_id){
       if(!isset($unique_id)){
-          throw new InvalidArgumentException('Missing unique id.');
+          throw new \InvalidArgumentException('Missing unique id.');
       }
 
-      $db = new PHPWS_DB('nomination_nomination');
+      $db = new \PHPWS_DB('nomination_nomination');
       $db->addWhere('nominator_unique_id', $unique_id);
 
       $result = $db->select('row');
 
-      if(PHPWS_Error::logIfError($result)){
-          PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
-          throw new DatabaseException($result->toString());
+      if(\PHPWS_Error::logIfError($result)){
+          throw new exception\DatabaseException($result->toString());
       }
 
       if(count($result) == 0){
@@ -194,7 +192,7 @@ class NominationFactory {
      */
     public static function getByReferenceUniqueId($unique_id)
     {
-        $db = new PHPWS_DB('nomination_nomination');
+        $db = new \PHPWS_DB('nomination_nomination');
         $db->addTable('nomination_reference');
         $db->addWhere('reference_id_1', 'nomination_reference.id', NULL, 'or', 'ref');
         $db->addWhere('reference_id_2', 'nomination_reference.id', NULL, 'or', 'ref');
@@ -202,8 +200,8 @@ class NominationFactory {
         $db->addWhere('nomination_reference.unique_id', $unique_id);
         $result = $db->getObjects('Nomination');
 
-        if(PHPWS_Error::logIfError($result) || sizeof($result) > 1 || sizeof($result) == 0){
-            throw new DatabaseException('Invalid reference unique_id');
+        if(\PHPWS_Error::logIfError($result) || sizeof($result) > 1 || sizeof($result) == 0){
+            throw new exception\DatabaseException('Invalid reference unique_id');
         }
 
         return $result[0];
@@ -220,7 +218,7 @@ class NominationFactory {
     {
         $currPeriod = Period::getCurrentPeriod();
         $period_id = $currPeriod->getId();
-        $db = new PHPWS_DB('nomination_nomination');
+        $db = new \PHPWS_DB('nomination_nomination');
         $db->addColumn('id');
         $db->addWhere('period', $period_id);
         $db->addWhere('winner', 0);
@@ -251,14 +249,14 @@ class NominationFactory {
 
         $result = $db->select();
 
-        if(PHPWS_Error::logIfError($result)){
-            throw new DatabaseException($result->toString());
+        if(\PHPWS_Error::logIfError($result)){
+            throw new exception\DatabaseException($result->toString());
         }
         // Plug info into objects
         $noms = array();
         foreach($result as $nom){
             $nomObj = new Nomination();
-            PHPWS_Core::plugObject($nomObj, $nom);
+            \PHPWS_Core::plugObject($nomObj, $nom);
             $noms[] = $nomObj;
         }
         return $noms;
@@ -273,7 +271,7 @@ class NominationFactory {
     {
       $currPeriod = Period::getCurrentPeriod();
       $period_id = $currPeriod->getId();
-      $db = new PHPWS_DB('nomination_nomination');
+      $db = new \PHPWS_DB('nomination_nomination');
       $db->addColumn('id');
       $db->addWhere('period', $period_id);
       $db->addWhere('winner', 1);
@@ -303,15 +301,15 @@ class NominationFactory {
         $db->addWhere('winner', !NULL);
         $result = $db->select();
 
-        if(PHPWS_Error::logIfError($result)){
-            PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
-            throw new DatabaseException($result->toString());
+        if(\PHPWS_Error::logIfError($result)){
+            \PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
+            throw new exception\DatabaseException($result->toString());
         }
         // Plug info into objects
         $noms = array();
         foreach($result as $nom){
             $nomObj = new Nomination();
-            PHPWS_Core::plugObject($nomObj, $nom);
+            \PHPWS_Core::plugObject($nomObj, $nom);
             $noms[] = $nomObj;
         }
         return $noms;
@@ -326,7 +324,7 @@ class NominationFactory {
     {
       if(!isset($id))
       {
-          throw new InvalidArgumentException('Missing id.');
+          throw new \InvalidArgumentException('Missing id.');
       }
 
       $db = Nomination::getDb();
@@ -334,7 +332,4 @@ class NominationFactory {
       $db->addWhere('id', $id);
       $db->delete();
     }
-
-
-
 }

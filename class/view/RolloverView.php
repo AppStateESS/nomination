@@ -1,4 +1,9 @@
 <?php
+namespace nomination\view;
+
+use \nomination\Context;
+use \nomination\CommandFactory;
+use \nomination\Period;
 
   /**
    * RolloverView
@@ -7,10 +12,6 @@
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
-
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'Period.php');
-
 class RolloverView extends \nomination\View
 {
     public function getRequestVars()
@@ -24,10 +25,7 @@ class RolloverView extends \nomination\View
             throw new PermissionException('You are not allowed to see that!');
         }
 
-        PHPWS_Core::initCoreClass('Form.php');
-        PHPWS_Core::initModClass('nomination', 'CommandFactory.php');
-
-        $form = new PHPWS_Form('rollover');
+        $form = new \PHPWS_Form('rollover');
 
         // Get submit command
         $cmdFactory = new CommandFactory();
@@ -45,8 +43,8 @@ class RolloverView extends \nomination\View
         $form->mergeTemplate($tpl);
         $tpl = $form->getTemplate();
 
-        Layout::addPageTitle('Rollover');
+        \Layout::addPageTitle('Rollover');
 
-        return PHPWS_Template::process($tpl, 'nomination', 'admin/rollover.tpl');
+        return \PHPWS_Template::process($tpl, 'nomination', 'admin/rollover.tpl');
     }
 }

@@ -1,4 +1,5 @@
 <?php
+namespace nomination\view;
 
   /**
    * If this page is displayed then the user probably typed
@@ -7,8 +8,6 @@
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
-PHPWS_Core::initModClass('nomination', 'View.php');
-
 class FourOhFour extends \nomination\View
 {
     public function getRequestVars()
@@ -16,7 +15,7 @@ class FourOhFour extends \nomination\View
         return array('view' => 'FourOhFour');
     }
 
-    public function display(Context $context)
+    public function display(\nomination\Context $context)
     {
         return 'Your request could not be processed. <br />
  Please <a href="mailto:bostrt@tux.appstate.edu">contact</a> us.';

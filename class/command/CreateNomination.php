@@ -1,4 +1,19 @@
 <?php
+namespace nomination\command;
+
+use \nomination\Command;
+use \nomination\Context;
+use \nomination\Nomination;
+use \nomination\NominationFactory;
+use \nomination\view\NominationForm;
+use \nomination\NominationDocument;
+use \nomination\DocumentFactory;
+use \nomination\Reference;
+use \nomination\ReferenceFactory;
+use \nomination\NominationEmail;
+use \nomination\Period;
+
+\PHPWS_Core::initCoreClass('Captcha.php');
 
 /**
  * CreateNominationForm
@@ -13,25 +28,6 @@
  * @author Jeremy Booker
  * @package nomination
  */
-
-PHPWS_Core::initModClass('nomination', 'Command.php');
-PHPWS_Core::initModClass('nomination', 'Context.php');
-
-PHPWS_Core::initModClass('nomination', 'Nomination.php');
-PHPWS_Core::initModClass('nomination', 'NominationFactory.php');
-PHPWS_Core::initModClass('nomination', 'view/NominationForm.php');
-PHPWS_Core::initModClass('nomination', 'NominationDocument.php');
-PHPWS_Core::initModClass('nomination', 'DocumentFactory.php');
-
-PHPWS_Core::initModClass('nomination', 'Reference.php');
-PHPWS_Core::initModClass('nomination', 'ReferenceFactory.php');
-
-PHPWS_Core::initModClass('nomination', 'NominationEmail.php');
-
-PHPWS_Core::initModClass('nomination', 'Period.php');
-
-PHPWS_CORE::initCoreClass('Captcha.php');
-
 class CreateNomination extends Command
 {
     public function getRequestVars()
@@ -64,7 +60,6 @@ class CreateNomination extends Command
 
 
         // Figure out which fields are required
-        PHPWS_Core::initModClass('nomination', 'NominationFieldVisibility.php');
         $vis = new NominationFieldVisibility();
 
         $required = array();
@@ -109,7 +104,7 @@ class CreateNomination extends Command
                 }
                 $missing[] = 'statement';
                 $context['missing'] = $missing;// Add missing fields to context
-                throw new BadFormException($msg);
+                throw new exception\BadFormException($msg);
             }
         }
 
@@ -125,7 +120,7 @@ class CreateNomination extends Command
             // Throw exception
             PHPWS_Core::initModClass('nomination', 'exception/BadFormException.php');
             $missingFields = implode(', ', $missing);
-            throw new BadFormException('The following fields are missing: ' . $missingFields);
+            throw new exception\BadFormException('The following fields are missing: ' . $missingFields);
         }
 
         //check for bad email
@@ -250,19 +245,18 @@ class CreateNomination extends Command
         /******************************
          * Statement / Document Upload *
          ******************************/
-        PHPWS_Core::initModClass('nomination', 'exception/IllegalFileException.php');
 
         // Make sure the $_FILES array some info on the file we're looking for
         if(!isset($_FILES['statement']) || !is_uploaded_file($_FILES['statement']['tmp_name']))
         {
             PHPWS_Core::initModClass('nomination', 'exception/BadFormException.php');
-            throw new BadFormException('Please select a document to upload.');
+            throw new exception\BadFormException('Please select a document to upload.');
         }
 
         // Sanity check on mime type for files the client may still have open
         if($_FILES['statement']['type'] == 'application/octet-stream')
         {
-            throw new IllegalFileException('Please save and close all word processors then re-submit file.');
+            throw new exception\IllegalFileException('Please save and close all word processors then re-submit file.');
         }
 
         $doc = new NominationDocument($nomination, 'nominator', 'statement', $_FILES['statement']);
@@ -279,13 +273,12 @@ class CreateNomination extends Command
         }
 
         // Send email to nominator, only if the nominator fields are turned on
-        PHPWS_Core::initModClass('nomination', 'NominationFieldVisibility.php');
         $vis = new NominationFieldVisibility();
         if($vis->isVisible('nominator_email'))
         {
             NominatorEmail::newNomination($nomination);
         }
 
-        NQ::simple('Nomination', NOMINATION_SUCCESS, 'Form successfully submitted. Email sent.');
+        \NQ::simple('Nomination', NOMINATION_SUCCESS, 'Form successfully submitted. Email sent.');
     }
 }

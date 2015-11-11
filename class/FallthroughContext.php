@@ -1,4 +1,5 @@
 <?php
+namespace nomination;
 
   /**
    * FallthroughContext
@@ -13,8 +14,6 @@
    * @author Chris Detsch
    * @package nomination
    */
-PHPWS_Core::initModClass('nomination', 'Context.php');
-
 class FallthroughContext extends Context {
     protected $others = array();
 

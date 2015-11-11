@@ -1,4 +1,6 @@
 <?php
+namespace nomination;
+use \Current_User;
 
 /**
  * Nomination User Status
@@ -42,7 +44,7 @@ class UserStatus
         } else {
             // Check member's groups for nomination_committee
             foreach($groups as $group_id){
-                PHPWS_Core::initModClass('users', 'Group.php');
+                \PHPWS_Core::initModClass('users', 'Group.php');
                 $group = new PHPWS_Group($group_id);
                 if($group->getName() == 'nomination_committee'){
                     return True;
@@ -76,7 +78,7 @@ class UserStatus
 			$vars['LOGOUT_LINK']  = UserStatus::getLogoutLink();
 		}
 
-		return PHPWS_Template::process($vars, 'nomination', 'UserStatus.tpl');
+		return \PHPWS_Template::process($vars, 'nomination', 'UserStatus.tpl');
 	}
 
     public static function getLoginLink()

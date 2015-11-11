@@ -1,4 +1,7 @@
 <?php
+namespace nomination;
+
+use \nomination\Context;
 
 /*
  * RequestWithdrawn
@@ -8,7 +11,6 @@
  * @author Chris Detsch
  * @package nomination
  */
-
 class RequestWithdrawn extends \nomination\View
 {
 
@@ -19,7 +21,7 @@ class RequestWithdrawn extends \nomination\View
 
     public function display(Context $context)
     {
-        Layout::addPageTitle('Thank you');
+        \Layout::addPageTitle('Thank you');
         return "<h3>Removal Request Withdrawn</h3>";
     }
 }

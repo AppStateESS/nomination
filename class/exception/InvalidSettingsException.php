@@ -1,6 +1,5 @@
 <?php
-
-PHPWS_Core::initModClass('nomination', 'exception/NominationException.php');
+namespace nomination\exception;
 
 class InvalidSettingsException extends NominationException
 {

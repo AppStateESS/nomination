@@ -1,6 +1,5 @@
 <?php
-
-PHPWS_Core::initModClass('nomination', 'exception/PLMException.php');
+namespace nomination\exception;
 
 class ContextException extends NominationException
 {

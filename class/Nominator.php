@@ -1,4 +1,5 @@
 <?php
+namespace nomination;
 
   /**
    * Nominator
@@ -12,11 +13,6 @@
    * @see Nomination
    */
 
-PHPWS_Core::initModClass('nomination', 'NominationActor.php');
-PHPWS_Core::initModClass('nomination', 'ViewFactory.php');
-
-define('NOMINATOR_TABLE', 'nomination_nomination');
-
 class Nominator extends NominationActor
 {
     public $phone;
@@ -24,10 +20,12 @@ class Nominator extends NominationActor
     public $unique_id;
     public $doc_id;
 
+    const TABLE = 'nomination_nomination';
+
     // Inherited from Nomination_Model
     public function getDb()
     {
-        return new PHPWS_DB(NOMINATOR_TABLE);
+        return new PHPWS_DB(self::TABLE);
     }
 
     /**
@@ -53,7 +51,7 @@ class Nominator extends NominationActor
         // Validate the email address
         // Check it ends with {something}.appstate.edu
         if(!self::isValidEmail($email)){
-            throw new InvalidArgumentException('Invalid nominator email. Must end with '.NOMINATION_EMAIL_DOMAIN);
+            throw new \InvalidArgumentException('Invalid nominator email. Must end with '.NOMINATION_EMAIL_DOMAIN);
         }
 
         if(empty($relationship)){
@@ -167,15 +165,15 @@ class Nominator extends NominationActor
      */
     public function getSubmissionDate()
     {
-        $db = new PHPWS_DB('nomination_nominator');
+        $db = new \PHPWS_DB('nomination_nominator');
         $db->addTable('nomination_nomination');
         $db->addWhere('id', $this->id);
         $db->addWhere('nomination_nomination.nominator_id', 'nomination_nominator.id');
         $db->addColumn('nomination_nomination.added_on');
         $result = $db->select('row');
 
-        if(PHPWS_Error::logIfError($result) || sizeof($result) == 0){
-            throw new DatabaseException('Database is broken, please try again');
+        if(\PHPWS_Error::logIfError($result) || sizeof($result) == 0){
+            throw new exception\DatabaseException('Database is broken, please try again');
         }
 
         return $result['added_on'];
@@ -187,19 +185,19 @@ class Nominator extends NominationActor
      */
     public function getNomination()
     {
-        $db = new PHPWS_DB('nomination_nomination');
+        $db = new \PHPWS_DB('nomination_nomination');
         $db->addWhere('id', $this->id);
         $result = $db->getObjects('Nomination');
 
         // Check for DB Error
         if(PHPWS_Error::logIfError($result)){
-            throw new DatabaseException('Database is broken: '.$result->toString());
+            throw new exception\DatabaseException('Database is broken: '.$result->toString());
         }
         if(sizeof($result) > 1){
-            throw new DatabaseException('Database Error: same nominator for multiple nominations');
+            throw new exception\DatabaseException('Database Error: same nominator for multiple nominations');
         }
         if(sizeof($result) < 1){
-            throw new DatabaseException('Database Error: no nominations for nominator');
+            throw new exception\DatabaseException('Database Error: no nominations for nominator');
         }
 
         return $result[0];
@@ -218,13 +216,13 @@ class Nominator extends NominationActor
         $db->addWhere('unique_id', $unique_id);
         $result = $db->getObjects('Nominator');
 
-        if(PHPWS_Error::logIfError($result) || sizeof($result) > 1){
-            throw new DatabaseException('Database Error: Multiple nominators with same unique_id');
+        if(\PHPWS_Error::logIfError($result) || sizeof($result) > 1){
+            throw new \DatabaseException('Database Error: Multiple nominators with same unique_id');
         }
         if(sizeof($result) != 0){
             return $result[0];
         }
-        return Null;
+        return null;
     }
 
 }

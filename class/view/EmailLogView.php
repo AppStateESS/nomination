@@ -1,4 +1,5 @@
 <?php
+namespace nomination\view;
 
   /**
    * EmailLogView
@@ -8,8 +9,6 @@
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
-PHPWS_Core::initModClass('nomination', 'View.php');
-
 class EmailLogView extends \nomination\View
 {
 
@@ -18,16 +17,14 @@ class EmailLogView extends \nomination\View
         return array('view'=>'EmailLogView');
     }
 
-    public function display(Context $context)
+    public function display(\nomination\Context $context)
     {
-        if(!UserStatus::isAdmin()){
-            PHPWS_Core::initModClass('nomination', 'exception/PermissionException.php');
-            throw new PermissionException('You are not allowed to see that!');
+        if(!\nomination\UserStatus::isAdmin()){
+            \PHPWS_Core::initModClass('nomination', 'exception/PermissionException.php');
+            throw new \nomination\exception\PermissionException('You are not allowed to see that!');
         }
 
-        PHPWS_Core::initModClass('nomination', 'EmailLog.php');
-
-        $pager = new DBPager('nomination_email_log', 'DBEmailLog');
+        $pager = new \DBPager('nomination_email_log', 'DBEmailLog');
 
         $pager->setModule('nomination');
         $pager->setTemplate('admin/email_log_view.tpl');
@@ -56,7 +53,7 @@ class EmailLogView extends \nomination\View
         javascript('jquery_ui');
         javascriptMod('nomination', 'email_view');
 
-        Layout::addPageTitle('Email Log');
+        \Layout::addPageTitle('Email Log');
 
         return $pager->get();
     }

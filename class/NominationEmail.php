@@ -1,4 +1,6 @@
 <?php
+namespace nomination;
+use exception\DaatabaseException;
 
 /**
  * NominationEmail
@@ -11,8 +13,6 @@
  * @package nomination
  */
 
-PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
-PHPWS_Core::initModClass('nomination', 'Period.php');
 PHPWS_Core::initCoreClass('Mail.php');
 
 // Abbreviated NominationActor names
@@ -98,8 +98,8 @@ abstract class NominationEmail {
         $db->addWhere('id', $msg->receiver_id);
         $result = $db->loadObject($obj);
 
-        if(PHPWS_Error::logIfError($result)){
-            PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
+        if(\PHPWS_Error::logIfError($result)){
+            \PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
             throw new DatabaseException($result->toString());
         }
         $obj = array($obj);

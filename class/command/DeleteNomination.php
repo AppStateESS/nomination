@@ -1,4 +1,6 @@
 <?php
+namespace nomination\command;
+
   /**
    * DeleteNomination
    *

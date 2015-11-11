@@ -1,6 +1,5 @@
 <?php
-
-PHPWS_Core::initModClass('nomination', 'exception/FileException.php');
+namespace nomination\exception;
 
 class FileNotFoundException extends FileException
 {

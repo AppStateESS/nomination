@@ -1,5 +1,5 @@
 <?php
-
+namespace nomination;
 
 /**
  * EmailLogFactory
@@ -11,7 +11,6 @@
  */
 class EmailLogFactory {
 
-
     /**
      * Saves the values of an EmailLog object to the database table nomination_email_log,
      * if there was already a log with the given EmailLog's id then it will overwrite it
@@ -21,7 +20,7 @@ class EmailLogFactory {
      */
     public static function save(EmailLog $email)
     {
-        $db = new PHPWS_DB('nomination_email_log');
+        $db = new \PHPWS_DB('nomination_email_log');
 
         $db->addValue('nominee_id', $email->getNomineeId());
         $db->addValue('message', $email->getMessage());
@@ -40,8 +39,8 @@ class EmailLogFactory {
             $result = $db->update();
         }
 
-        if(PHPWS_Error::logIfError($result)){
-            throw new Exception('DatabaseException: Failed to save EmailLog. ' . $result->toString());
+        if(\PHPWS_Error::logIfError($result)) {
+            throw new \Exception('DatabaseException: Failed to save EmailLog. ' . $result->toString());
         }
     }
 
@@ -55,15 +54,15 @@ class EmailLogFactory {
     public static function getById($id){
 
 
-        $db = new PHPWS_DB('nomination_email_log');
+        $db = new \PHPWS_DB('nomination_email_log');
 
         $db->addWhere('id', $id);
 
         $result = $db->select('row');
 
-        if(PHPWS_Error::logIfError($result)){
-            PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
-            throw new DatabaseException($result->toString());
+        if(\PHPWS_Error::logIfError($result)){
+            \PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
+            throw new exception\DatabaseException($result->toString());
         }
 
         if(count($result) == 0){
@@ -92,10 +91,10 @@ class EmailLogFactory {
     {
       if(!isset($id))
       {
-          throw new InvalidArgumentException('Missing id.');
+          throw new \InvalidArgumentException('Missing id.');
       }
 
-      $db = new PHPWS_DB('nomination_email_log');
+      $db = new \PHPWS_DB('nomination_email_log');
 
       $db->addWhere('nominee_id', $id);
       $db->delete();

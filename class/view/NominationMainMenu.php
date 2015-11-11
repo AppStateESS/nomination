@@ -1,4 +1,5 @@
 <?php
+namespace nomination\view;
 
   /**
    * NominationMainMenu
@@ -8,13 +9,11 @@
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
-PHPWS_Core::initModClass('nomination', 'othermenu/MainMenu.php');
-
-class NominationMainMenu extends MainMenu
+class NominationMainMenu extends \nomination\othermenu\MainMenu
 {
     public function addMenuItemByName($name, $text, $tag=null, $parentTag=null)
     {
-        $vFactory = new ViewFactory();
+        $vFactory = new \nomination\ViewFactory();
         $view = $vFactory->get($name);
 
         $this->addMenuItem($view->getLink($text), $tag, $parentTag);

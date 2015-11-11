@@ -1,4 +1,7 @@
 <?php
+namespace nomination\view;
+
+use \nomination\Context;
 
   /**
    * ThankYouReference
@@ -7,8 +10,6 @@
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
-
-PHPWS_Core::initModClass('nomination', 'View.php');
 
 class ThankYouReference extends \nomination\View
 {
@@ -20,7 +21,7 @@ class ThankYouReference extends \nomination\View
 
     public function display(Context $context)
     {
-        Layout::addPageTitle('Thank you');
+        \Layout::addPageTitle('Thank you');
         return "<h3>Your letter of recommendation was successfully submitted.</h3>";
     }
 }

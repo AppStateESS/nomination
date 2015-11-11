@@ -1,4 +1,5 @@
 <?php
+namespace nomination;
 
 /**
  * Tells you whether or not a field is visible.
@@ -26,12 +27,12 @@ class NominationFieldVisibility
         $vis = array();
         foreach($this->fields as $field) {
             // If it's not set, show it.
-            if(!PHPWS_Settings::is_set('nomination', 'field_' . $field)) {
+            if(!\PHPWS_Settings::is_set('nomination', 'field_' . $field)) {
                 $vis[] = $field;
                 continue;
             }
             // Otherwise, go to settings.
-            if(PHPWS_Settings::get('nomination', 'field_' . $field) == 1) {
+            if(\PHPWS_Settings::get('nomination', 'field_' . $field) == 1) {
                 $vis[] = $field;
             }
         }
@@ -86,15 +87,15 @@ class NominationFieldVisibility
     {
         // Mark all fields hidden first
         foreach($this->fields as $field) {
-            PHPWS_Settings::set('nomination', 'field_' . $field, 0);
+            \PHPWS_Settings::set('nomination', 'field_' . $field, 0);
         }
 
         // Now mark them shown if they show up on the request
         foreach($context[$name] as $value) {
-            PHPWS_Settings::set('nomination', 'field_' . $value, 1);
+            \PHPWS_Settings::set('nomination', 'field_' . $value, 1);
         }
 
-        PHPWS_Settings::save('nomination');
+        \PHPWS_Settings::save('nomination');
         $this->visibility = $this->loadVisibility();
     }
 }

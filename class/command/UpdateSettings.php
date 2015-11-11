@@ -1,4 +1,5 @@
 <?php
+namespace nomination\command;
 
 /**
  * UpdateSettings - Controller class to handle saving module settings.

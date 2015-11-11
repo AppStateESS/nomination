@@ -1,6 +1,5 @@
 <?php
-
-PHPWS_Core::initModClass('nomination', 'exception/AccessException.php');
+namespace nomination\exception;
 
 class IllegalCommandException extends AccessException {
 

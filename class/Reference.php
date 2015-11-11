@@ -1,4 +1,5 @@
 <?php
+namespace nomination;
 
 /**
  * Reference
@@ -62,7 +63,7 @@ class Reference
 
     public function getDb()
     {
-      return new PHPWS_DB('nomination_reference');
+      return new \PHPWS_DB('nomination_reference');
     }
 
     public function getId()
@@ -157,8 +158,6 @@ class Reference
 
     //gets a link to the nominee
     public function getReferenceLink(){
-        PHPWS_Core::initModClass('nomination','view/ReferenceView.php');
-
         $view = new ReferenceView();
         //we need this so we can see the id later
 
@@ -191,7 +190,7 @@ class Reference
      */
     public static function getNumReferencesReq()
     {
-        return PHPWS_Settings::get('nomination', 'num_references_req');
+        return \PHPWS_Settings::get('nomination', 'num_references_req');
     }
 
 }

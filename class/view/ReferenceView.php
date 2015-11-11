@@ -1,15 +1,18 @@
 <?php
-  /**
-   * ReferenceView
-   *
-   * Look at some reference details...not much though
-   *
-   * @author Robert Bost <bostrt at tux dot appstate dot edu>
-   */
+namespace nomination\view;
 
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'Reference.php');
+use \nomination\Reference;
+use \nomination\Context;
+use \nomination\ReferenceFactory;
 
+/**
+ * ReferenceView
+ *
+ * Look at some reference details...not much though
+ *
+ * @author Robert Bost <bostrt at tux dot appstate dot edu>
+ * @package nomination;
+ */
 class ReferenceView extends \nomination\View
 {
     public $id;
@@ -32,11 +35,11 @@ class ReferenceView extends \nomination\View
         $tpl['RELATIONSHIP'] = $ref->getRelationship();
 
         if(isset($context['ajax'])){
-            echo PHPWS_Template::process($tpl, 'nomination', 'admin/reference.tpl');
+            echo \PHPWS_Template::process($tpl, 'nomination', 'admin/reference.tpl');
             exit();
         } else {
-            Layout::addPageTitle('Reference View');
-            return PHPWS_Template::process($tpl, 'nomination', 'admin/reference.tpl');
+            \Layout::addPageTitle('Reference View');
+            return \PHPWS_Template::process($tpl, 'nomination', 'admin/reference.tpl');
         }
     }
 

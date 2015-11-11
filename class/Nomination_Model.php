@@ -1,4 +1,5 @@
 <?php
+namespace nomination;
 
   /**
    * Nomination_Model
@@ -42,9 +43,9 @@ abstract class Nomination_Model
         $db = $this->getDb();
         $db->addWhere('id', $this->id);
         $result = $db->loadObject($this);
-        if(PHPWS_Error::logIfError($result)){
-            PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
-            throw new DatabaseException($result->toString());
+        if(\PHPWS_Error::logIfError($result)){
+            \PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
+            throw new exception\DatabaseException($result->toString());
         }
 
         return $result;
@@ -55,9 +56,9 @@ abstract class Nomination_Model
         $db = $this->getDb();
         $result = $db->saveObject($this);
 
-        if(PHPWS_Error::logIfError($result)){
-            PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
-            throw new DatabaseException($result->toString());
+        if(\PHPWS_Error::logIfError($result)){
+            \PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
+            throw new exception\DatabaseException($result->toString());
         }
 
         // return new id
@@ -70,8 +71,8 @@ abstract class Nomination_Model
         $db->addWhere('id', $this->id);
         $result = $db->delete();
 
-        if(PHPWS_Error::logIfError($result)){
-            throw new DatabaseException($result->toString());
+        if(\PHPWS_Error::logIfError($result)){
+            throw new exception\DatabaseException($result->toString());
         }
         return true;
     }

@@ -1,4 +1,5 @@
 <?php
+namespace nomination\view;
 
 /**
  * DownloadFile
@@ -9,11 +10,6 @@
  * @author Daniel West <dwest at tux dot appstate dot edu>
  * @package nomination
  */
-
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'NominationDocument.php');
-PHPWS_Core::initModClass('nomination', 'NominationFactory.php');
-PHPWS_Core::initModClass('nomination', 'DocumentFactory.php');
 
 class DownloadFile extends \nomination\View {
     public $unique_id;
@@ -34,12 +30,12 @@ class DownloadFile extends \nomination\View {
         return $vars;
     }
 
-    public function display(Context $context)
+    public function display(\nomination\Context $context)
     {
-        $omnom = new NominationFactory();
+        $omnom = new \nomination\NominationFactory();
         $omnom = $omnom->getNominationbyId($context['nomination']);
 
-        $doc = new DocumentFactory();
+        $doc = new \nomination\DocumentFactory();
         $doc = $doc->getDocumentById($context['unique_id']);
         $doc->newSendFile($context['unique_id']);
     }

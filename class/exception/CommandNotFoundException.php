@@ -1,6 +1,5 @@
 <?php
-
-PHPWS_Core::initModClass('nomination', 'exception/CommandException.php');
+namespace nomination\exception;
 
 class CommandNotFoundException extends CommandException {
 

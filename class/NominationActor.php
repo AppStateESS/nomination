@@ -1,4 +1,6 @@
 <?php
+namespace nomination;
+
   /**
    * NominationActor
    *
@@ -8,8 +10,6 @@
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
-
-PHPWS_Core::initModClass('nomination', 'Nomination_Model.php');
 
 abstract class NominationActor extends Nomination_Model
 {
@@ -49,8 +49,7 @@ abstract class NominationActor extends Nomination_Model
         $uniqueId = md5(uniqid($username));
 
         if(self::uniqueIdExists($uniqueId)){
-            PHPWS_Core::initModClass('nomination', 'exception/UniqueIdException.php');
-            throw new UniqueIdException('Problem occured while generating unique ID.');
+            throw new exception\UniqueIdException('Problem occured while generating unique ID.');
         }
 
         return $uniqueId;
@@ -63,9 +62,6 @@ abstract class NominationActor extends Nomination_Model
      */
     private static function uniqueIdExists($id)
     {
-        PHPWS_Core::initModClass('nomination', 'Nominator.php');
-        PHPWS_Core::initModClass('nomination', 'Reference.php');
-
         $nom_db = Nominator::getDb();
         $ref_db = Reference::getDb();
 

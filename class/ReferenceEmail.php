@@ -1,21 +1,22 @@
 <?php
+namespace nomination;
 
 /**
-  *
-  * A class for handling the nomination reference emails on the creation of a new nomination.
-  *
-  * @author Chris Detsch
-  * @package nomination
-  */
-  class ReferenceEmail
-  {
+*
+* A class for handling the nomination reference emails on the creation of a new nomination.
+*
+* @author Chris Detsch
+* @package nomination
+*/
+class ReferenceEmail
+{
 
     /**
-     * Sends an email to a reference listed on a new nomination
-     *
-     * @param $reference Reference
-     * @param $nom Nomination
-     */
+    * Sends an email to a reference listed on a new nomination
+    *
+    * @param $reference Reference
+    * @param $nom Nomination
+    */
     public static function newNomination(Reference $reference, Nomination $nom)
     {
         $vars = array();
@@ -45,11 +46,11 @@
     }
 
     /**
-     * Sends an email to a reference listed on a new nomination
-     *
-     * @param $reference Reference
-     * @param $nominee Nominee
-     */
+    * Sends an email to a reference listed on a new nomination
+    *
+    * @param $reference Reference
+    * @param $nominee Nominee
+    */
     public static function uploadDocument(Reference $reference)
     {
         $vars = array();
@@ -64,8 +65,8 @@
         $vars['EDIT_LINK'] = $reference->getEditLink();
 
         $list = array($reference);
-        $subject = PHPWS_Settings::get('nomination', 'award_title');
-        $msg = PHPWS_Template::process($vars, 'nomination', 'email/reference_letter_submit.tpl');
+        $subject = \PHPWS_Settings::get('nomination', 'award_title');
+        $msg = \PHPWS_Template::process($vars, 'nomination', 'email/reference_letter_submit.tpl');
         $msgType = 'REFUPL';
 
         $email = new EmailByList($list, $subject, $msg, $msgType);
@@ -73,12 +74,12 @@
     }
 
     /**
-     * Sends an email to a reference listed on a new nomination
-     *
-     * @param $reference Reference
-     * @param $nominee Nominee
-     * @param $nominator Nominator
-     */
+    * Sends an email to a reference listed on a new nomination
+    *
+    * @param $reference Reference
+    * @param $nominee Nominee
+    * @param $nominator Nominator
+    */
     public static function updateNomination(Reference $reference, Nomination $nomination)
     {
         $vars = array();
@@ -96,8 +97,8 @@
         $vars['REF_EDIT_LINK'] = $reference->getEditLink();
 
         $list = array($reference);
-        $subject = PHPWS_Settings::get('nomination', 'award_title');
-        $msg = PHPWS_Template::process($vars, 'nomination', 'email/reference_new_nomination.tpl');
+        $subject = \PHPWS_Settings::get('nomination', 'award_title');
+        $msg = \PHPWS_Template::process($vars, 'nomination', 'email/reference_new_nomination.tpl');
         $msgType = 'UPDNOM';
 
         $email = new EmailByList($list, $subject, $msg, $msgType);
@@ -105,28 +106,28 @@
     }
 
     /**
-     * Sends a message to the nominator of nomination that has been removed
-     *
-     * @param $nominator Nominator
-     * @param $nominee Nominee
-     */
+    * Sends a message to the nominator of nomination that has been removed
+    *
+    * @param $nominator Nominator
+    * @param $nominee Nominee
+    */
     public static function removeNomination(Nomination $nomination)
     {
-
+        
         $vars = array();
 
         $vars['NAME'] = $nomination->getNominatorFirstName() . ' ' . $nomination->getNominatorLastName();
         $vars['NOMINEE_NAME'] = $nomination->getFirstName() . ' ' . $nomination->getLastName();
-        $vars['AWARD_NAME'] = PHPWS_Settings::get('nomination', 'award_title');
+        $vars['AWARD_NAME'] = \PHPWS_Settings::get('nomination', 'award_title');
 
         $references = ReferenceFactory::getByNominationId($nomination->getId());
 
         $list = array();
         foreach ($references as $ref) {
-          array_push($list, $ref->getId());
+            array_push($list, $ref->getId());
         }
         $subject = 'Nomination Removal Request Approved';
-        $msg = PHPWS_Template::process($vars, 'nomination', 'email/removal_request_approved.tpl');
+        $msg = \PHPWS_Template::process($vars, 'nomination', 'email/removal_request_approved.tpl');
         $msgType = 'REFDEL';
 
         $email = new EmailByList($list, $subject, $msg, $msgType);
@@ -135,4 +136,4 @@
 
     }
 
-  }
+}

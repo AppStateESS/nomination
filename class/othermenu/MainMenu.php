@@ -1,6 +1,5 @@
 <?php
-
-PHPWS_Core::initModClass('nomination', 'othermenu/OtherMenu.php');
+namespace nomination\othermenu;
 
 class MainMenu extends OtherMenu
 {
@@ -25,8 +24,8 @@ class MainMenu extends OtherMenu
             // Show each item
             $tpl['menus'][] = array('CONTENT' => $item->show());
         }
-        Layout::addStyle('nomination', 'othermenu/css/style.css');
-        return PHPWS_Template::process($tpl, 'nomination', 'othermenu/main_menu.tpl');
+        \Layout::addStyle('nomination', 'othermenu/css/style.css');
+        return \PHPWS_Template::process($tpl, 'nomination', 'othermenu/main_menu.tpl');
     }
 }
 

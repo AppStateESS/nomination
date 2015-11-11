@@ -1,4 +1,10 @@
 <?php
+namespace nomination\view;
+
+use \nomination\Nominee;
+use \nomination\AjaxDBPager;
+use \nomination\UserStatus;
+use \nomination\Period;
 
 /**
  * NomineeSearch
@@ -6,12 +12,8 @@
  * Nominee searching with AJAX
  *
  * @author Daniel West <dwest at tux dot appstate dot edu>
+ * @package nomination
  */
-
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'Nominee.php');
-PHPWS_Core::initModClass('nomination', 'AjaxDBPager.php');
-
 class NomineeSearch extends \nomination\View
 {
     public $query;
@@ -21,7 +23,7 @@ class NomineeSearch extends \nomination\View
     public function display(Context $context)
     {
         if(!UserStatus::isAdmin() && !UserStatus::isCommitteeMember()){
-            throw new PermissionException('You are not allowed to look at that!');
+            throw new \nomination\exception\PermissionException('You are not allowed to look at that!');
         }
         $ajax = !is_null($context['ajax']);
         $searchString = !is_null($context['query']) ? $context['query'] : '';
@@ -45,7 +47,7 @@ class NomineeSearch extends \nomination\View
 
             javascript('jquery_ui');
             javascriptMod('nomination', 'search', array('PHPWS_SOURCE_HTTP' => PHPWS_SOURCE_HTTP));
-            $form = new PHPWS_Form('search');
+            $form = new \PHPWS_Form('search');
 
             $form->setMethod('get');
             $form->addText('query', $searchString);
@@ -68,18 +70,15 @@ class NomineeSearch extends \nomination\View
 
             $tpl['TITLE'] = 'Nominee Search';
 
-            Layout::addPageTitle('Nominee Search');
+            \Layout::addPageTitle('Nominee Search');
 
-            return PHPWS_Template::process($tpl, 'nomination', 'admin/search.tpl');
+            return \PHPWS_Template::process($tpl, 'nomination', 'admin/search.tpl');
         }
     }
 
     public function getPager($searchString="")
     {
-
-        PHPWS_Core::initModClass('nomination', 'Period.php');
-
-        $pager = new DBPager('nomination_nomination', 'DBNomination');
+        $pager = new \DBPager('nomination_nomination', 'DBNomination');
         $pager->setModule('nomination');
         $pager->setTemplate('admin/nominee_search_results.tpl');
         $pager->setEmptyMessage('No matching nominees found');
@@ -124,4 +123,3 @@ class NomineeSearch extends \nomination\View
         return $vars;
     }
 }
-?>

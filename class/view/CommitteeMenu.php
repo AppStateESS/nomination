@@ -1,13 +1,12 @@
 <?php
+namespace nomination\view;
 
-PHPWS_Core::initModClass('nomination', 'ViewMenu.php');
-
-class CommitteeMenu extends ViewMenu
+class CommitteeMenu extends \nomination\ViewMenu
 {
     public function __construct()
     {
         if(!UserStatus::isCommitteeMember()){
-            throw new PermissionException('You do have permission to look at this!');
+            throw new \nomination\exception\PermissionException('You do have permission to look at this!');
         }
         $this->addViewByName('Nominees', 'NomineeSearch');
         $this->addViewByName('Nominators', 'NominatorSearch');
@@ -18,7 +17,7 @@ class CommitteeMenu extends ViewMenu
         return array('view' => 'CommitteeMenu');
     }
 
-    public function display(Context $context)
+    public function display(\nomination\Context $context)
     {
         return parent::display($context);
     }

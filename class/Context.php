@@ -1,4 +1,6 @@
 <?php
+namespace nomination;
+
 /**
  * Context.php
  *
@@ -8,7 +10,7 @@
  * @package nomination
  */
 
-class Context implements ArrayAccess
+class Context implements \ArrayAccess
 {
     protected $container = array();
 

@@ -1,4 +1,5 @@
 <?php
+namespace nomination;
 
   /**
    * ViewFactory.php
@@ -9,11 +10,22 @@
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
-PHPWS_Core::initModClass('nomination', 'AbstractFactory.php');
-
 class ViewFactory extends AbstractFactory
 {
     private $dir = 'view';
+
+    public function get($className)
+    {
+        if(is_null($className) || $className == ''){
+            //$name = 'Null';
+            throw new \InvalidArgumentException('Missing view name.');
+        }
+
+        $className = '\nomination\view\\' . $className;
+
+        $instance = new $className();
+        return $instance;
+    }
 
     // inherited from parent
     public function getDirectory()
@@ -24,14 +36,12 @@ class ViewFactory extends AbstractFactory
     // inherited from parent
     public function throwIllegal($name)
     {
-        PHPWS_Core::initModClass('nomination', 'exception/IllegalViewException.php');
-        throw new IllegalViewException("Illegal characters found in view {$name}");
+        throw new exception\IllegalViewException("Illegal characters found in view {$name}");
     }
 
     // inherited from parent
     public function throwNotFound($name)
     {
-        PHPWS_Core::initModClass('nomination', 'exception/ViewNotFoundException.php');
-        throw new ViewNotFoundException("Could not initialize view {$name}");
+        throw new exception\ViewNotFoundException("Could not initialize view {$name}");
     }
 }

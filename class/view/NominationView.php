@@ -1,4 +1,17 @@
 <?php
+namespace nomination\view;
+
+use \nomination\View;
+use \nomination\Context;
+use \nomination\Nominee;
+use \nomination\Nominator;
+use \nomination\Nomination;
+use \nomination\NominationDocument;
+use \nomination\ReferenceFactory;
+use \nomination\DocumentFactory;
+
+PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+
   /**
    * NominationView
    *
@@ -7,17 +20,6 @@
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
-
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'Context.php');
-PHPWS_Core::initModClass('nomination', 'Nominee.php');
-PHPWS_Core::initModClass('nomination', 'Nominator.php');
-PHPWS_Core::initModClass('nomination', 'Nomination.php');
-PHPWS_Core::initModClass('nomination', 'NominationDocument.php');
-PHPWS_Core::initModClass('nomination', 'ReferenceFactory.php');
-PHPWS_Core::initModClass('nomination', 'DocumentFactory.php');
-PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
-
 class NominationView extends \nomination\View {
     public $nominationId;
 
@@ -30,8 +32,6 @@ class NominationView extends \nomination\View {
 
 
     public function display(Context $context){
-	    PHPWS_Core::initModClass('nomination', 'NominationFactory.php');
-
         $tpl = array();
 	    $factory = new NominationFactory;
 	    $nomination = $factory::getNominationById($context['id']);
@@ -41,14 +41,14 @@ class NominationView extends \nomination\View {
         $tpl['NOMINATOR_RELATION'] = ($nomination->getNominatorRelation() == null ? "No relation given" : $nomination->getNominatorRelation());
 
         // Get the download link for the nominator statement
-        $db = new PHPWS_DB('nomination_document');
+        $db = new \PHPWS_DB('nomination_document');
         $db->addColumn('id');
         $db->addWhere('nomination_id', $context['id']);
         $db->addWhere('description', 'statement');
         $nominatorDocId = $db->select('row');
 
-        if(PHPWS_Error::logIfError($nominatorDocId)) {
-            throw new DatabaseException('Database is broken, please try again');
+        if(\PHPWS_Error::logIfError($nominatorDocId)) {
+            throw new \nomination\exception\DatabaseException('Database is broken, please try again');
     	}
 
         $doc = new DocumentFactory();
@@ -62,12 +62,12 @@ class NominationView extends \nomination\View {
     	$db->addWhere('nomination_id', $nomination->id);
         $result = $db->select();
 
-        if(PHPWS_Error::logIfError($result) || sizeof($result) == 0){
-            throw new DatabaseException('Database is broken, please try again');
+        if(\PHPWS_Error::logIfError($result) || sizeof($result) == 0){
+            throw new \nomination\exception\DatabaseException('Database is broken, please try again');
     	}
 
         // Fill the references array with references
-        $numRefs = PHPWS_Settings::get('nomination', 'num_references_req');
+        $numRefs = \PHPWS_Settings::get('nomination', 'num_references_req');
     	for($i = 0; $i < $numRefs; $i++){
 	        $ref = new ReferenceFactory();
 	        $reference = $ref->getByUniqueId($result[$i]['unique_id']);
@@ -103,10 +103,10 @@ class NominationView extends \nomination\View {
         javascriptMod('nomination', 'details', array('PHPWS_SOURCE_HTTP' => PHPWS_SOURCE_HTTP));
 
         if(isset($context['ajax'])){
-            echo PHPWS_Template::processTemplate($tpl, 'nomination', 'admin/nomination.tpl');
+            echo \PHPWS_Template::processTemplate($tpl, 'nomination', 'admin/nomination.tpl');
             exit();
         } else {
-            return PHPWS_Template::processTemplate($tpl, 'nomination', 'admin/nomination.tpl');
+            return \PHPWS_Template::processTemplate($tpl, 'nomination', 'admin/nomination.tpl');
         }
     }
 }

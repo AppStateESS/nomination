@@ -1,8 +1,7 @@
 <?php
+namespace nomination;
 
-PHPWS_Core::initModClass('nomination', 'View.php');
-
-abstract class ViewMenu extends \nomination\View
+abstract class ViewMenu extends View
 {
     private $views = array();
 
@@ -38,6 +37,6 @@ abstract class ViewMenu extends \nomination\View
     public function display(Context $context)
     {
         $tpl = $this->buildTemplate();
-        return PHPWS_Template::process($tpl, 'nomination', 'admin/menu.tpl');
+        return \PHPWS_Template::process($tpl, 'nomination', 'admin/menu.tpl');
     }
 }

@@ -1,6 +1,5 @@
 <?php
-
-PHPWS_Core::initModClass('nomination', 'NominationDocument.php');
+namespace nomination;
 
 /**
  * DocumentFactory
@@ -22,16 +21,16 @@ class DocumentFactory {
      */
     public static function getDocumentById($id) {
         if (!isset($id)) {
-            throw new InvalidArgumentException('Missing ID.');
+            throw new \InvalidArgumentException('Missing ID.');
         }
 
         $db = new PHPWS_DB('nomination_document');
         $db->addWhere('id', $id);
         $result = $db->select('row');
 
-        if (PHPWS_Error::logIfError($result)) {
-            PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
-            throw new DatabaseException($result->toString('No document found in DB.'));
+        if (\PHPWS_Error::logIfError($result)) {
+            \PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
+            throw new exception\DatabaseException($result->toString('No document found in DB.'));
         }
 
         if (count($result) == 0) {
@@ -53,7 +52,7 @@ class DocumentFactory {
 
     public static function save(NominationDocument $doc)
     {
-        $db = new PHPWS_DB('nomination_document');
+        $db = new \PHPWS_DB('nomination_document');
 
         $db->addValue('nomination_id', $doc->getNomination()->getId());
         $db->addValue('uploaded_by', $doc->getUploadedBy());
@@ -66,7 +65,7 @@ class DocumentFactory {
         $id = $doc->getId();
         if(!isset($id) || is_null($id)) {
             $result = $db->insert();
-            if(!PHPWS_Error::isError($result)){
+            if(!\PHPWS_Error::isError($result)){
                 // If everything worked, insert() will return the new database id,
                 // So, we need to set that on the object for later
                 $doc->setId($result);
@@ -76,8 +75,8 @@ class DocumentFactory {
             $result = $db->update();
         }
 
-        if(PHPWS_Error::logIfError($result)){
-            throw new Exception('DatabaseException: Failed to save document. ' . $result->toString());
+        if(\PHPWS_Error::logIfError($result)){
+            throw new \Exception('DatabaseException: Failed to save document. ' . $result->toString());
         }
     }
 

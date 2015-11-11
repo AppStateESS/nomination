@@ -1,5 +1,7 @@
 <?php
-PHPWS_Core::requireInc('nomination', 'defines.php');
+namespace nomination;
+
+\PHPWS_Core::requireInc('nomination', 'defines.php');
   /**
    * NominationRolloverEmailPulse
    *
@@ -25,8 +27,6 @@ class NominationRolloverEmailPulse extends ScheduledPulse
 
     public static function execute()
     {
-        PHPWS_Core::initModClass('nomination', 'NominationEmail.php');
-
         $rollover_receiver = array();
 
         // This is the worst hack ever
@@ -55,7 +55,7 @@ class NominationRolloverEmailPulse extends ScheduledPulse
      */
     public static function getCurrentPulse()
     {
-        $db = new PHPWS_DB('pulse_schedule');
+        $db = new \PHPWS_DB('pulse_schedule');
         $db->addWhere('status', PULSE_STATUS_SCHEDULED);
 
         $result = $db->select();
@@ -71,6 +71,6 @@ class RolloverReceiver
 {
     public function getEmail()
     {
-        return PHPWS_Settings::get('nomination', 'rollover_email');
+        return \PHPWS_Settings::get('nomination', 'rollover_email');
     }
 }

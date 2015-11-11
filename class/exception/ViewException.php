@@ -1,6 +1,5 @@
 <?php
-
-PHPWS_Core::initModClass('nomination', 'exception/NominationException.php');
+namespace nomination\exception;
 
 class ViewException extends NominationException {
 

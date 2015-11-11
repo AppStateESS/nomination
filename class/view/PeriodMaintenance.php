@@ -1,4 +1,11 @@
 <?php
+namespace nomination\view;
+
+use \nomination\CommandFactory;
+use \nomination\Period;
+use \nomination\Context;
+use \nomination\UserStatus;
+use \nomination\ViewFactory;
 
 /**
  * Period Maintenance
@@ -9,11 +16,6 @@
  * @author Jeremy Booker
  * @package nomination
  */
-
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'CommandFactory.php');
-PHPWS_Core::initModClass('nomination', 'Period.php');
-
 class PeriodMaintenance extends \nomination\View
 {
     public function getRequestVars()
@@ -26,11 +28,11 @@ class PeriodMaintenance extends \nomination\View
         javascript('jquery');
         javascript('jquery_ui');
         if(!UserStatus::isAdmin()){
-            throw new PermissionException('You are not allowed to see that!');
+            throw new \nomination\exception\PermissionException('You are not allowed to see that!');
         }
         $tpl = array();
 
-        $form = new PHPWS_Form('period_');
+        $form = new \PHPWS_Form('period_');
 
         $cmdFactory = new CommandFactory();
         $updateCmd = $cmdFactory->get('UpdatePeriod');
@@ -69,7 +71,7 @@ class PeriodMaintenance extends \nomination\View
             $tpl['ROLLOVER_LINK'] = '[' . $rolloverView->getLink('Rollover') . ']';
         }
 
-        $form->addText('rollover_email', PHPWS_Settings::get('nomination', 'rollover_email'));
+        $form->addText('rollover_email', \PHPWS_Settings::get('nomination', 'rollover_email'));
         $form->setLabel('rollover_email', 'Rollover Reminder');
         $form->addCssClass('rollover_email', 'form-control');
 
@@ -82,8 +84,8 @@ class PeriodMaintenance extends \nomination\View
         $form->mergeTemplate($tpl);
         $tpl = $form->getTemplate();
 
-        Layout::addPageTitle('Period Settings');
+        \Layout::addPageTitle('Period Settings');
 
-        return PHPWS_Template::process($tpl, 'nomination', 'admin/period_maintenance.tpl');
+        return \PHPWS_Template::process($tpl, 'nomination', 'admin/period_maintenance.tpl');
     }
 }

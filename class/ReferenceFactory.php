@@ -1,6 +1,5 @@
 <?php
-
-PHPWS_Core::initModClass('nomination', 'Reference.php');
+namespace nomination;
 
 /**
  * ReferenceFactory
@@ -14,7 +13,7 @@ class ReferenceFactory {
 
     public static function save(Reference $ref)
     {
-        $db = new PHPWS_DB('nomination_reference');
+        $db = new \PHPWS_DB('nomination_reference');
 
         $db->addValue('nomination_id', $ref->getNominationId());
         $db->addValue('first_name', $ref->getFirstName());
@@ -29,7 +28,7 @@ class ReferenceFactory {
         $id = $ref->getId();
         if(!isset($id) || is_null($id)) {
             $result = $db->insert();
-            if(!PHPWS_Error::isError($result)){
+            if(!\PHPWS_Error::isError($result)){
                 // If everything worked, insert() will return the new database id,
                 // So, we need to set that on the object for later
                 $ref->setId($result);
@@ -39,8 +38,8 @@ class ReferenceFactory {
             $result = $db->update();
         }
 
-        if(PHPWS_Error::logIfError($result)){
-            throw new Exception('DatabaseException: Failed to save reference. ' . $result->toString());
+        if(\PHPWS_Error::logIfError($result)){
+            throw new exception\Exception('DatabaseException: Failed to save reference. ' . $result->toString());
         }
     }
 
@@ -53,15 +52,15 @@ class ReferenceFactory {
      */
     public static function getByUniqueId($uniqueId){
 
-        $db = new PHPWS_DB('nomination_reference');
+        $db = new \PHPWS_DB('nomination_reference');
 
         $db->addWhere('unique_id', $uniqueId);
 
         $result = $db->select('row');
 
-        if(PHPWS_Error::logIfError($result)){
-            PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
-            throw new DatabaseException($result->toString());
+        if(\PHPWS_Error::logIfError($result)){
+            \PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
+            throw new exception\DatabaseException($result->toString());
         }
 
         if(count($result) == 0){
@@ -92,15 +91,15 @@ class ReferenceFactory {
      */
     public static function getByNominationId($Id){
 
-        $db = new PHPWS_DB('nomination_reference');
+        $db = new \PHPWS_DB('nomination_reference');
 
         $db->addWhere('nomination_id', $Id);
 
         $results = $db->select();
 
-        if(PHPWS_Error::logIfError($results)){
-            PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
-            throw new DatabaseException($results->toString());
+        if(\PHPWS_Error::logIfError($results)){
+            \PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
+            throw new exception\DatabaseException($results->toString());
         }
 
 
@@ -134,15 +133,15 @@ class ReferenceFactory {
      */
     public static function getReferenceById($Id){
 
-        $db = new PHPWS_DB('nomination_reference');
+        $db = new \PHPWS_DB('nomination_reference');
 
         $db->addWhere('id', $Id);
 
         $results = $db->select();
 
-        if(PHPWS_Error::logIfError($results)){
-            PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
-            throw new DatabaseException($results->toString());
+        if(\PHPWS_Error::logIfError($results)){
+            \PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
+            throw new exception\DatabaseException($results->toString());
         }
 
 
@@ -176,7 +175,7 @@ class ReferenceFactory {
     {
       if(!isset($id))
       {
-          throw new InvalidArgumentException('Missing nomination id for deleteRefByNomId().');
+          throw new exception\InvalidArgumentException('Missing nomination id for deleteRefByNomId().');
       }
 
       $db = Reference::getDb();

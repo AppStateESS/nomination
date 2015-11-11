@@ -1,4 +1,10 @@
 <?php
+namespace nomination\view;
+
+use \nomination\Context;
+use \nomination\NominationEmail;
+use \nomination\CommandFactory;
+use \nomination\UserStatus;
 
 /**
  * SendEmail
@@ -8,12 +14,6 @@
  * @author Daniel West <dwest at tux dot appstate dot edu>
  * @package nomination
  */
-
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'Context.php');
-PHPWS_Core::initModClass('nomination', 'NominationEmail.php');
-PHPWS_Core::initModClass('nomination', 'CommandFactory.php');
-
 class SendEmail extends \nomination\View {
 
     public function getRequestVars()
@@ -26,13 +26,13 @@ class SendEmail extends \nomination\View {
     public function display(Context $context)
     {
         if(!UserStatus::isAdmin()){
-            throw new PermissionException('You are not allowed to see this!');
+            throw new \nomination\exception\PermissionException('You are not allowed to see this!');
         }
 
         $cf = new CommandFactory;
         $cmd = $cf->get('SubmitReviewEmail');
 
-        $form = new PHPWS_Form('email');
+        $form = new \PHPWS_Form('email');
         $cmd->initForm($form);
 
         $form->addDropBox('list', NominationEmail::getLists());
@@ -54,8 +54,8 @@ class SendEmail extends \nomination\View {
             unset($_SESSION['review']);
         }
 
-        Layout::addPageTitle('Send Email');
+        \Layout::addPageTitle('Send Email');
 
-        return PHPWS_Template::process($form->getTemplate(), 'nomination', 'admin/email_form.tpl');
+        return \PHPWS_Template::process($form->getTemplate(), 'nomination', 'admin/email_form.tpl');
     }
 }

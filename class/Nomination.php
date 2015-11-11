@@ -1,4 +1,6 @@
 <?php
+namespace nomination;
+
 /**
  * Nomination
  *
@@ -411,9 +413,6 @@ class Nomination
     {
         //we need to check if this nomination is complete
         // 1. has each reference uploaded a document?
-        PHPWS_Core::initModClass('nomination','ReferenceFactory.php');
-        PHPWS_Core::initModClass('nomination','Reference.php');
-
         $ref = new ReferenceFactory();
 
         //grab the references attached to this
@@ -454,8 +453,6 @@ class Nomination
     }
     //gets a link to the nominee
     public function getNomineeLink(){
-        PHPWS_Core::initModClass('nomination','view/NomineeView.php');
-
         $view = new NomineeView();
         //we need this so we can see the id later
         $view->setNominationId($this->id);
@@ -465,8 +462,6 @@ class Nomination
     }
 
     public function getNominatorLink() {
-        PHPWS_Core::initModClass('nomination', 'view/NominatorView.php');
-
         $view = new NominatorView();
         //we need this so we can see the id later
         $view->setNominationId($this->id);

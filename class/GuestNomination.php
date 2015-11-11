@@ -1,7 +1,5 @@
 <?php
-
-PHPWS_Core::initModClass('nomination', 'NominationMod.php');
-PHPWS_Core::initModClass('nomination', 'ViewFactory.php');
+namespace nomination;
 
 class GuestNomination extends NominationMod
 {
@@ -20,6 +18,6 @@ class GuestNomination extends NominationMod
         $view = $vFactory->get('UserView');
         $view->setMain($this->content);
 
-        Layout::add($view->display($this->context));
+        \Layout::add($view->display($this->context));
     }
 }

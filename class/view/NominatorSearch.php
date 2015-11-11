@@ -1,8 +1,11 @@
 <?php
+namespace nomination\view;
 
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'Nominator.php');
-PHPWS_Core::initCoreClass('DBPager.php');
+use \nomination\View;
+use \nomination\Nominator;
+use \nomination\UserStatus;
+
+\PHPWS_Core::initCoreClass('DBPager.php');
 
 class NominatorSearch extends \nomination\View
 {
@@ -14,7 +17,7 @@ class NominatorSearch extends \nomination\View
     public function display(Context $context)
     {
         if(!UserStatus::isAdmin() && !UserStatus::isCommitteeMember()){
-            throw new PermissionException('You are not allowed to look at that!');
+            throw new \nomination\exception\PermissionException('You are not allowed to look at that!');
         }
 
         $ajax = !is_null($context['ajax']);
@@ -28,7 +31,7 @@ class NominatorSearch extends \nomination\View
 
             javascript('jquery_ui');
             javascriptMod('nomination', 'search', array('PHPWS_SOURCE_HTTP' => PHPWS_SOURCE_HTTP));
-            $form = new PHPWS_Form('search');
+            $form = new \PHPWS_Form('search');
             $form->setMethod('get');
             $form->addText('query', $searchString);
             $form->addCssClass('query', 'form-control');
@@ -41,19 +44,19 @@ class NominatorSearch extends \nomination\View
             $tpl['PAGER'] = $this->getPager($searchString);
             $tpl['TITLE'] = 'Nominator Search';
 
-            Layout::addPageTitle('Nominator Search');
+            \Layout::addPageTitle('Nominator Search');
 
 
-            return PHPWS_Template::process($tpl, 'nomination', 'admin/search.tpl');
+            return \PHPWS_Template::process($tpl, 'nomination', 'admin/search.tpl');
         }
     }
 
     public function getPager($searchString="")
     {
-        PHPWS_Core::initModClass('nomination', 'Period.php');
-	      PHPWS_Core::initModClass('nomination', 'Nomination.php');
+        \PHPWS_Core::initModClass('nomination', 'Period.php');
+        \PHPWS_Core::initModClass('nomination', 'Nomination.php');
 
-	      $pager = new DBPager('nomination_nomination', 'DBNomination');
+        $pager = new \DBPager('nomination_nomination', 'DBNomination');
         $pager->setModule('nomination');
         $pager->setTemplate('admin/nominator_search_results.tpl');
         $pager->setEmptyMessage('No matching nominators found');
@@ -74,13 +77,14 @@ class NominatorSearch extends \nomination\View
             $pager->db->addWhere('nomination_nomination.complete', TRUE);
         }
 
-	      $pager->db->addJoin('left', 'nomination_nomination', 'nomination_period', 'period', 'id');
+        $pager->db->addJoin('left', 'nomination_nomination', 'nomination_period', 'period', 'id');
         $pager->db->addWhere('nomination_period.year', Period::getCurrentPeriodYear());
 
         $pager->addSortHeader('first_name', 'First');
         $pager->addSortHeader('middle_name', 'Middle');
         $pager->addSortHeader('last_name', 'Last');
         $pager->addRowTags('rowTags');
+        
         return $pager->get();
     }
 }

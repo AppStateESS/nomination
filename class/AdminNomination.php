@@ -1,7 +1,5 @@
 <?php
-
-PHPWS_Core::initModClass('nomination', 'NominationMod.php');
-PHPWS_Core::initModClass('nomination', 'ViewFactory.php');
+namespace nomination;
 
 class AdminNomination extends NominationMod
 {
@@ -18,7 +16,7 @@ class AdminNomination extends NominationMod
 
         $sideMenu = $vFactory->get('AdminMenu');
         $userView->addSideMenu($sideMenu->display($this->context));
-        Layout::add($userView->display($this->context));
+        \Layout::add($userView->display($this->context));
     }
 
 }

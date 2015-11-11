@@ -1,4 +1,11 @@
 <?php
+namespace nomination\view;
+
+use \nomination\Context;
+use \nomination\ViewFactory;
+use \nomination\CommandFactory;
+use \nomination\UserStatus;
+use \nomination\NominationEmail;
 
 /**
  * ReviewEmail
@@ -8,11 +15,6 @@
  * @author Daniel West <dwest at tux dot appstate dot edu>
  * @package nomination
  */
-
-PHPWS_Core::initModClass('nomination', 'View.php');
-PHPWS_Core::initModClass('nomination', 'ViewFactory.php');
-PHPWS_Core::initModClass('nomination', 'CommandFactory.php');
-
 class ReviewEmail extends \nomination\View {
     protected $from;
     protected $list;
@@ -41,7 +43,7 @@ class ReviewEmail extends \nomination\View {
     public function display(Context $context)
     {
         if(!UserStatus::isAdmin()){
-            throw new PermissionException('You are not allowed to see this!');
+            throw new \nomination\exception\PermissionException('You are not allowed to see this!');
         }
 
         if(!isset($_SESSION['review'])){
@@ -64,11 +66,11 @@ class ReviewEmail extends \nomination\View {
         $submitCmd->subject = $data['subject'];
         $submitCmd->message = $data['message'];
 
-        $back = new PHPWS_Form('back');
+        $back = new \PHPWS_Form('back');
         $backCmd->initForm($back);
         $back->addSubmit('Edit');
 
-        $forward = new PHPWS_Form('forward');
+        $forward = new \PHPWS_Form('forward');
         $submitCmd->initForm($forward);
         $forward->addSubmit('Send');
 
@@ -81,8 +83,8 @@ class ReviewEmail extends \nomination\View {
         $data['FORWARD'] = implode('', $forward->getTemplate());
         unset($_SESSION['review']);
 
-        Layout::addPageTitle('Review Email');
+        \Layout::addPageTitle('Review Email');
 
-        return PHPWS_Template::process($data, 'nomination', 'admin/confirm_email.tpl');
+        return \PHPWS_Template::process($data, 'nomination', 'admin/confirm_email.tpl');
     }
 }

@@ -1,4 +1,6 @@
 <?php
+namespace nomination;
+
   /**
    * AjaxDBPager
    *
@@ -12,7 +14,7 @@
 
 PHPWS_Core::initCoreClass('DBPager.php');
 
-class AjaxDBPager extends DBPager {
+class AjaxDBPager extends \DBPager {
     protected $exclusionMap;
 
     public function __construct(Array $exclusionMap, $table, $class=null){

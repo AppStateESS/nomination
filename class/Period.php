@@ -1,4 +1,6 @@
 <?php
+namespace nomination;
+
  /**
   * Period
   *
@@ -10,19 +12,17 @@
   * @package nomination
   */
 
-PHPWS_Core::initModClass('nomination', 'Nomination_Model.php');
-
-define('PERIOD_TABLE', 'nomination_period');
-
 class Period extends Nomination_Model
 {
     public $year;
     public $start_date;
     public $end_date;
 
+    const TABLE = 'nomination_period';
+
     public function getDb()
     {
-        return new PHPWS_DB(PERIOD_TABLE);
+        return new \PHPWS_DB(self::TABLE);
     }
 
     /**
@@ -73,7 +73,7 @@ class Period extends Nomination_Model
         $currPeriod = Period::getCurrentPeriod();
 
         if(is_null($currPeriod)){
-            throw new InvalidArgumentException('No current time period set.');
+            throw new \InvalidArgumentException('No current time period set.');
         }
 
         if($now > $currPeriod->getEndDate()){
@@ -140,7 +140,7 @@ class Period extends Nomination_Model
      */
     public static function getCurrentPeriod()
     {
-        $year = PHPWS_Settings::get('nomination', 'current_period');
+        $year = \PHPWS_Settings::get('nomination', 'current_period');
 
         if(!isset($year) || is_null($year)){
             return null;
@@ -153,7 +153,7 @@ class Period extends Nomination_Model
      */
     public static function getCurrentPeriodYear()
     {
-        return PHPWS_Settings::get('nomination', 'current_period');
+        return \PHPWS_Settings::get('nomination', 'current_period');
     }
     /**
      * @return year - The next period

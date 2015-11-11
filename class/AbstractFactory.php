@@ -1,4 +1,5 @@
 <?php
+namespace nomination;
 
   /**
    * AbstractFactory.php
@@ -12,28 +13,16 @@ abstract class AbstractFactory
     public abstract function throwIllegal($name);
     public abstract function throwNotFound($name);
 
-    public function get($name=Null)
+    public function get($className)
     {
-        if(is_null($name)){
-            $name = 'Null';
+        if(is_null($className) || $className == ''){
+            //$name = 'Null';
+            throw new \InvalidArgumentException('Missing view name.');
         }
 
-        $class = $this->init($name);
+        $className = '\nomination\command\\' . $className;
 
-        $instance = new $class();
+        $instance = new $className();
         return $instance;
-    }
-
-    private function init($name)
-    {
-        $dir = $this->getDirectory();
-
-        if(preg_match('/\W/', $name)) {
-            $this->throwIllegal($name);
-        }
-
-        PHPWS_Core::initModClass('nomination', "{$dir}/{$name}.php");
-
-        return $name;
     }
 }

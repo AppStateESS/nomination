@@ -1,4 +1,5 @@
 <?php
+namespace nomination;
 
 /**
  * AllNominatorsEmail
@@ -25,7 +26,7 @@
 
      if(PHPWS_Error::logIfError($results) || is_null($results))
      {
-       throw new DatabaseException('Could not retrieve requested mailing list');
+       throw new exception\DatabaseException('Could not retrieve requested mailing list');
      }
 
      return $results;
