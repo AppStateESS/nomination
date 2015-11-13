@@ -6,6 +6,7 @@ use \nomination\Context;
 use \nomination\view\NominationNotificationView;
 use \nomination\exception\InvalidSettingsException;
 use \nomination\UserStatus;
+use \nomination\NominationFieldVisibility;
 
 /**
  * UpdateSettings - Controller class to handle saving module settings.
@@ -96,7 +97,6 @@ class UpdateSettings extends Command {
 
             $settingsMap['email_from_address'] = $context['email_from_address'];
 
-            \PHPWS_Core::initModClass('nomination', 'NominationFieldVisibility.php');
             $vis = new NominationFieldVisibility();
             $vis->saveFromContext($context, 'show_fields');
 
