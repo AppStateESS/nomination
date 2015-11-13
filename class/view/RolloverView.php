@@ -4,6 +4,7 @@ namespace nomination\view;
 use \nomination\Context;
 use \nomination\CommandFactory;
 use \nomination\Period;
+use \nomination\UserStatus;
 
   /**
    * RolloverView

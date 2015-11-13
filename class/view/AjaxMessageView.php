@@ -1,4 +1,6 @@
 <?php
+namespace nomination\view;
+use \nomination\Context;
 
   /**
    * AjaxMessageView

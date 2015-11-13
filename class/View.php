@@ -12,7 +12,7 @@ namespace nomination;
 
 abstract class View {
     public abstract function getRequestVars();
-    public abstract function display(\Context $context);
+    public abstract function display(\nomination\Context $context);
 
     public function initForm(\PHPWS_Form $form)
     {

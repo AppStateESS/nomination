@@ -45,7 +45,7 @@ class UserStatus
             // Check member's groups for nomination_committee
             foreach($groups as $group_id){
                 \PHPWS_Core::initModClass('users', 'Group.php');
-                $group = new PHPWS_Group($group_id);
+                $group = new \PHPWS_Group($group_id);
                 if($group->getName() == 'nomination_committee'){
                     return True;
                 }

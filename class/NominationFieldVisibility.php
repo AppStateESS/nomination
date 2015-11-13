@@ -70,7 +70,7 @@ class NominationFieldVisibility
                      'nominator_relationship');
     }
 
-    public function prepareSettingsForm(PHPWS_Form $form, $name)
+    public function prepareSettingsForm(\PHPWS_Form $form, $name)
     {
         $fieldMatch = array();
         foreach($this->fields as $field) {

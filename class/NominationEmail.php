@@ -13,7 +13,7 @@ use exception\DaatabaseException;
  * @package nomination
  */
 
-PHPWS_Core::initCoreClass('Mail.php');
+\PHPWS_Core::initCoreClass('Mail.php');
 
 // Abbreviated NominationActor names
 // Used in DB

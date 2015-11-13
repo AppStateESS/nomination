@@ -1,6 +1,9 @@
 <?php
 namespace nomination\view;
 
+use \nomination\Context;
+use \nomination\UserStatus;
+
 \PHPWS_Core::initCoreClass('DBPager.php');
 
 /**
@@ -18,7 +21,7 @@ class CancelQueuePager extends \nomination\View {
         return array('view'=>'CancelQueuePager');
     }
 
-    public function display(\nomination\Context $form)
+    public function display(Context $form)
     {
         if(!UserStatus::isAdmin()){
             throw new \nomination\exception\PermissionException('You are not allowed to see that!');

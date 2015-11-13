@@ -5,6 +5,7 @@ use \nomination\Nominee;
 use \nomination\AjaxDBPager;
 use \nomination\UserStatus;
 use \nomination\Period;
+use \nomination\Context;
 
 /**
  * NomineeSearch

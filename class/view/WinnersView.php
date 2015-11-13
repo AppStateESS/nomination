@@ -1,5 +1,7 @@
 <?php
 namespace nomination\view;
+use \nomination\Context;
+use \nomination\UserStatus;
 
   /**
    * WinnersView
@@ -23,7 +25,7 @@ class WinnersView extends \nomination\View
             throw new \nomination\exception\PermissionException('You are not allowed to see this!');
         }
 
-        $pager = new \DBpager('nomination_nomination', '\nomination\Nomination');
+        $pager = new \DBPager('nomination_nomination', '\nomination\Nomination');
         $pager->setModule('nomination');
         $pager->setTemplate('admin/winners.tpl');
         $pager->setEmptyMessage('No Winners Yet');
@@ -40,7 +42,7 @@ class WinnersView extends \nomination\View
         // Row tags
         $pager->addRowTags('rowTags');
 
-        Layout::addPageTitle('View Winners');
+        \Layout::addPageTitle('View Winners');
 
         return $pager->get();
     }

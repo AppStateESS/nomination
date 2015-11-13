@@ -4,6 +4,8 @@ namespace nomination\view;
 use \nomination\View;
 use \nomination\Nominator;
 use \nomination\UserStatus;
+use \nomination\Context;
+use \nomination\Period;
 
 \PHPWS_Core::initCoreClass('DBPager.php');
 
@@ -84,7 +86,7 @@ class NominatorSearch extends \nomination\View
         $pager->addSortHeader('middle_name', 'Middle');
         $pager->addSortHeader('last_name', 'Last');
         $pager->addRowTags('rowTags');
-        
+
         return $pager->get();
     }
 }

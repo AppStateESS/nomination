@@ -1,6 +1,9 @@
 <?php
 namespace nomination\view;
 
+use \nomination\Context;
+use \nomination\UserStatus;
+
   /**
    * AdminSettings
    *

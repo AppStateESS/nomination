@@ -1,5 +1,7 @@
 <?php
 namespace nomination\command;
+use \nomination\Context;
+use \nomination\UserStatus;
 
 /**
  * UpdatePeriod - Controller class to handle updating/saving a period's settings/attributes.
@@ -8,11 +10,7 @@ namespace nomination\command;
  * @author Jeremy Booker
  * @package nomination
  */
-
-PHPWS_Core::initModClass('nomination', 'Command.php');
-PHPWS_Core::initModClass('nomination', 'exception/InvalidSettingsException.php');
-
-class UpdatePeriod extends Command
+class UpdatePeriod extends \nomination\Command
 {
     public function getRequestVars()
     {
@@ -22,7 +20,7 @@ class UpdatePeriod extends Command
     public function execute(Context $context)
     {
         if(!UserStatus::isAdmin()){
-            throw new PermissionException('You are not allowed to do that!');
+            throw new \nomination\exception\PermissionException('You are not allowed to do that!');
         }
 
         try{
@@ -34,33 +32,33 @@ class UpdatePeriod extends Command
                 // m/d/y
                 $date= explode("/", $context['nomination_period_start']);
                 if(!$this->isValidDateFormat($date)){
-                    throw new InvalidSettingsException('Incorrect formatting on Start Date. (MM/DD/YYYY)');
+                    throw new \nomination\exception\InvalidSettingsException('Incorrect formatting on Start Date. (MM/DD/YYYY)');
                 }
                 $startUnixDate = mktime(0,0,0, $date[0], $date[1], $date[2]);
             } else {
-                throw new InvalidSettingsException('Start date for period must be set.');
+                throw new \nomination\exception\InvalidSettingsException('Start date for period must be set.');
             }
 
             if(!empty($context['nomination_period_end'])){
                 // m/d/y
                 $date= explode("/", $context['nomination_period_end']);
                 if(!$this->isValidDateFormat($date)){
-                    throw new InvalidSettingsException('Incorrect formatting on End Date. (MM/DD/YYYY)');
+                    throw new \nomination\exception\InvalidSettingsException('Incorrect formatting on End Date. (MM/DD/YYYY)');
                 }
                 $endUnixDate = mktime(0,0,0, $date[0], $date[1], $date[2]);
             } else {
-                throw new InvalidSettingsException('End date for period must be set.');
+                throw new \nomination\exception\InvalidSettingsException('End date for period must be set.');
             }
 
             // Check that start date is BEFORE end date
             if($startUnixDate >= $endUnixDate){
-                throw new InvalidSettingsException('Start date must be before end date.');
+                throw new \nomination\exception\InvalidSettingsException('Start date must be before end date.');
             }
 
             //
             // Save nomination period settings
             //
-            PHPWS_Core::initModClass('nomination', 'Period.php');
+            \PHPWS_Core::initModClass('nomination', 'Period.php');
             $period = Period::getCurrentPeriod();
             if(is_null($period)){
                 // A period doesn't exist yet, so we need to create it
@@ -68,8 +66,8 @@ class UpdatePeriod extends Command
                 $period->setYear($date[2]);
 
                 // Save the year as a phpws setting too
-                PHPWS_Settings::set('nomination', 'current_period', $date[2]);
-                PHPWS_Settings::save('nomination');
+                \PHPWS_Settings::set('nomination', 'current_period', $date[2]);
+                \PHPWS_Settings::save('nomination');
             }
 
             $period->setStartDate($startUnixDate);
@@ -79,18 +77,18 @@ class UpdatePeriod extends Command
             /**
              * Update receiver of rollover reminder email
              */
-            PHPWS_Settings::set('nomination', 'rollover_email', $context['rollover_email']);
-            PHPWS_Settings::save('nomination');
+            \PHPWS_Settings::set('nomination', 'rollover_email', $context['rollover_email']);
+            \PHPWS_Settings::save('nomination');
 
-            PHPWS_Core::initModClass('nomination', 'NominationRolloverEmailPulse.php');
+            \PHPWS_Core::initModClass('nomination', 'NominationRolloverEmailPulse.php');
             $pulse = NominationRolloverEmailPulse::getCurrentPulse();
             $pulse->setExecuteTime($endUnixDate);
 
-        } catch(Exception $e){
-            NQ::simple('nomination', NOMINATION_ERROR, $e->getMessage());
+        } catch(\Exception $e){
+            \NQ::simple('nomination', NOMINATION_ERROR, $e->getMessage());
             return;
         }
-        NQ::simple('nomination', NOMINATION_SUCCESS, $year.' period updated.');
+        \NQ::simple('nomination', NOMINATION_SUCCESS, $year.' period updated.');
     }
 
     /**

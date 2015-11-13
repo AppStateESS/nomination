@@ -1,6 +1,12 @@
 <?php
 namespace nomination\command;
 
+use \nomination\Command;
+use \nomination\Context;
+use \nomination\view\NominationNotificationView;
+use \nomination\exception\InvalidSettingsException;
+use \nomination\UserStatus;
+
 /**
  * UpdateSettings - Controller class to handle saving module settings.
  *
@@ -8,11 +14,6 @@ namespace nomination\command;
  * @author Jeremy Booker
  * @package nomination
  */
-PHPWS_Core::initModClass('nomination', 'Command.php');
-PHPWS_Core::initModClass('nomination', 'Context.php');
-PHPWS_Core::initModClass('nomination', 'view/NominationNotificationView.php');
-PHPWS_Core::initModClass('nomination', 'exception/InvalidSettingsException.php');
-
 class UpdateSettings extends Command {
 
     public function getRequestVars(){
@@ -50,7 +51,7 @@ class UpdateSettings extends Command {
     public function execute(Context $context)
     {
         if(!UserStatus::isAdmin()){
-            throw new PermissionException('You are not allowed to see this!');
+            throw new \nomination\exception\PermissionException('You are not allowed to see this!');
         }
 
         try{
@@ -90,12 +91,12 @@ class UpdateSettings extends Command {
             if(!empty($context['allowed_file_types'])){
                 $settingsMap['allowed_file_types'] = $context['allowed_file_types'];
             } else {
-                throw new InvalidSettingsException('At least one file type must be set.');
+                throw new \nomination\exception\InvalidSettingsException('At least one file type must be set.');
             }
 
             $settingsMap['email_from_address'] = $context['email_from_address'];
 
-            PHPWS_Core::initModClass('nomination', 'NominationFieldVisibility.php');
+            \PHPWS_Core::initModClass('nomination', 'NominationFieldVisibility.php');
             $vis = new NominationFieldVisibility();
             $vis->saveFromContext($context, 'show_fields');
 
@@ -104,20 +105,20 @@ class UpdateSettings extends Command {
              * PHPWS_Settings::save() returns null on success
              */
             foreach($settingsMap as $key=>$value){
-                PHPWS_Settings::set('nomination', $key, $value);
+                \PHPWS_Settings::set('nomination', $key, $value);
             }
-            $result = PHPWS_Settings::save('nomination');
+            $result = \PHPWS_Settings::save('nomination');
 
             if(!is_null($result)){
-                throw new Exception('Something bad happened when settings were being saved.');
+                throw new \Exception('Something bad happened when settings were being saved.');
             }
-        } catch (Exception $e){
-            NQ::simple('nomination', NOMINATION_ERROR, $e->getMessage());
+        } catch (\Exception $e){
+            \NQ::simple('nomination', NOMINATION_ERROR, $e->getMessage());
             return;
         }
 
 
-        NQ::simple('nomination', NOMINATION_SUCCESS, 'Settings saved.');
+        \NQ::simple('nomination', NOMINATION_SUCCESS, 'Settings saved.');
     }
 
 }

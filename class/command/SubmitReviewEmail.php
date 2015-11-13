@@ -1,6 +1,11 @@
 <?php
 namespace nomination\command;
 
+use \nomination\Command;
+use \nomination\UserStatus;
+use \nomination\Context;
+use \nomination\exception\PermissionException;
+
 /**
  * SubmitReviewEmail
  *
@@ -10,9 +15,6 @@ namespace nomination\command;
  * @author Daniel West <dwest at tux dot appstate dot edu>
  * @package nomination
  */
-
-PHPWS_Core::initModClass('nomination', 'Command.php');
-
 class SubmitReviewEmail extends Command {
 
     public function getRequestVars()
@@ -30,7 +32,7 @@ class SubmitReviewEmail extends Command {
 
         //can't session object with serialization witchery...
         $review = array();
-        $review['from'] = isset($context['from']) ? $context['from'] : PHPWS_Settings::get('nomination', 'email_from_address');
+        $review['from'] = isset($context['from']) ? $context['from'] : \PHPWS_Settings::get('nomination', 'email_from_address');
         $review['list'] = $context['list'];
         $review['subject'] = $context['subject'];
         $review['message'] = $context['message'];
