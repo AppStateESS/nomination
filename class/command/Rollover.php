@@ -48,6 +48,6 @@ class Rollover extends Command
         $timeDiff = mktime() - $newPeriod->getEndDate();
         $pulse->newFromNow($timeDiff);
 
-        \NQ::simple('nomination', NOMINATION_SUCCESS, 'Current period is now '.$newYear);
+        \NQ::simple('nomination', NotificationView::NOMINATION_SUCCESS, 'Current period is now '.$newYear);
     }
 }

@@ -85,10 +85,10 @@ class UpdatePeriod extends \nomination\Command
             $pulse->setExecuteTime($endUnixDate);
 
         } catch(\Exception $e){
-            \NQ::simple('nomination', NOMINATION_ERROR, $e->getMessage());
+            \NQ::simple('nomination', NotificationView::NOMINATION_ERROR, $e->getMessage());
             return;
         }
-        \NQ::simple('nomination', NOMINATION_SUCCESS, $year.' period updated.');
+        \NQ::simple('nomination', NotificationView::NOMINATION_SUCCESS, $year.' period updated.');
     }
 
     /**

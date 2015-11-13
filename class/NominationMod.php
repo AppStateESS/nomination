@@ -1,7 +1,7 @@
 <?php
 namespace nomination;
 
-use \nomination\view\NominationNotificationView;
+use \nomination\view\NotificationView;
 
 abstract class NominationMod
 {
@@ -45,18 +45,18 @@ abstract class NominationMod
                 exit();
             } catch (Exception $e) {
                 $this->context['view'] = isset($this->context['after']) ? $this->context['after'] : 'Null';
-                NQ::simple('nomination', NOMINATION_ERROR, $e->getMessage());
+                NQ::simple('nomination', NotificationView::NOMINATION_ERROR, $e->getMessage());
             }
         }
 
         /* Show any notifications */
-        $nv = new NominationNotificationView();
+        $nv = new NotificationView();
         $nv->popNotifications();
 
         try{
             $this->context['nq'] = $nv->show();
         } catch (\InvalidArgumentException $e){
-            NominationNotificationView::immediateError($e->getMessage());
+            NotificationView::immediateError($e->getMessage());
         }
 
         $vFactory = new ViewFactory();

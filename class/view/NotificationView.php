@@ -2,7 +2,7 @@
 namespace nomination\view;
 
   /**
-   * NominationNotificationView
+   * NotificationView
    *
    *   Handles rendering NQ messages for this application.
    *
@@ -10,13 +10,13 @@ namespace nomination\view;
    * @inspired-by Jeff Tickle's NotificationView in hms
    * @package nomination
    */
-
-define('NOMINATION_SUCCESS', 0);
-define('NOMINATION_ERROR',   1);
-define('NOMINATION_WARNING', 2);
-
-class NominationNotificationView
+class NotificationView
 {
+    const NOMINATION_SUCCESS    = 0;
+    const NOMINATION_ERROR      = 1;
+    const NOMINATION_WARNING    = 2;
+
+
     private $notifications = array();
 
     public function popNotifications()
@@ -26,7 +26,7 @@ class NominationNotificationView
 
     public function immediateError($message)
     {
-        \NQ::simple('nomination', NOMINATION_ERROR, $message);
+        \NQ::simple('nomination', self::NOMINATION_ERROR, $message);
         \NQ::close();
 
         exit();
@@ -61,11 +61,11 @@ class NominationNotificationView
     public function resolveType(Notification $notification)
     {
         switch($notification->getType()){
-            case NOMINATION_SUCCESS:
+            case self::NOMINATION_SUCCESS:
                 return 'SUCCESS';
-            case NOMINATION_ERROR:
+            case self::NOMINATION_ERROR:
                 return 'ERROR';
-            case NOMINATION_WARNING:
+            case self::NOMINATION_WARNING:
                 return 'WARNING';
             default:
                 return 'UNKNOWN';

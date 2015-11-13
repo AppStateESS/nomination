@@ -3,7 +3,7 @@ namespace nomination\command;
 
 use \nomination\Command;
 use \nomination\Context;
-use \nomination\view\NominationNotificationView;
+use \nomination\view\NotificationView;
 use \nomination\exception\InvalidSettingsException;
 use \nomination\UserStatus;
 use \nomination\NominationFieldVisibility;
@@ -113,12 +113,12 @@ class UpdateSettings extends Command {
                 throw new \Exception('Something bad happened when settings were being saved.');
             }
         } catch (\Exception $e){
-            \NQ::simple('nomination', NOMINATION_ERROR, $e->getMessage());
+            \NQ::simple('nomination', NotificationView::NOMINATION_ERROR, $e->getMessage());
             return;
         }
 
 
-        \NQ::simple('nomination', NOMINATION_SUCCESS, 'Settings saved.');
+        \NQ::simple('nomination', NotificationView::NOMINATION_SUCCESS, 'Settings saved.');
     }
 
 }

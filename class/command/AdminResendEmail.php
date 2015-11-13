@@ -56,6 +56,6 @@ class AdminResendEmail extends Command
             $context['after']->setMessage(true);
         }
 
-        NQ::simple('nomination', NOMINATION_SUCCESS, 'Email sent.');
+        NQ::simple('nomination', NotificationView::NOMINATION_SUCCESS, 'Email sent.');
     }
 }

@@ -279,6 +279,6 @@ class CreateNomination extends Command
             NominatorEmail::newNomination($nomination);
         }
 
-        \NQ::simple('Nomination', NOMINATION_SUCCESS, 'Form successfully submitted. Email sent.');
+        \NQ::simple('Nomination', NotificationView::NOMINATION_SUCCESS, 'Form successfully submitted. Email sent.');
     }
 }

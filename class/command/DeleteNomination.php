@@ -56,6 +56,6 @@ class DeleteNomination extends Command
         // Delete removal request from queue
         CancelQueue::approve($nomination);
 
-        NQ::simple('nomination', NOMINATION_SUCCESS, 'Nomination deleted. Email sent.');
+        NQ::simple('nomination', NotificationView::NOMINATION_SUCCESS, 'Nomination deleted. Email sent.');
     }
 }
