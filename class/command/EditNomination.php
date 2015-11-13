@@ -221,7 +221,7 @@ class EditNomination extends Command
       }
 
 
-      NQ::simple('Nomination', NotificationView::NOMINATION_SUCCESS, 'Form successfully submitted. Changes made.');
+      \NQ::simple('Nomination', NotificationView::NOMINATION_SUCCESS, 'Form successfully submitted. Changes made.');
 
 
     }

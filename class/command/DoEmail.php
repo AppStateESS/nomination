@@ -75,12 +75,12 @@ class DoEmail extends Command {
               $mail = new CompleteNomineeEmail($context['subject'], $context['message'], $msgType);
               $mail->send();
             }
-            NQ::simple('nomination', NotificationView::NOMINATION_SUCCESS, 'Emails sent');
+            \NQ::simple('nomination', NotificationView::NOMINATION_SUCCESS, 'Emails sent');
             $this->redirect();
 
         } catch(DatabaseException $e){
 
-            NQ::simple('nomination', NotificationView::NOMINATION_ERROR, $e->getMessage());
+            \NQ::simple('nomination', NotificationView::NOMINATION_ERROR, $e->getMessage());
         }
     }
 }

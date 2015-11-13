@@ -39,7 +39,7 @@ class ReferenceForm extends \nomination\View {
 
         // Check if unique_id is in context
         if(!isset($context['unique_id'])){
-            NQ::simple('nomination', NotificationView::NOMINATION_ERROR, 'Missing ID in link');
+            \NQ::simple('nomination', NotificationView::NOMINATION_ERROR, 'Missing ID in link');
             $vFactory = new ViewFactory();
             $fof = $vFactory->get('FourOhFour');
             $fof->redirect();
@@ -49,7 +49,7 @@ class ReferenceForm extends \nomination\View {
 
         // Check that we got a reference obj back
         if(is_null($ref)){
-            NQ::simple('nomination', NotificationView::NOMINATION_ERROR, 'Invalid ID');
+            \NQ::simple('nomination', NotificationView::NOMINATION_ERROR, 'Invalid ID');
             $vFactory = new ViewFactory();
             $fof = $vFactory->get('FourOhFour');
             $fof->redirect();

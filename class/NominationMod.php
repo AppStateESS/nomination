@@ -40,12 +40,12 @@ abstract class NominationMod
                     $after = isset($this->context['after']) ? 'index.php?module=nomination&view='.$this->context['after'] : 'index.php';
                 }
 
-                NQ::close();
+                \NQ::close();
                 header("Location: ".$after);
                 exit();
             } catch (Exception $e) {
                 $this->context['view'] = isset($this->context['after']) ? $this->context['after'] : 'Null';
-                NQ::simple('nomination', NotificationView::NOMINATION_ERROR, $e->getMessage());
+                \NQ::simple('nomination', NotificationView::NOMINATION_ERROR, $e->getMessage());
             }
         }
 

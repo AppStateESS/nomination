@@ -134,7 +134,7 @@ abstract class Command
 	public function redirect()
 	{
 		$path = $this->getURI();
-		NQ::close();
+		\NQ::close();
 
 		header('HTTP/1.1 303 See Other');
 		header("Location: $path");

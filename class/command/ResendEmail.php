@@ -63,7 +63,7 @@ class ResendEmail extends Command
         $nomForm->unique_id = $context['unique_id'];
         $context['after'] = $nomForm;
 
-        NQ::simple('nomination', NotificationView::NOMINATION_SUCCESS, 'Email(s) sent.');
+        \NQ::simple('nomination', NotificationView::NOMINATION_SUCCESS, 'Email(s) sent.');
     }
 
     public function setUniqueId($unique_id){
