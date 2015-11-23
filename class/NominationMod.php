@@ -25,27 +25,31 @@ abstract class NominationMod
         if(!empty($_GET) && !isset($_GET['check_overpost'])){
             $this->context = new Context($_GET);
         }
-        // Execute a command and redirect to it's after view
+        // Execute a command and redirect to its after view
         else if(!empty($_POST)){
             $this->context = new Context($_POST);
 
             $cmdFactory = new CommandFactory();
             $cmd = $cmdFactory->get($this->context['action']);
-            try{
+
+            try {
                 $cmd->execute($this->context);
 
                 if(isset($this->context['after']) && $this->context['after'] instanceof View){
-                    $after = $this->context['after']->getURI();
+                    $uri = $this->context['after']->getURI();
+                } else if (isset($this->context['after'])) {
+                    $uri = 'index.php?module=nomination&view=' . $this->context['after'];
                 } else {
-                    $after = isset($this->context['after']) ? 'index.php?module=nomination&view='.$this->context['after'] : 'index.php';
+                    $uri = 'index.php';
                 }
 
                 \NQ::close();
                 header("Location: ".$after);
                 exit();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $this->context['view'] = isset($this->context['after']) ? $this->context['after'] : 'Null';
                 \NQ::simple('nomination', NotificationView::NOMINATION_ERROR, $e->getMessage());
+                \NQ::close();
             }
         }
 
@@ -59,15 +63,11 @@ abstract class NominationMod
             NotificationView::immediateError($e->getMessage());
         }
 
-        $vFactory = new ViewFactory();
-
         // If view is not set in context then show the default view
-        $view = isset($this->context['view']) ? $this->context['view'] : $this->defaultView;
+        $viewName = isset($this->context['view']) ? $this->context['view'] : $this->defaultView;
 
         // Get view from factory and show it
-
-            $theView = $vFactory->get($view);
-            $this->content = $theView->display($this->context);
-
+        $view = ViewFactory::get($viewName);
+        $this->content = $view->display($this->context);
     }
 }

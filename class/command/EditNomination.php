@@ -88,9 +88,8 @@ class EditNomination extends Command
           $context['missing'] = $missing;// Add missing fields to context
           $context['form_fail'] = True;// Set form fail
           // Throw exception
-          PHPWS_Core::initModClass('nomination', 'exception/BadFormException.php');
           $missingFields = implode(', ', $missing);
-          throw new BadFormException('The following fields are missing: ' . $missingFields);
+          throw new \nomination\exception\BadFormException('The following fields are missing: ' . $missingFields);
       }
 
       //check for bad email

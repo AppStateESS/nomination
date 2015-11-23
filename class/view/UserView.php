@@ -12,9 +12,19 @@ use \nomination\UserStatus;
  * @author Robert Bost <bostrt at tux dot appstate dot edu>
  * @package nomination;
  */
-class UserView extends \nomination\NomView
+class UserView extends \nomination\View
 {
     private $sideMenu;
+    private $main;
+
+    public function setMain($content){
+        $this->main = $content;
+    }
+
+    public function getMain()
+    {
+        return $this->main;
+    }
 
     public function getRequestVars(){
         return array('view'=>'UserView');
@@ -34,6 +44,7 @@ class UserView extends \nomination\NomView
         $tpl['MAIN'] = $this->getMain();
         $tpl['MENU'] = $this->sideMenu;
         $tpl['USER_STATUS'] = UserStatus::getDisplay();
-        return $this->displayNomination(\PHPWS_Template::process($tpl, 'nomination', 'user.tpl'));
+        \Layout::addStyle('nomination', 'css/nomination.css');
+        return \PHPWS_Template::process($tpl, 'nomination', 'user.tpl');
     }
 }

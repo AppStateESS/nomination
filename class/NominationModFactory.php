@@ -1,31 +1,22 @@
 <?php
 namespace nomination;
 
-  /**
-   * NominationFactory.php
-   *
-   * @author Robert Bost <bostrt at tux dot appstate dot edu>
-   */
-
+/**
+ * NominationFactory.php
+ *
+ * @author Robert Bost <bostrt at tux dot appstate dot edu>
+ * @package nomination
+ */
 class NominationModFactory
 {
-    private static $nomination;
-
     public static function getNomination()
     {
-        if(isset(NominationModFactory::$nomination)){
-            return NominationFactory::$nomination;
+        if(UserStatus::isAdmin()) {
+            return new AdminNomination();
+        } else if(UserStatus::isCommitteeMember()) {
+            return new CommitteeNomination();
+        } else {
+            return new GuestNomination();
         }
-        else if(UserStatus::isAdmin()){
-            NominationModFactory::$nomination = new AdminNomination();
-        }
-        else if(UserStatus::isCommitteeMember()){
-            NominationModFactory::$nomination = new CommitteeNomination();
-        }
-        else {
-            NominationModFactory::$nomination = new GuestNomination();
-        }
-
-        return NominationModFactory::$nomination;
     }
 }

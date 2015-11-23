@@ -9,14 +9,12 @@ class AdminNomination extends NominationMod
     {
         parent::process();
 
-        $vFactory = new ViewFactory();
-
-        $userView = $vFactory->get('UserView');
+        $userView = new view\UserView();
         $userView->setMain($this->content);
 
-        $sideMenu = $vFactory->get('AdminMenu');
+        $sideMenu = new view\AdminMenu();
         $userView->addSideMenu($sideMenu->display($this->context));
+
         \Layout::add($userView->display($this->context));
     }
-
 }

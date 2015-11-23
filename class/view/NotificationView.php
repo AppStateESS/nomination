@@ -1,15 +1,15 @@
 <?php
 namespace nomination\view;
 
-  /**
-   * NotificationView
-   *
-   *   Handles rendering NQ messages for this application.
-   *
-   * @author Daniel West <dwest at tux dot appstate dot edu>
-   * @inspired-by Jeff Tickle's NotificationView in hms
-   * @package nomination
-   */
+/**
+* NotificationView
+*
+*   Handles rendering NQ messages for this application.
+*
+* @author Daniel West <dwest at tux dot appstate dot edu>
+* @inspired-by Jeff Tickle's NotificationView in hms
+* @package nomination
+*/
 class NotificationView
 {
     const NOMINATION_SUCCESS    = 0;
@@ -24,7 +24,7 @@ class NotificationView
         $this->notifications = \NQ::popAll('nomination');
     }
 
-    public function immediateError($message)
+    public static function immediateError($message)
     {
         \NQ::simple('nomination', self::NOMINATION_ERROR, $message);
         \NQ::close();
@@ -34,41 +34,40 @@ class NotificationView
 
     public function show()
     {
-		    if(empty($this->notifications))
-        {
-			       return '';
-		    }
-		    $tpl = array();
-		    $tpl['NOTIFICATIONS'] = array();
-		    foreach($this->notifications as $notification)
-        {
-			       if(!$notification instanceof Notification)
-             {
-				           throw new \InvalidArgumentException('Something was pushed onto the NQ that was not a Notification.');
-			       }
+        if(empty($this->notifications)) {
+            return '';
+        }
 
-			       $type = self::resolveType($notification);
-			       $tpl['NOTIFICATIONS'][][$type] = $notification->toString();
-		    }
+        $tpl = array();
+        $tpl['NOTIFICATIONS'] = array();
+
+        foreach($this->notifications as $notification) {
+            if(!$notification instanceof \Notification) {
+                throw new \InvalidArgumentException('Something was pushed onto the NQ that was not a Notification.');
+            }
+
+            $type = self::resolveType($notification);
+            $tpl['NOTIFICATIONS'][][$type] = $notification->toString();
+        }
+
         $content = \PHPWS_Template::process($tpl, 'nomination', 'NotificationView.tpl');
 
         javascript('jquery');
-        javascriptMod('nomination', 'jsnotification');
 
         return $content;
     }
 
-    public function resolveType(Notification $notification)
+    public function resolveType(\Notification $notification)
     {
-        switch($notification->getType()){
+        switch($notification->getType()) {
             case self::NOMINATION_SUCCESS:
-                return 'SUCCESS';
+            return 'SUCCESS';
             case self::NOMINATION_ERROR:
-                return 'ERROR';
+            return 'ERROR';
             case self::NOMINATION_WARNING:
-                return 'WARNING';
+            return 'WARNING';
             default:
-                return 'UNKNOWN';
+            return 'UNKNOWN';
         }
     }
 }

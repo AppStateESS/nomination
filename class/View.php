@@ -88,25 +88,3 @@ abstract class View {
         exit();
     }
 }
-
-abstract class NomView extends View
-{
-    private $main;
-
-    public function setMain($content){
-        $this->main = $content;
-    }
-
-    public function getMain()
-    {
-        return $this->main;
-    }
-
-    public function displayNomination($content)
-    {
-        $tpl = array();
-        $tpl['MAIN'] = $content;
-        \Layout::addStyle('nomination', 'css/nomination.css');
-        return \PHPWS_Template::process($tpl, 'nomination', 'nomination.tpl');
-    }
-}

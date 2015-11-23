@@ -45,8 +45,7 @@ class SubmitRecommendation extends Command {
 
         // Make sure the $_FILES array some info on the file we're looking for
         if(!isset($_FILES['recommendation']) || !is_uploaded_file($_FILES['recommendation']['tmp_name'])){
-            PHPWS_Core::initModClass('nomination', 'exception/BadFormException.php');
-            throw new BadFormException('Please select a document to upload.');
+            throw new \nomination\exception\BadFormException('Please select a document to upload.');
         }
 
         // Sanity check on mime type for files the client may still have open

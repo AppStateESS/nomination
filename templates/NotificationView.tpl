@@ -1,28 +1,22 @@
-<div class="nq-container">
 <!-- BEGIN NOTIFICATIONS -->
 <!-- BEGIN ERROR -->
-<div class="notification-notification nq-error">
+<div class="alert alert-danger">
   {ERROR}
-  <div class="nq-extra">(click to close)</div>
 </div>
 <!-- END ERROR -->
 <!-- BEGIN WARNING -->
-<div class="notification-notification nq-warning">
+<div class="alert alert-warning">
   {WARNING}
-  <div class="nq-extra">(click to close)</div>
 </div>
 <!-- END WARNING -->
 <!-- BEGIN SUCCESS -->
-<div class="notification-notification nq-success">
+<div class="alert alert-success">
   {SUCCESS}
-  <div class="nq-extra">(click to close)</div>
 </div>
 <!-- END SUCCESS -->
 <!-- BEGIN UNKNOWN -->
-<div class="notification-notification nq-unknown">
+<div class="alert alert-info">
   {UNKNOWN}
-  <div class="nq-extra">(click to close)</div>
 </div>
 <!-- END UNKNOWN -->
 <!-- END NOTIFICATIONS -->
-</div>

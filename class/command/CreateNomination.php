@@ -12,6 +12,7 @@ use \nomination\Reference;
 use \nomination\ReferenceFactory;
 use \nomination\NominationEmail;
 use \nomination\Period;
+use \nomination\NominationFieldVisibility;
 
 \PHPWS_Core::initCoreClass('Captcha.php');
 
@@ -92,7 +93,6 @@ class CreateNomination extends Command
         // Check for a "statement" file upload, if required
         if($vis->isVisible('statement')) {
             if($_FILES['statement']['error'] != UPLOAD_ERR_OK){
-                PHPWS_Core::initModClass('nomination', 'exception/BadFormException.php');
                 $context['after'] = 'NominationForm';// Set after view to the form
                 $context['form_fail'] = True;// Set form fail
 
@@ -104,12 +104,12 @@ class CreateNomination extends Command
                 }
                 $missing[] = 'statement';
                 $context['missing'] = $missing;// Add missing fields to context
-                throw new exception\BadFormException($msg);
+                throw new \nomination\exception\BadFormException($msg);
             }
         }
 
         // If anything was missing, redirect back to the form
-        if(!empty($missing) || !Captcha::verify()){
+        if(!empty($missing) || !\Captcha::verify()){
             // Notify the user that they must reselect their file
             $missing[] = 'statement';
 
@@ -118,9 +118,8 @@ class CreateNomination extends Command
             $context['form_fail'] = True;// Set form fail
 
             // Throw exception
-            PHPWS_Core::initModClass('nomination', 'exception/BadFormException.php');
             $missingFields = implode(', ', $missing);
-            throw new exception\BadFormException('The following fields are missing: ' . $missingFields);
+            throw new \nomination\exception\BadFormException('The following fields are missing: ' . $missingFields);
         }
 
         //check for bad email
@@ -228,9 +227,8 @@ class CreateNomination extends Command
                 $context['form_fail'] = True;// Set form fail
 
                 // Throw exception
-                PHPWS_Core::initModClass('nomination', 'exception/BadFormException.php');
                 $missingFields = implode(', ', $missing);
-                throw new BadFormException('The following fields are missing: ' . $missingFields);
+                throw new \nomination\exception\BadFormException('The following fields are missing: ' . $missingFields);
             }
 
             // TODO: need to check reference emails; should be fully-qualified
@@ -249,14 +247,13 @@ class CreateNomination extends Command
         // Make sure the $_FILES array some info on the file we're looking for
         if(!isset($_FILES['statement']) || !is_uploaded_file($_FILES['statement']['tmp_name']))
         {
-            PHPWS_Core::initModClass('nomination', 'exception/BadFormException.php');
-            throw new exception\BadFormException('Please select a document to upload.');
+            throw new \nomination\exception\BadFormException('Please select a document to upload.');
         }
 
         // Sanity check on mime type for files the client may still have open
         if($_FILES['statement']['type'] == 'application/octet-stream')
         {
-            throw new exception\IllegalFileException('Please save and close all word processors then re-submit file.');
+            throw new \nomination\exception\IllegalFileException('Please save and close all word processors then re-submit file.');
         }
 
         $doc = new NominationDocument($nomination, 'nominator', 'statement', $_FILES['statement']);

@@ -9,25 +9,18 @@ namespace nomination;
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
-class CommandFactory extends AbstractFactory
+class CommandFactory
 {
-    private $dir = 'command';
-
-    // inherited from parent
-    public function getDirectory()
+    public static function get($className)
     {
-        return $this->dir;
-    }
+        if(is_null($className) || $className == ''){
+            //$name = 'Null';
+            throw new \InvalidArgumentException('Missing view name.');
+        }
 
-    // inherited from parent
-    public function throwIllegal($name)
-    {
-        throw new exception\IllegalCommandException("Illegal characters found in command {$name}");
-    }
+        $className = '\nomination\command\\' . $className;
 
-    // inherited from parent
-    public function throwNotFound($name)
-    {
-        throw new exception\CommandNotFoundException("Could not initialize command {$name}");
+        $instance = new $className();
+        return $instance;
     }
 }
