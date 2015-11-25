@@ -25,7 +25,7 @@
 {START_FORM}
 
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-10">
 
         <h1>{AWARD_TITLE} Nomination</h1>
 
@@ -33,9 +33,12 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-6">
         <h3>Nominee Information</h3>
-
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
         <!-- BEGIN NOMINEE_BANNER_ID -->
         <div class="form-group">
             <label class="req">Banner ID</label>
@@ -177,7 +180,7 @@
 </div>
 
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-4">
         <!-- Reference 0 -->
         <div class="panel panel-default">
             <div class="panel-body">
