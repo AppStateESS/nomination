@@ -1,5 +1,7 @@
 <?php
 
+require_once(PHPWS_SOURCE_DIR . 'inc/nomination_defines.php');
+
   /*************************
    * Nomination categories *
    *************************/

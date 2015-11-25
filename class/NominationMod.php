@@ -32,7 +32,7 @@ abstract class NominationMod
             $cmdFactory = new CommandFactory();
             $cmd = $cmdFactory->get($this->context['action']);
 
-            try {
+            //try {
                 $cmd->execute($this->context);
 
                 if(isset($this->context['after']) && $this->context['after'] instanceof View){
@@ -44,13 +44,15 @@ abstract class NominationMod
                 }
 
                 \NQ::close();
-                header("Location: ".$after);
+                header("Location: " . $uri);
                 exit();
+            /*
             } catch (\Exception $e) {
                 $this->context['view'] = isset($this->context['after']) ? $this->context['after'] : 'Null';
                 \NQ::simple('nomination', NotificationView::NOMINATION_ERROR, $e->getMessage());
                 \NQ::close();
             }
+            */
         }
 
         /* Show any notifications */
