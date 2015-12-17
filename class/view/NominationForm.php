@@ -232,9 +232,9 @@ class NominationForm extends \nomination\View
         * Category *
         ************/
         if($vis->isVisible('category')) {
-            $category_radio = array(APP_STUDENT_CONDUCT_BOARD, APP_ACADEMIC_INTEGRITY_BOARD, APP_BOTH);
+            $category_radio = array(NOMINATION_STUDENT_LEADER, NOMINATION_STUDENT_EDUCATOR, NOMINATION_FACULTY_MEMBER, NOMINATION_EMPLOYEE);
             $form->addRadio('category', $category_radio);
-            $form->setMatch('category', isset($c['category']) ? $c['category'] : APP_STUDENT_CONDUCT_BOARD);
+            $form->setMatch('category', isset($c['category']) ? $c['category'] : -1);
         }
 
         /*************

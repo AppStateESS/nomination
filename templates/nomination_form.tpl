@@ -139,24 +139,33 @@
             </label>
         </div>
         <!-- END NOMINEE_RESPONSIBILITY -->
-
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <h3>Category</h3>
         <!-- BEGIN CATEGORY -->
             <p>
-                Please choose group you would like to apply to:
+                Please choose the appropriate category:
             </p>
             <div class="radio">
                 <label>
-                    {CATEGORY_1} Student Conduct Board
+                    {CATEGORY_1} <strong>Student Leader</strong> One who has provided distinguished leadership above that of other student leaders.
                 </label>
             </div>
             <div class="radio">
                 <label>
-                    {CATEGORY_2} Academic Integrity Board
+                    {CATEGORY_2} <strong>Student Development Educator within the Division of Student Development</strong> For meritorious leadership in his or her work to enrich the quality of student life and learning.
                 </label>
             </div>
             <div class="radio">
                 <label>
-                    {CATEGORY_3} Both / Either (Student Conduct and/or Academic Integrity Board)
+                    {CATEGORY_3} <strong>Faculty Member</strong> One who has provided meritorious leadership through his or her work with student clubs or organizations, or work that enriches the quality of student life and learning outside of the classroom.
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    {CATEGORY_4} <strong>Employee of Appalachian State University</strong> One who has shown that he or she has provided meritorious leadership which has significantly enriched the quality of student life and learning.
                 </label>
             </div>
         <!-- END CATEGORY -->
