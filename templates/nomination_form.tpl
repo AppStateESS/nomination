@@ -175,7 +175,7 @@
 <!-- BEGIN REFERENCES_OVERALL -->
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <h3>References</h3>
         <p>
             <strong>Contact information for {NUM_REFS} reference(s) must be included for this
@@ -189,7 +189,7 @@
 </div>
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-5">
         <!-- Reference 0 -->
         <div class="panel panel-default">
             <div class="panel-body">
