@@ -341,15 +341,15 @@
 
 <!-- BEGIN STATEMENT -->
 <div class="row">
-    <div class="col-md-6">
-        <h3>Resume &amp; Short Answer</h3>
+    <div class="col-md-12">
+        <h3>Statement</h3>
         <p>
-        Please <a href="{FILES_DIR}mod/nomination/files/StudentConductApplicationQuestions.doc">
-            download this document</a> (please right-click and select "save link as...")
-            and insert your answers to the short-answer questions directly into the
-            document. Then, attach your resume as the last page of the document and
-            upload the document using the button below. Please save your document as a
-            PDF file, if possible.
+            Please upload a statement which supports this nomination for {AWARD_TITLE}. This statement should address the following aspects for the person you are nominating:
+                <ul>
+                    <li>Work and involvement with students outside the classroom</li>
+                    <li>Role or roles that have had an impact on the life of students on campus</li>
+                    <li>Meritorious involvement- why does this person stand above others?</li>
+                </ul>
         </p>
         <p>
             {STATEMENT}
@@ -358,11 +358,16 @@
     </div>
 </div>
 
+<!-- BEGIN NOMINATOR_OVERALL -->
 <div class="row">
-    <div class="col-md-3">
-        <!-- BEGIN NOMINATOR_OVERALL -->
+    <div class="col-md-6">
         <h2>Nominator Information</h2>
+    </div>
+</div>
 
+
+<div class="row">
+    <div class="col-md-4">
         <!-- BEGIN NOMINATOR_FIRST_NAME -->
         <div class="form-group">
             <label class="req">{NOMINATOR_FIRST_NAME_LABEL}</label>
@@ -420,20 +425,12 @@
 
 <div class="row">
     <div class="col-md-8">
-        <p>
-            In order for you to be considered for the Student Conduct Board and/or
-            Academic Integrity Board, you must be a student in good academic standing
-            (GPA of 2.5 or above) and good conduct standing (not currently on probation)
-            within the Appalachian community. You must also attest that all of the
-            information provided is accurate to the best of your knowledge. By submitting
-            this form, it will give the Office of Student Conduct staff permission to
-            check your records and grades.
-        </p>
 
         {CAPTCHA_IMAGE}
 
         <button type="submit" class="btn btn-lg btn-success">Submit Changes</button>
 
-{END_FORM}
     </div>
 </div>
+
+{END_FORM}
