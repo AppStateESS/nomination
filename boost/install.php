@@ -7,7 +7,7 @@ function nomination_install(&$content)
 
     // Create period
     PHPWS_Core::initModClass('nomination', 'Period.php');
-    $period = new Period();
+    $period = new \nomination\Period();
 
     $period->year = $thisYear;
 
