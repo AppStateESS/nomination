@@ -90,7 +90,8 @@ class UpdatePeriod extends \nomination\Command
             \NQ::simple('nomination', NotificationView::NOMINATION_ERROR, $e->getMessage());
             return;
         }
-        \NQ::simple('nomination', NotificationView::NOMINATION_SUCCESS, $year.' period updated.');
+
+        \NQ::simple('nomination', NotificationView::NOMINATION_SUCCESS, "Successfully updated the {$date[2]} period.");
     }
 
     /**
