@@ -24,7 +24,7 @@ class DocumentFactory {
             throw new \InvalidArgumentException('Missing ID.');
         }
 
-        $db = new PHPWS_DB('nomination_document');
+        $db = new \PHPWS_DB('nomination_document');
         $db->addWhere('id', $id);
         $result = $db->select('row');
 

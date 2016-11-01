@@ -9,8 +9,9 @@ use \nomination\Nomination;
 use \nomination\NominationDocument;
 use \nomination\ReferenceFactory;
 use \nomination\DocumentFactory;
+use \nomination\NominationFactory;
 
-PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+\PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
 
   /**
    * NominationView
