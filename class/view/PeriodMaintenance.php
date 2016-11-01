@@ -71,9 +71,11 @@ class PeriodMaintenance extends \nomination\View
             $tpl['ROLLOVER_LINK'] = '[' . $rolloverView->getLink('Rollover') . ']';
         }
 
+        /*
         $form->addText('rollover_email', \PHPWS_Settings::get('nomination', 'rollover_email'));
         $form->setLabel('rollover_email', 'Rollover Reminder');
         $form->addCssClass('rollover_email', 'form-control');
+        */
 
         // For use with JQuery datepicker and start/end dates
         $tpl['START_DATE_ID'] = $form->getFormId().'_nomination_period_start';

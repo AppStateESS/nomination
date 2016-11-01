@@ -17,6 +17,7 @@ function nomination_install(&$content)
 
     // Create pulse for this period
 
+/*
     $pulse = \pulse\PulseFactory::getByName('RolloverEmailPulse', 'nomination');
     if (empty($pulse)) {
         $ps = pulse\PulseFactory::build();
@@ -29,7 +30,7 @@ function nomination_install(&$content)
         $ps->setExecuteAfter($period->start_date);
         pulse\PulseFactory::save($ps);
     }
-
+*/
 
 
     // Create Committee group

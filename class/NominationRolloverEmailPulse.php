@@ -2,6 +2,8 @@
 namespace nomination;
 
 \PHPWS_Core::requireInc('nomination', 'defines.php');
+\PHPWS_Core::initModClass('pulse', 'ScheduledPulse.php');
+
   /**
    * NominationRolloverEmailPulse
    *
@@ -10,8 +12,6 @@ namespace nomination;
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
-
-PHPWS_Core::initModClass('pulse', 'ScheduledPulse.php');
 
 class NominationRolloverEmailPulse extends ScheduledPulse
 {

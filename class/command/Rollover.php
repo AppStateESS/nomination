@@ -8,7 +8,7 @@ use \nomination\Nomination;
 use \nomination\NominationEmail;
 use \nomination\Period;
 use \nomination\EmailMessage;
-use \nomination\NominationRolloverEmailPulse;
+//use \nomination\NominationRolloverEmailPulse;
 
   /**
    * Rollover
@@ -44,9 +44,11 @@ class Rollover extends Command
         \PHPWS_Settings::save('nomination');
 
         // Add new pulse
+        /*
         $pulse = new NominationRolloverEmailPulse();
         $timeDiff = mktime() - $newPeriod->getEndDate();
         $pulse->newFromNow($timeDiff);
+        */
 
         \NQ::simple('nomination', NotificationView::NOMINATION_SUCCESS, 'Current period is now '.$newYear);
     }

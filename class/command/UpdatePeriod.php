@@ -2,6 +2,8 @@
 namespace nomination\command;
 use \nomination\Context;
 use \nomination\UserStatus;
+use \nomination\Period;
+use \nomination\view\NotificationView;
 
 /**
  * UpdatePeriod - Controller class to handle updating/saving a period's settings/attributes.
@@ -80,9 +82,9 @@ class UpdatePeriod extends \nomination\Command
             \PHPWS_Settings::set('nomination', 'rollover_email', $context['rollover_email']);
             \PHPWS_Settings::save('nomination');
 
-            \PHPWS_Core::initModClass('nomination', 'NominationRolloverEmailPulse.php');
-            $pulse = NominationRolloverEmailPulse::getCurrentPulse();
-            $pulse->setExecuteTime($endUnixDate);
+            //\PHPWS_Core::initModClass('nomination', 'NominationRolloverEmailPulse.php');
+            //$pulse = NominationRolloverEmailPulse::getCurrentPulse();
+            //$pulse->setExecuteTime($endUnixDate);
 
         } catch(\Exception $e){
             \NQ::simple('nomination', NotificationView::NOMINATION_ERROR, $e->getMessage());
