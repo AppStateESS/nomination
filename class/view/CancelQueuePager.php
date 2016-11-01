@@ -26,7 +26,7 @@ class CancelQueuePager extends \nomination\View {
         if(!UserStatus::isAdmin()){
             throw new \nomination\exception\PermissionException('You are not allowed to see that!');
         }
-        $pager = new \DBPager('nomination_cancel_queue', 'CancelQueue');
+        $pager = new \DBPager('nomination_cancel_queue', '\nomination\CancelQueue');
         $pager->setModule('nomination');
         $pager->setTemplate('admin/approve_remove.tpl');
         $pager->setEmptyMessage('No nominators are requesting nomination removal at this time.');
