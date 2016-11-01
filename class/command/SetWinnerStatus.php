@@ -11,12 +11,13 @@ namespace nomination\command;
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
-PHPWS_Core::initModClass('nomination', 'Command.php');
-PHPWS_Core::initModClass('nomination', 'view/AjaxMessageView.php');
-PHPWS_Core::initModClass('nomination', 'Nomination.php');
-PHPWS_Core::initModClass('nomination', 'NominationFactory.php');
-PHPWS_Core::initModClass('nomination', 'Period.php');
-
+use \nomination\Command;
+use \nomination\view\AjaxMessageView;
+use \nomination\Nomination;
+use \nomination\NominationFactory;
+use \nomination\Period;
+use \nomination\Context;
+use \nomination\UserStatus;
 
 class SetWinnerStatus extends Command
 {
@@ -36,27 +37,31 @@ class SetWinnerStatus extends Command
         $factory = new NominationFactory();
         $nomination = $factory->getNominationById($context['id']);
 
-        if(!isset($nomination))
-        {
-          throw new NominationException('The given nomination is null, id = ' . $context['id']);
+        if(!isset($nomination)) {
+            throw new NominationException('The given nomination is null, id = ' . $context['id']);
         }
 
-        $db = new PHPWS_DB('nomination_period');
+        $db = new \PHPWS_DB('nomination_period');
         $db->addWhere('id', $nomination->getPeriod());
         $period = $db->select('row');
 
         if ($period['year'] == Period::getCurrentPeriodYear()) {
-            $nomination->setWinner($status);
+            if($status === 'true'){
+                $win = '1';
+            } else {
+                $win = '0';
+            }
+            $nomination->setWinner($win);
         } else {
-            $context['after']->setMessage(False);
+            $context['after']->setMessage(false);
             return;
         }
 
         try {
             $factory->save($nomination);
-            $context['after']->setMessage(True);
+            $context['after']->setMessage(true);
         } catch (DatabaseException $e) {
-            $context['after']->setMessage(False);
+            $context['after']->setMessage(talse);
         }
     }
 }

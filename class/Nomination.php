@@ -336,7 +336,7 @@ class Nomination
     }
 
     public function setWinner($win) {
-        if($win){
+        if($win === '1'){
             $this->winner = 1;
         }else{
             $this->winner = 0;
