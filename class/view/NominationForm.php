@@ -405,8 +405,6 @@ class NominationForm extends \nomination\View
             javascriptMod('nomination', 'highlight', $vars);
         }
 
-        $form->addSubmit('submit', 'Submit');
-
         $form->mergeTemplate($tpl);
         $tpl = $form->getTemplate();
 

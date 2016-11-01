@@ -23,7 +23,7 @@ namespace nomination;
         $vars['CURRENT_DATE'] = date('F j, Y');
         $vars['NOMINATOR_NAME'] = $nom->getNominatorFullName(); // NB: This could be an empty string for self-nominations
         $vars['NOMINEE_NAME'] = $nom->getFullName();
-        $vars['AWARD_NAME'] = PHPWS_Settings::get('nomination', 'award_title');
+        $vars['AWARD_NAME'] = \PHPWS_Settings::get('nomination', 'award_title');
         $period = Period::getCurrentPeriod();
         $vars['END_DATE'] = $period->getReadableEndDate();
         $vars['EDIT_LINK'] = $nom->getEditLink(); //TODO nominator editing
@@ -75,7 +75,7 @@ namespace nomination;
         $vars = array();
 
         $vars['NAME'] = $nominator->getFullName();
-        $vars['AWARD_NAME'] = PHPWS_Settings::get('nomination', 'award_title');
+        $vars['AWARD_NAME'] = \PHPWS_Settings::get('nomination', 'award_title');
         $vars['NOMINEE_NAME'] = $nominee->getFullName();
         $period = Period::getCurrentPeriod();
         $vars['END_DATE'] = $period->getReadableEndDate();

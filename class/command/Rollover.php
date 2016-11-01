@@ -46,7 +46,7 @@ class Rollover extends Command
         // Add new pulse
         /*
         $pulse = new NominationRolloverEmailPulse();
-        $timeDiff = mktime() - $newPeriod->getEndDate();
+        $timeDiff = time() - $newPeriod->getEndDate();
         $pulse->newFromNow($timeDiff);
         */
 

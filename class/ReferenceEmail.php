@@ -32,12 +32,12 @@ class ReferenceEmail
         $period = Period::getCurrentPeriod();
         $vars['END_DATE'] = $period->getReadableEndDate();
         $vars['REF_EDIT_LINK'] = $reference->getEditLink();
-        $vars['AWARD_TITLE'] = PHPWS_Settings::get('nomination', 'award_title');
+        $vars['AWARD_TITLE'] = \PHPWS_Settings::get('nomination', 'award_title');
 
 
         $list = array($reference->getId());
-        $subject = 'Reference Request: ' . PHPWS_Settings::get('nomination', 'award_title');
-        $msg = PHPWS_Template::process($vars, 'nomination', 'email/reference_new_nomination.tpl');
+        $subject = 'Reference Request: ' . \PHPWS_Settings::get('nomination', 'award_title');
+        $msg = \PHPWS_Template::process($vars, 'nomination', 'email/reference_new_nomination.tpl');
         $msgType = 'NEWREF';
 
 
@@ -59,7 +59,7 @@ class ReferenceEmail
         $vars['NAME'] = $reference->getFullName();
         $nom = NominationFactory::getNominationbyId($reference->getNominationId());
         $vars['NOMINEE_NAME'] = $nom->getFirstName() . ' ' . $nom->getLastName();
-        $vars['AWARD_NAME'] = PHPWS_Settings::get('nomination', 'award_title');
+        $vars['AWARD_NAME'] = \PHPWS_Settings::get('nomination', 'award_title');
         $period = Period::getCurrentPeriod();
         $vars['END_DATE'] = $period->getReadableEndDate();
         $vars['EDIT_LINK'] = $reference->getEditLink();
@@ -113,7 +113,7 @@ class ReferenceEmail
     */
     public static function removeNomination(Nomination $nomination)
     {
-        
+
         $vars = array();
 
         $vars['NAME'] = $nomination->getNominatorFirstName() . ' ' . $nomination->getNominatorLastName();

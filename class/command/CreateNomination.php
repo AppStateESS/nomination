@@ -13,6 +13,9 @@ use \nomination\ReferenceFactory;
 use \nomination\NominationEmail;
 use \nomination\Period;
 use \nomination\NominationFieldVisibility;
+use \nomination\ReferenceEmail;
+use \nomination\NominatorEmail;
+use \nomination\view\NotificationView;
 
 \PHPWS_Core::initCoreClass('Captcha.php');
 
@@ -92,7 +95,7 @@ class CreateNomination extends Command
         }
         // Check for a "statement" file upload, if required
         if($vis->isVisible('statement')) {
-            if($_FILES['statement']['error'] != UPLOAD_ERR_OK){
+            if($_FILES['statement']['error'] !== 0){
                 $context['after'] = 'NominationForm';// Set after view to the form
                 $context['form_fail'] = True;// Set form fail
 
@@ -108,10 +111,20 @@ class CreateNomination extends Command
             }
         }
 
+        // Verify the captcha
+        //var_dump($_REQUEST['captcha']);
+        if(!\Captcha::verify()){
+            $missing[] = 'captcha';
+
+            $context['after'] = 'NominationForm';// Set after view to the form
+            $context['missing'] = $missing;// Add missing fields to context
+            $context['form_fail'] = True;// Set form fail
+
+            throw new \nomination\exception\BadFormException('The Captcha words were incorrect.');
+        }
+
         // If anything was missing, redirect back to the form
-        if(!empty($missing) || !\Captcha::verify()){
-            // Notify the user that they must reselect their file
-            $missing[] = 'statement';
+        if(!empty($missing)){
 
             $context['after'] = 'NominationForm';// Set after view to the form
             $context['missing'] = $missing;// Add missing fields to context

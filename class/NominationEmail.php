@@ -50,13 +50,13 @@ abstract class NominationEmail {
         $this->subject     = $subject;
         $this->message     = $message;
         $this->messageType = $msgType;
-        $this->from        = PHPWS_Settings::get('nomination', 'email_from_address');
+        $this->from        = \PHPWS_Settings::get('nomination', 'email_from_address');
     }
 
     public function sendTo($recipientEmail)
     {
 
-        $mail = new PHPWS_Mail;
+        $mail = new \PHPWS_Mail;
         $mail->sendIndividually(true);
 
         $mail->addSendTo($recipientEmail);
@@ -78,18 +78,18 @@ abstract class NominationEmail {
         switch($msg->receiver_type)
         {
             case SHORT_Reference:
-                PHPWS_Core::initModClass('nomination', 'Reference.php');
-                $db = new PHPWS_DB('nomination_reference');
+                \PHPWS_Core::initModClass('nomination', 'Reference.php');
+                $db = new \PHPWS_DB('nomination_reference');
                 $obj = new Reference();
                 break;
             case SHORT_Nominator:
-                PHPWS_Core::initModClass('nomination', 'Nominator.php');
-                $db = new PHPWS_DB('nomination_nominator');
+                \PHPWS_Core::initModClass('nomination', 'Nominator.php');
+                $db = new \PHPWS_DB('nomination_nominator');
                 $obj = new Nominator();
                 break;
             case SHORT_Nominee:
-                PHPWS_Core::initModClass('nomination', 'Nominee.php');
-                $db = new PHPWS_DB('nomination_nominee');
+                \PHPWS_Core::initModClass('nomination', 'Nominee.php');
+                $db = new \PHPWS_DB('nomination_nominee');
                 $obj = new Nominee();
                 break;
         }
@@ -129,21 +129,23 @@ abstract class NominationEmail {
 
 
 
-        $now = mktime();
 
-        $message = new EmailLog();
+        $messageLog = new EmailLog($nomination->getId(), $this->message,
+        $this->messageType, $this->subject, $recipientId, $receiverType, time());
 
 
-        $message->setNomineeId($nomination->getId());
+        /*
+        $messageLog->setNomineeId($nomination->getId();
 
-        $message->setMessage($this->message);
-        $message->setMessageType($this->messageType);
-        $message->setSubject($this->subject);
-        $message->setReceiverId($recipientId);
-        $message->setReceiverType($receiverType);
-        $message->setSentOn($now);
+        $messageLog->setMessage($this->message);
+        $messageLog->setMessageType($this->messageType);
+        $messageLog->setSubject($this->subject);
+        $messageLog->setReceiverId($recipientId);
+        $messageLog->setReceiverType($receiverType);
+        $messageLog->setSentOn($now);
+        */
 
-        EmailLogFactory::save($message);
+        EmailLogFactory::save($messageLog);
 
 
     }

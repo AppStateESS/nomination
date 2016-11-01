@@ -428,7 +428,7 @@
 
         {CAPTCHA_IMAGE}
 
-        <button type="submit" class="btn btn-lg btn-success">Submit Changes</button>
+        <button type="submit" class="btn btn-lg btn-success">Submit Nomination</button>
 
     </div>
 </div>
