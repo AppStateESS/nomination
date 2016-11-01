@@ -68,7 +68,8 @@ class PeriodMaintenance extends \nomination\View
             $vFactory = new ViewFactory();
             $rolloverView = $vFactory->get('RolloverView');
             $tpl['NEXT_PERIOD'] = $period->getNextPeriodYear();
-            $tpl['ROLLOVER_LINK'] = '[' . $rolloverView->getLink('Rollover') . ']';
+            //$tpl['ROLLOVER_LINK'] = '[' . $rolloverView->getLink('Rollover') . ']';
+            $tpl['ROLLOVER_URI'] = $rolloverView->getUri();
         }
 
         /*

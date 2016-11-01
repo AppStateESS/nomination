@@ -22,62 +22,37 @@
 
 {START_FORM}
 
-<div class="col-md-12">
+<div class="row">
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="{NOMINATION_PERIOD_START_ID}">{NOMINATION_PERIOD_START_LABEL}</label>
+            {NOMINATION_PERIOD_START}
+        </div>
 
-  <div class="row">
-    <label>
-      {NOMINATION_PERIOD_START_LABEL}
-    </label>
-  </div>
-  <div class="row">
-    <div class="col-md-5">
-      {NOMINATION_PERIOD_START}
+        <div class="form-group">
+            <label for="{NOMINATION_PERIOD_END_ID}">{NOMINATION_PERIOD_END_LABEL}</label>
+            {NOMINATION_PERIOD_END}
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-lg btn-success">
+              <i class="fa fa-calendar"></i>
+              Update Period
+            </button>
+        </div>
+
     </div>
-  </div>
-
-  <div class="row">
-    <label>
-      {NOMINATION_PERIOD_END_LABEL}
-    </label>
-  </div>
-  <div class="row">
-    <div class="col-md-5">
-      {NOMINATION_PERIOD_END}
+    <div class="col-md-3 col-md-push-4">
+        <h4>Roll-over</h4>
+        <!-- BEGIN next_period -->
+        <p>
+            Next period is {NEXT_PERIOD} {ROLLOVER_LINK}
+        </p>
+        <p>
+            <a href="{ROLLOVER_URI}" class="btn btn-danger">Roll-over Now to {NEXT_PERIOD}</a>
+        </p>
+        <!-- END next_period -->
     </div>
-  </div>
-
-  <div class="row">
-    <label>
-      Rollover
-    </label>
-  </div>
-  <div class="row">
-    <p class="col-md-6">
-      <!-- BEGIN next_period -->
-        Next period is {NEXT_PERIOD} {ROLLOVER_LINK}
-      <!-- END next_period -->
-    </p>
-  </div>
-
-  <div class="row">
-    <label>
-      {ROLLOVER_EMAIL_LABEL}
-    </label>
-  </div>
-  <div class="row">
-    <div class="col-md-5">
-      {ROLLOVER_EMAIL}
-    </div>
-  </div>
-
-  <p></p>
-
-  <div class="row">
-    <button type="submit" class="btn btn-lg btn-success">
-      <i class="fa fa-calendar"></i>
-      Update Period
-    </button>
-  </div>
 </div>
 
 {END_FORM}
