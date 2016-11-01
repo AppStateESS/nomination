@@ -36,6 +36,11 @@ class RolloverView extends \nomination\View
         $tpl = array();
 
         $period = Period::getCurrentPeriod();
+
+        if($period === null){
+            return "There is no nomiation period available. Please create a nomination period first.";
+        }
+
         $tpl['CURRENT_PERIOD'] = $period->getYear();
         $tpl['NEXT_PERIOD'] = $period->getNextPeriodYear();
 
