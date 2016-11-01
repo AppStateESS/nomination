@@ -24,7 +24,7 @@ class EmailLogView extends \nomination\View
             throw new \nomination\exception\PermissionException('You are not allowed to see that!');
         }
 
-        $pager = new \DBPager('nomination_email_log', 'DBEmailLog');
+        $pager = new \DBPager('nomination_email_log', '\nomination\DBEmailLog');
 
         $pager->setModule('nomination');
         $pager->setTemplate('admin/email_log_view.tpl');
