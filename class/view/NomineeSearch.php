@@ -79,7 +79,7 @@ class NomineeSearch extends \nomination\View
 
     public function getPager($searchString="")
     {
-        $pager = new \DBPager('nomination_nomination', 'DBNomination');
+        $pager = new \DBPager('nomination_nomination', '\nomination\DBNomination');
         $pager->setModule('nomination');
         $pager->setTemplate('admin/nominee_search_results.tpl');
         $pager->setEmptyMessage('No matching nominees found');

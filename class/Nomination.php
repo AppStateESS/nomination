@@ -1,6 +1,9 @@
 <?php
 namespace nomination;
 
+use \nomination\view\NomineeView;
+use \nomination\view\NominatorView;
+
 /**
  * Nomination
  *
@@ -486,20 +489,6 @@ class Nomination
     }
 }
 
-/**
- * Empty child class for Nomination for loading objects from the database.
- *
- * @author jbooker
- * @package nomination
- */
-class DBNomination extends Nomination {
-    /**
-     * Empty constructor for restoring objects from a database
-     * without calling the parent class' constructor.
-     */
-    public function __construct(){
-    }
-}
 
 /**
  * This function is used by DB_Pager's csv reporting function. It returns
