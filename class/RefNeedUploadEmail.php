@@ -28,7 +28,7 @@ class RefNeedUploadEmail extends NominationEmail
         $db->addWhere('period', $period_id);
         $results = $db->select('col');
 
-        if(PHPWS_Error::logIfError($results) || is_null($results)){
+        if(\PHPWS_Error::logIfError($results) || is_null($results)){
             throw new exception\DatabaseException('Could not retrieve requested mailing list');
         }
 

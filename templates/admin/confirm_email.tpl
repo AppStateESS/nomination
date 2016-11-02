@@ -2,29 +2,22 @@
 
 <table>
   <tr>
-    <th>From
-    </th>
-    <td>{FROM}
-    </td>
+    <th>From</th>
+    <td>{FROM}</td>
   </tr>
   <tr>
-    <th>To
-    </th>
-    <td>{LIST}
-    </td>
+    <th>To</th>
+    <td>{LIST}</td>
   </tr>
   <tr>
-    <th>Subject
-    </th>
-    <td>{SUBJECT}
-    </td>
+    <th>Subject</th>
+    <td>{SUBJECT}</td>
   </tr>
   <tr>
-    <th>Message
-    </th>
-    <td>{MESSAGE}
-    </td>
+    <th>Message</th>
+    <td>{MESSAGE}</td>
   </tr>
 </table>
-<div style="float: left;">{BACK}</div>
-<div style="float: left;">{FORWARD}</div>
+
+<div class="form-group">{BACK}</div><br /><br />
+<div class="form-group">{FORWARD}</div>

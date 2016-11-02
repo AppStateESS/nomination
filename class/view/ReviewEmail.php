@@ -46,6 +46,7 @@ class ReviewEmail extends \nomination\View {
             throw new \nomination\exception\PermissionException('You are not allowed to see this!');
         }
 
+        // TODO: Get rid of the session crap, so that the edit page can be refreshed
         if(!isset($_SESSION['review'])){
             $vf = new ViewFactory;
             $view = $vf->get('SendEmail');
@@ -55,11 +56,13 @@ class ReviewEmail extends \nomination\View {
         $data = $_SESSION['review'];
 
         $cf = new CommandFactory;
+
         $backCmd = $cf->get('EditEmail');
         $backCmd->from    = $data['from'];
         $backCmd->list    = $data['list'];
         $backCmd->subject = $data['subject'];
         $backCmd->message = $data['message'];
+
         $submitCmd = $cf->get('DoEmail');
         $submitCmd->from    = $data['from'];
         $submitCmd->list    = $data['list'];
@@ -79,8 +82,14 @@ class ReviewEmail extends \nomination\View {
         $data = array_change_key_case($_SESSION['review'], CASE_UPPER);
 
         $data['MESSAGE'] = preg_replace('/\n/', '<br />', $data['MESSAGE']);
-        $data['BACK']    = implode('', $back->getTemplate());
-        $data['FORWARD'] = implode('', $forward->getTemplate());
+
+        $backTemplate = $back->getTemplate();
+        $forwardTemplate = $forward->getTemplate();
+
+        // TODO: Fix this to use actual buttons for 'Edit' and 'Send'. Make the buttons pretty and lay them out properly
+        $data['BACK']    = implode('', array($backTemplate['START_FORM'], $backTemplate['SUBMIT'], $backTemplate['END_FORM']));
+        $data['FORWARD'] = implode('', array($forwardTemplate['START_FORM'], $forwardTemplate['SUBMIT'], $forwardTemplate['END_FORM']));
+
         unset($_SESSION['review']);
 
         \Layout::addPageTitle('Review Email');

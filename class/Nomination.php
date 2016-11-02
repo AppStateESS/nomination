@@ -95,7 +95,7 @@ class Nomination
      * Getter & Setters
      */
     public static function getDb(){
-      return new PHPWS_DB('nomination_nomination');
+      return new \PHPWS_DB('nomination_nomination');
     }
 
     public function getId(){
@@ -501,7 +501,6 @@ class Nomination
  * @returns An associative array of variables that make up one row of a CSV report.
  */
 function reportRowForCSV($obj) {
-    PHPWS_Core::initModClass('nomination', 'NominationFactory.php');
     $factory = new NominationFactory();
     $data = $factory->getNominationbyId($obj->getId());
 
@@ -539,8 +538,8 @@ function reportRowForCSV($obj) {
     $row['added_on']                = strftime('%m/%d/%Y %T', $data->getAddedOn());
     $row['updated_on']              = strftime('%m/%d/%Y %T', $data->getUpdatedOn());
 
-    $numRefs = PHPWS_Settings::get('nomination', 'num_references_req');
-    $db = new PHPWS_DB('nomination_reference');
+    $numRefs = \PHPWS_Settings::get('nomination', 'num_references_req');
+    $db = new \PHPWS_DB('nomination_reference');
     $db->addWhere('nomination_id', $obj->getId());
     $references = $db->select();
 

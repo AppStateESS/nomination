@@ -11,10 +11,20 @@ namespace nomination\command;
  * @package nomination
  */
 
-PHPWS_Core::initModClass('nomination', 'Command.php');
-PHPWS_Core::initModClass('nomination', 'NominationEmail.php');
+ use \nomination\Command;
+ use \nomination\Context;
+ use \nomination\NominationEmail;
+ use \nomination\UserStatus;
+ use \nomination\view\NotificationView;
+
+ use \nomination\AllNominatorsEmail;
+ use \nomination\CompleteNominationEmail;
+ use \nomination\IncompleteNomEmail;
+ use \nomination\RefNeedUploadEmail;
+ use \nomination\CompleteNomineeEmail;
 
 class DoEmail extends Command {
+
     public $from;
     public $list;
     public $subject;

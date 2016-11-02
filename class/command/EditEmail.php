@@ -10,8 +10,9 @@ namespace nomination\command;
  * @package nomination
  */
 
-PHPWS_Core::initModClass('nomination', 'Command.php');
-PHPWS_Core::initModClass('nomination', 'NominationEmail.php');
+use \nomination\Command;
+use \nomination\Context;
+use \nomination\NominationEmail;
 
 class EditEmail extends Command {
     public $from;
@@ -47,7 +48,7 @@ class EditEmail extends Command {
 
         //can't session object with serialization witchery...
         $review = array();
-        $review['from'] = isset($context['from']) ? $context['from'] : PHPWS_Settings::get('nomination', 'email_from_address');
+        $review['from'] = isset($context['from']) ? $context['from'] : \PHPWS_Settings::get('nomination', 'email_from_address');
         $review['list'] = $context['list'];
         $review['subject'] = $context['subject'];
         $review['message'] = $context['message'];

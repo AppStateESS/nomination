@@ -32,6 +32,7 @@ abstract class Command
 	{
         $moduleElement = $form->get('module');
         if(\PEAR::isError($moduleElement)){
+            // TODO Fix this. We shouldn't be relying on errors for expected behavior
 			$form->addHidden('module', 'nomination');
 		}
 
