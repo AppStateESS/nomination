@@ -33,14 +33,11 @@ class EmailView extends \nomination\View
         }
 
         // Get DB and select where id = ...
-        $db = \nomination\EmailMessage::getDb();
-
+        $db = new \PHPWS_DB('nomination_email_log');
         $db->addWhere('id', $context['id']);
-
         $result = $db->select();
 
-        if($result[0]['receiver_type'] === 'REF')
-        {
+        if($result[0]['receiver_type'] === 'REF'){
           $rdb = \nomination\Reference::getDb();
 
           $rdb->addWhere('id', $result[0]['receiver_id']);
@@ -48,9 +45,8 @@ class EmailView extends \nomination\View
           $rec = $rdb->select();
 
           $receiver = $rec[0]['email'];
-        }
-        else if($result[0]['receiver_type'] === 'NTR')
-        {
+
+        } else if($result[0]['receiver_type'] === 'NTR') {
           $ndb = \nomination\Nomination::getDb();
 
           $ndb->addWhere('id', $result[0]['receiver_id']);
@@ -58,9 +54,8 @@ class EmailView extends \nomination\View
           $rec = $ndb->select();
 
           $receiver = $rec[0]['nominator_email'];
-        }
-        else if($result[0]['receiver_type'] === 'NEE')
-        {
+
+        } else if($result[0]['receiver_type'] === 'NEE') {
           $ndb = \nomination\Nomination::getDb();
 
           $ndb->addWhere('id', $result[0]['receiver_id']);

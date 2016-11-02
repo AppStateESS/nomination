@@ -94,7 +94,7 @@ class Nomination
     /**
      * Getter & Setters
      */
-    public function getDb(){
+    public static function getDb(){
       return new PHPWS_DB('nomination_nomination');
     }
 

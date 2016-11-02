@@ -45,11 +45,11 @@ class EmailLogFactory {
     }
 
     /**
-     * Returns the Reference object with the given uniqueId, or null if
-     * no matching reference is found.
+     * Returns the EmailLog object with the given uniqueId, or null if
+     * no matching email is found.
      *
-     * @param string $id - The Reference's ID.
-     * @return Reference Reference object, or null if no matching id found
+     * @param string $id - The email's ID.
+     * @return DBEmailLog object, or null if no matching id found
      */
     public static function getById($id){
 

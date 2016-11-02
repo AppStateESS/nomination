@@ -1,6 +1,8 @@
 <?php
 namespace nomination;
 
+use nomination\view\ReferenceView;
+
 /**
  * Reference
  *
@@ -61,7 +63,7 @@ class Reference
      * Getter & Setter Methods *
      ***************************/
 
-    public function getDb()
+    public static function getDb()
     {
       return new \PHPWS_DB('nomination_reference');
     }

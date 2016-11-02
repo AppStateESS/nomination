@@ -1,9 +1,6 @@
 <?php
 namespace nomination;
 
-// DB Table
-define('EMAIL_MESSAGE_TABLE', 'nomination_email_log');
-
 class EmailMessage extends Nomination_Model
 {
     public $nominee_id;
@@ -14,9 +11,9 @@ class EmailMessage extends Nomination_Model
     public $receiver_type;
     public $sent_on;
 
-    public function getDb()
+    public static function getDb()
     {
-        return new \PHPWS_DB(EMAIL_MESSAGE_TABLE);
+        return new \PHPWS_DB('nomination_email_log');
     }
 
     // Delete all emails for the nominator, reference, or nominee
