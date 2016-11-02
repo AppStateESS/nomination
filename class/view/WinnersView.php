@@ -25,7 +25,7 @@ class WinnersView extends \nomination\View
             throw new \nomination\exception\PermissionException('You are not allowed to see this!');
         }
 
-        $pager = new \DBPager('nomination_nomination', '\nomination\Nomination');
+        $pager = new \DBPager('nomination_nomination', '\nomination\DBNomination');
         $pager->setModule('nomination');
         $pager->setTemplate('admin/winners.tpl');
         $pager->setEmptyMessage('No Winners Yet');
