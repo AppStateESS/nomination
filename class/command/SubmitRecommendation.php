@@ -9,11 +9,14 @@ namespace nomination\command;
    * @package nomination
    */
 
-PHPWS_Core::initModClass('nomination', 'Command.php');
-PHPWS_Core::initModClass('nomination', 'NominationFactory.php');
-PHPWS_Core::initModClass('nomination', 'NominationDocument.php');
-PHPWS_Core::initModClass('nomination', 'DocumentFactory.php');
-PHPWS_Core::initModClass('nomination', 'ReferenceFactory.php');
+use \nomination\Command;
+use \nomination\Context;
+use \nomination\NominationFactory;
+use \nomination\NominationDocument;
+use \nomination\DocumentFactory;
+use \nomination\ReferenceFactory;
+use \nomination\view\NotificationView;
+use \nomination\ReferenceEmail;
 
 class SubmitRecommendation extends Command {
 
@@ -29,49 +32,55 @@ class SubmitRecommendation extends Command {
     {
         // Get this reference
         $ref = ReferenceFactory::getByUniqueId($context['unique_id']);
-        if(!isset($ref))
-        {
+        if(!isset($ref)) {
           throw new NominationException('The given reference is null, unique id = ' . $context['unique_id']);
         }
 
         // Get the corresponding nomination
         $nomination = NominationFactory::getNominationById($ref->getNominationId());
-        if(!isset($nomination))
-        {
+        if(!isset($nomination)) {
           throw new NominationException('The given nomination is null, id = ' . $ref->getNominationId());
         }
 
-        PHPWS_Core::initModClass('nomination', 'exception/IllegalFileException.php');
+        \PHPWS_Core::initModClass('nomination', 'exception/IllegalFileException.php');
 
         // Make sure the $_FILES array some info on the file we're looking for
         if(!isset($_FILES['recommendation']) || !is_uploaded_file($_FILES['recommendation']['tmp_name'])){
-            throw new \nomination\exception\BadFormException('Please select a document to upload.');
+            \NQ::simple('nomination', NotificationView::NOMINATION_ERROR, 'Please select a document to upload.');
+            $context['after'] = 'ReferenceForm&unique_id=' . $context['unique_id'];
+            return;
         }
 
         // Sanity check on mime type for files the client may still have open
         if($_FILES['recommendation']['type'] == 'application/octet-stream'){
-            throw new IllegalFileException('Please save and close all word processors then re-submit file.');
+            \NQ::simple('nomination', NotificationView::NOMINATION_ERROR, 'Please save and close the document you are trying to upload and then try again.');
+            $context['after'] = 'ReferenceForm&unique_id=' . $context['unique_id'];
+            return;
         }
 
-        $doc = new NominationDocument($nomination, 'reference', 'recommendation', $_FILES['recommendation']);
-        DocumentFactory::save($doc);
+        $doc = null;
 
+        try {
+            $doc = new NominationDocument($nomination, 'reference', 'recommendation', $_FILES['recommendation']);
+            DocumentFactory::save($doc);
 
-        // Save the ID of the document with the Reference object
-        $ref->setDocId($doc->getId());
+            // Save the ID of the document with the Reference object
+            $ref->setDocId($doc->getId());
+        } catch(\Exception $e){
+            \NQ::simple('nomination', NotificationView::NOMINATION_ERROR, 'The file you submited is not the correct type of file. We can only accept .doc, .docx, and .pdf files.');
+            $context['after'] = 'ReferenceForm&unique_id=' . $context['unique_id'];
+            return;
+        }
 
         ReferenceFactory::save($ref);
 
-
         // Check if nomination is completed now...
-        // TODO
         $nomination->checkCompletion();
 
         // Send notification email
-        // TODO
-
-        $ref = ReferenceFactory::getByUniqueId($context['unique_id']);
+        $ref = ReferenceFactory::getByUniqueId($context['unique_id']); // Why are we doing this again? $ref is already loaded
         ReferenceEmail::uploadDocument($ref);
+
 
         \NQ::simple('nomination', NotificationView::NOMINATION_SUCCESS, 'Thank you!');
     }
