@@ -58,7 +58,7 @@ class NominatorSearch extends \nomination\View
         \PHPWS_Core::initModClass('nomination', 'Period.php');
         \PHPWS_Core::initModClass('nomination', 'Nomination.php');
 
-        $pager = new \DBPager('nomination_nomination', 'DBNomination');
+        $pager = new \DBPager('nomination_nomination', '\nomination\DBNomination');
         $pager->setModule('nomination');
         $pager->setTemplate('admin/nominator_search_results.tpl');
         $pager->setEmptyMessage('No matching nominators found');

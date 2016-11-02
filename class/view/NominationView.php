@@ -41,6 +41,7 @@ class NominationView extends \nomination\View {
         $tpl['NOMINATOR'] = $nomination->getNominatorLink();
         $tpl['NOMINATOR_RELATION'] = ($nomination->getNominatorRelation() == null ? "No relation given" : $nomination->getNominatorRelation());
 
+        // TODO: ZOMG, use a factory
         // Get the download link for the nominator statement
         $db = new \PHPWS_DB('nomination_document');
         $db->addColumn('id');
@@ -57,6 +58,7 @@ class NominationView extends \nomination\View {
         $tpl['NOMINATOR_STATEMENT'] = $doc->getDownloadLink($nominatorDocId, 'Download Statement');
 
         // Get the references from the DB
+        // TODO: ZOMG, use a factory
 	    $references = array();
         $db->reset();   // we recycle 'round here
         $db->setTable('nomination_reference');
