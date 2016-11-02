@@ -1,6 +1,6 @@
 <?php
 namespace nomination;
-
+use \nomination\view\NotificationView;
 /**
 * RefNeedUploadEmail
 *
@@ -28,7 +28,7 @@ class RefNeedUploadEmail extends NominationEmail
         $db->addWhere('period', $period_id);
         $results = $db->select('col');
 
-        if(\PHPWS_Error::logIfError($results) || is_null($results)){
+        if(\PHPWS_Error::logIfError($results)){
             throw new exception\DatabaseException('Could not retrieve requested mailing list');
         }
 
@@ -38,6 +38,11 @@ class RefNeedUploadEmail extends NominationEmail
     public function send()
     {
         $list = $this->getMembers();
+
+        if($list === null){
+            \NQ::simple('nomination', NotificationView::NOMINATION_WARNING, 'There was no one in that email list.');
+            return;
+        }
 
         foreach ($list as $id)
         {
