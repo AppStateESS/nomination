@@ -180,10 +180,10 @@
         <p>
             <strong>Contact information for {NUM_REFS} reference(s) must be included for this
             application.</strong> These references will be sent a link to submit letters of
-            recommendation which should include relevant information that gives examples
-            of your leadership ability, dependability, integrity, self-confidence, maturity,
-            and communication skills as it relates to your abilities to serve on one of
-            the student boards.
+            recommendation which should include relevant information that gives examples of
+            the nominees leadership ability, dependability, integrity, self-confidence, maturity,
+            and communication sklls ​that reflect the nominee's ability to enrich the quality of
+            student life and learning outside of the classroom.
         </p>
     </div>
 </div>
