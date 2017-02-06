@@ -36,6 +36,11 @@ class NominationFieldVisibility
                 $vis[] = $field;
             }
         }
+
+        array_push($vis, "reference_first_name");
+        array_push($vis, "reference_last_name");
+        array_push($vis, "reference_email");
+
         return $vis;
     }
 
@@ -54,10 +59,7 @@ class NominationFieldVisibility
                      'nominee_gpa',
                      'nominee_class',
                      'category',
-                     'reference_first_name',
-                     'reference_last_name',
                      'reference_department',
-                     'reference_email',
                      'reference_phone',
                      'reference_relationship',
                      'statement',

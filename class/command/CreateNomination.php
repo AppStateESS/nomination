@@ -53,7 +53,11 @@ class CreateNomination extends Command
 				    'nominator_last_name',
 				    'nominator_email',
 				    'nominator_phone',
-				    'nominator_address');
+				    'nominator_address',
+            'reference_first_name',
+            'reference_last_name',
+            'reference_phone',
+            'reference_email');
 
     public function execute(Context $context)
     {
@@ -65,22 +69,26 @@ class CreateNomination extends Command
 
         // Figure out which fields are required
         $vis = new NominationFieldVisibility();
-
         $required = array();
         foreach(self::$requiredFields as $field) {
             if($vis->isVisible($field))
             {
-            	$required[] = $field;
+              switch($field){
+                case "reference_first_name":
+                case "reference_last_name":
+                case "reference_phone":
+                case "reference_email":
+                  for($i = 0; $i < $numReferencesReq; $i++)
+                  {
+                    array_push($required, $field.'_'.$i);
+                  }
+                  break;
+                default:
+                  $required[] = $field;
+              }
             }
         }
 
-        for($i = 0; $i < $numReferencesReq; $i++)
-        {
-          array_push($required, 'reference_first_name_'.$i);
-          array_push($required, 'reference_last_name_'.$i);
-          array_push($required, 'reference_phone_'.$i);
-          array_push($required, 'reference_email_'.$i);
-        }
         /*****************
          * Check  fields *
         *****************/
