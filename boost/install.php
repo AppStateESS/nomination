@@ -2,19 +2,6 @@
 
 function nomination_install(&$content)
 {
-    $today = getdate();
-    $thisYear = $today['year'];
-
-    // Create period
-    PHPWS_Core::initModClass('nomination', 'Period.php');
-    $period = new \nomination\Period();
-
-    $period->year = $thisYear;
-
-    $period->setDefaultStartDate();
-    $period->setDefaultEndDate();
-    $period->save();
-
     // Create pulse for this period
 
 /*
