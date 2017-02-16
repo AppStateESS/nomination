@@ -36,7 +36,7 @@ class AdminResendEmail extends Command
         }
 
         if(!isset($context['id'])){
-            PHPWS_Core::initModClass('nomination', 'exception/ContextException.php');
+            \PHPWS_Core::initModClass('nomination', 'exception/ContextException.php');
             throw new ContextException('ID expected.');
         }
 
@@ -44,7 +44,7 @@ class AdminResendEmail extends Command
         $message = new EmailMessage($context['id']);
 
         if($message->id == 0 || $message == null){
-            PHPWS_Core::initModClass('nomination', 'expcetion/DatabaseException.php');
+            \PHPWS_Core::initModClass('nomination', 'expcetion/DatabaseException.php');
             throw new DatabaseException('Error occured loading email message from database.');
         }
 
