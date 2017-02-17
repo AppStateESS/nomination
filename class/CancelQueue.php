@@ -95,7 +95,7 @@ class CancelQueue {
         return $tpl;
     }
 
-    public function contains($id){
+    public static function contains($id){
         $db = new \PHPWS_DB('nomination_cancel_queue');
         $db->addWhere('nomination', $id);
         $result = $db->select();

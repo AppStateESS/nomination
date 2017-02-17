@@ -82,7 +82,7 @@ class NominationForm extends \nomination\View
             $cancelForm = new \PHPWS_Form('cancel_nominationForm');
 
             // CancelQueue contains method
-            if($this->contains($nomination->getId())) {
+            if(CancelQueue::contains($nomination->getId())) {
                 $cmd = $cmdFactory->get('WithdrawCancelNomination');
                 $cancelForm->addSubmit('Remove Request');
                 $cmd->unique_id = $context['unique_id'];
