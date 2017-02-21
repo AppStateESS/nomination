@@ -157,7 +157,7 @@ class Nomination
     // Assumes email address is stored without domain,
     // and all addresses belong to the @appstate.edu domain
     public function getEmailLink(){
-        $email = $this->email . "@appstate.edu";
+        $email = $this->email;
         return "<a href='mailto:$email'>$email</a>";
     }
 
@@ -272,7 +272,7 @@ class Nomination
     // Assumes email address is stored without domain,
     // and all addresses belong to the @appstate.edu domain
     public function getNominatorEmailLink(){
-        $email = $this->nominator_email . "@appstate.edu";
+        $email = $this->nominator_email;
         return "<a href='mailto:$email'>$email</a>";
     }
 
