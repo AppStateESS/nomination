@@ -75,7 +75,10 @@ class SubmitRecommendation extends Command {
         ReferenceFactory::save($ref);
 
         // Check if nomination is completed now...
-        $nomination->checkCompletion();
+        if ($nomination->checkCompletion()){
+            $nomination->setComplete(true);
+            NominationFactory::save($nomination);
+        }
 
         // Send notification email
         $ref = ReferenceFactory::getByUniqueId($context['unique_id']); // Why are we doing this again? $ref is already loaded
