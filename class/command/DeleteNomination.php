@@ -12,7 +12,7 @@ namespace nomination\command;
    * @author Chris Detsch
    */
 
-PHPWS_Core::initModClass('nomination', 'Command.php');
+\PHPWS_Core::initModClass('nomination', 'Command.php');
 
 class DeleteNomination extends Command
 {
@@ -33,7 +33,7 @@ class DeleteNomination extends Command
         }
         // A nomination ID must be set.
         if(!isset($context['nominationId']) || $context['nominationId'] == ''){
-            PHPWS_Core::initModClass('nomination', 'exception/ContextException.php');
+            \PHPWS_Core::initModClass('nomination', 'exception/ContextException.php');
             throw new ContextException('Nomination ID is required');
         }
 

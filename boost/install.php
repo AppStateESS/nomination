@@ -21,7 +21,7 @@ function nomination_install(&$content)
 
 
     // Create Committee group
-    PHPWS_Core::initModClass('users', 'Group.php');
+    \PHPWS_Core::initModClass('users', 'Group.php');
     $group = new PHPWS_Group();
     $group->setName('nomination_committee');
     $group->setActive(True);

@@ -50,6 +50,8 @@ class PeriodMaintenance extends \nomination\View
         $form->setLabel('nomination_period_end', 'Period End Date');
         $form->addCssClass('nomination_period_end', 'form-control');
 
+
+
         if(is_null($period)){
             // This can happen if no periods are configured yet (e.g. on first install)
             $tpl['CURRENT_PERIOD_YEAR'] = '<span class="error-text">No period set</span>';

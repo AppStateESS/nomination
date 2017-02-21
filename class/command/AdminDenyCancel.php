@@ -35,8 +35,8 @@ class AdminDenyCancel extends Command
         if(!UserStatus::isAdmin()){
             throw new PermissionException('You are not allowed to do that!');
         }
-        PHPWS_Core::initModClass('nomination', 'Nomination.php');
-        PHPWS_Core::initModClass('nomination', 'CancelQueue.php');
+        \PHPWS_Core::initModClass('nomination', 'Nomination.php');
+        \PHPWS_Core::initModClass('nomination', 'CancelQueue.php');
 
         $nomination = NominationFactory::getNominationbyId($context['nominationId']);
 

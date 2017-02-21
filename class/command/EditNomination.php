@@ -53,7 +53,7 @@ class EditNomination extends Command
       $entered = array();
 
       // Figure out which fields are required
-      PHPWS_Core::initModClass('nomination', 'NominationFieldVisibility.php');
+      \PHPWS_Core::initModClass('nomination', 'NominationFieldVisibility.php');
       $vis = new NominationFieldVisibility();
 
       $required = array();

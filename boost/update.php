@@ -10,7 +10,7 @@ function nomination_update($content, $currentVersion)
             if(PHPWS_Error::logIfError($result)){
                 return $result;
             }
-            PHPWS_Core::initModClass('users', 'Permission.php');
+            \PHPWS_Core::initModClass('users', 'Permission.php');
             Users_Permission::registerPermissions('nomination', $content);
         case version_compare($currentVersion, '0.0.3', '<'):
             $db = new PHPWS_DB;

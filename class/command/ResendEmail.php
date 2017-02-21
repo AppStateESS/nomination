@@ -24,12 +24,12 @@ class ResendEmail extends Command
     public function execute(Context $context)
     {
         if(!isset($context['unique_id'])){
-            PHPWS_Core::initModClass('nomination', 'exception/ContextException.php');
+            \PHPWS_Core::initModClass('nomination', 'exception/ContextException.php');
             throw new ContextException('Unique ID not given.');
         }
 
-        PHPWS_Core::initModClass('nomination', 'NominationEmail.php');
-        PHPWS_Core::initModClass('nomination', 'Nomination.php');
+        \PHPWS_Core::initModClass('nomination', 'NominationEmail.php');
+        \PHPWS_Core::initModClass('nomination', 'Nomination.php');
 
         // Get the nomination.
         $nominator = Nominator::getByUniqueId($context['unique_id']);
