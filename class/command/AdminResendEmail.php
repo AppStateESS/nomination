@@ -16,7 +16,7 @@ namespace nomination\command;
 \PHPWS_Core::initModClass('nomination', 'Command.php');
 \PHPWS_Core::initModClass('nomination', 'Context.php');
 \PHPWS_Core::initModClass('nomination', 'view/AjaxMessageView.php');
-\PHPWS_Core::initModClass('nomination', 'PLM_Email.php');
+\PHPWS_Core::initModClass('nomination', 'NominationEmail.php');
 \PHPWS_Core::initModClass('nomination', 'EmailMessage.php');
 
 class AdminResendEmail extends Command
@@ -48,7 +48,7 @@ class AdminResendEmail extends Command
             throw new DatabaseException('Error occured loading email message from database.');
         }
 
-        PLM_Email::sendMessageObj($message);
+        NominationEmail::sendMessageObj($message);
 
 
         if(isset($context['ajax'])){
