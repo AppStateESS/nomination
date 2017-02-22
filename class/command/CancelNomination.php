@@ -1,6 +1,9 @@
 <?php
 namespace nomination\command;
 
+use \nomination\Command;
+use \nomination\Context;
+
 /*
  * CancelNomination
  *
@@ -10,8 +13,8 @@ namespace nomination\command;
  * @package nomination
  */
 
-PHPWS_Core::initModClass('nomination', 'Command.php');
-PHPWS_Core::initModClass('nomination', 'CancelQueue.php');
+\PHPWS_Core::initModClass('nomination', 'Command.php');
+\PHPWS_Core::initModClass('nomination', 'CancelQueue.php');
 
 class CancelNomination extends Command {
     public $unique_id;

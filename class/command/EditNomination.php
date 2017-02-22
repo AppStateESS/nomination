@@ -1,6 +1,9 @@
 <?php
 namespace nomination\command;
 
+use \nomination\Command;
+use \nomination\Context;
+
 /**
  * EditNomination
  *
@@ -12,10 +15,10 @@ namespace nomination\command;
  * @author Chris Detsch
  */
 
-PHPWS_Core::initModClass('nomination', 'Command.php');
-PHPWS_Core::initModClass('nomination', 'Context.php');
-PHPWS_Core::initModClass('nomination', 'NominationDocument.php');
-PHPWS_Core::initModClass('nomination', 'view/NominationForm.php');
+\PHPWS_Core::initModClass('nomination', 'Command.php');
+\PHPWS_Core::initModClass('nomination', 'Context.php');
+\PHPWS_Core::initModClass('nomination', 'NominationDocument.php');
+\PHPWS_Core::initModClass('nomination', 'view/NominationForm.php');
 
 class EditNomination extends Command
 {
