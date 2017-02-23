@@ -3,6 +3,7 @@ namespace nomination\command;
 
 use \nomination\Command;
 use \nomination\Context;
+use \nomination\NominationFieldVisibility;
 
 /**
  * EditNomination
