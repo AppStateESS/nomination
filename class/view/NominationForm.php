@@ -327,8 +327,8 @@ class NominationForm extends \nomination\View
                 $tpl['STATEMENT'] = NominationDocument::getFileWidget(null, 'statement', $form);
             } else {
                 //TODO fix editing
-                $omnom = new Nomination;
-                $omnom->id = $nomination->getId();
+                //$omnom = new Nomination;
+                //$omnom->id = $nomination->getId();
             }
         }
 
