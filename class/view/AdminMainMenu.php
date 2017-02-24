@@ -13,7 +13,12 @@ class AdminMainMenu extends \nomination\View
 
     public function display(Context $context)
     {
-        if(!UserStatus::isAdmin()){
+        if(!\Current_User::isLogged()){
+            // If user is not logged in, redirect them to the login URL
+            $auth = \Current_User::getAuthorization();
+            \PHPWS_Core::reroute($auth->login_link);
+        } else if(!UserStatus::isAdmin()) {
+            // User is logged in, but does not have admin permissions
             throw new \nomination\exception\PermissionException('You are not allowed to see that!');
         }
 
