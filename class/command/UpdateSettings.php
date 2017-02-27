@@ -97,6 +97,20 @@ class UpdateSettings extends Command {
 
             $settingsMap['email_from_address'] = $context['email_from_address'];
 
+            /**
+             * Update Signature
+             */
+            if(!empty($context['signature_title'])){
+                $settingsMap['signature'] = $context['signature_title'];
+            }
+
+           /**
+            * Update Signature Position
+            */
+            if(!empty($context['sig_position'])){
+                $settingsMap['sig_position'] = $context['sig_position'];
+            }
+
             $vis = new NominationFieldVisibility();
             $vis->saveFromContext($context, 'show_fields');
 

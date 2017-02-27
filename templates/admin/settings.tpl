@@ -25,9 +25,22 @@
         </div>
         <!-- END allowed_file_types_repeat -->
 
+    </div>
+
+    <div class="col-md-3 col-md-offset-2">
         <div class="form-group">
             <label>{EMAIL_FROM_ADDRESS_LABEL}:</label>
             {EMAIL_FROM_ADDRESS}
+        </div>
+
+        <div class="form-group">
+            <label>{SIGNATURE_TITLE_LABEL}</label>
+            {SIGNATURE_TITLE}
+        </div>
+
+        <div class="form-group">
+            <label>{SIG_POSITION_LABEL}</label>
+            {SIG_POSITION}
         </div>
 
     </div>
