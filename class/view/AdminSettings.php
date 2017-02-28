@@ -69,6 +69,18 @@ class AdminSettings extends \nomination\View {
         $form->setSize('email_from_address', 30);
         $form->addCssClass('email_from_address', 'form-control');
 
+        // Signature
+        $form->addText('signature_title', \PHPWS_Settings::get('nomination', 'signature'));
+        $form->setLabel('signature_title', 'Signature Title');
+        $form->setSize('signature_title', 30);
+        $form->addCssClass('signature_title', 'form-control');
+
+        // Signature Position
+        $form->addText('sig_position', \PHPWS_Settings::get('nomination', 'sig_position'));
+        $form->setLabel('sig_position', 'Signature Position');
+        $form->setSize('sig_position', 30);
+        $form->addCssClass('sig_position', 'form-control');
+
         // Hidden Fields
         \PHPWS_Core::initModClass('nomination', 'NominationFieldVisibility.php');
         $vis = new \nomination\NominationFieldVisibility();

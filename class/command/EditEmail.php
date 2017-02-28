@@ -13,6 +13,7 @@ namespace nomination\command;
 use \nomination\Command;
 use \nomination\Context;
 use \nomination\NominationEmail;
+use \nomination\UserStatus;
 
 class EditEmail extends Command {
     public $from;

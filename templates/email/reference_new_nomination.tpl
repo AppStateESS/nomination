@@ -13,4 +13,6 @@ Click the link below to submit your document.  Submissions will no longer be acc
     {REF_EDIT_LINK}
 
 Sincerely,
-   Office of the Vice Chancellor for Student Development
+
+{SIGNATURE}
+{SIG_POSITION}

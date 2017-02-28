@@ -33,6 +33,8 @@ class ReferenceEmail
         $vars['END_DATE'] = $period->getReadableEndDate();
         $vars['REF_EDIT_LINK'] = $reference->getEditLink();
         $vars['AWARD_TITLE'] = \PHPWS_Settings::get('nomination', 'award_title');
+        $vars['SIGNATURE'] = \PHPWS_Settings::get('nomination', 'signature');
+        $vars['SIG_POSITION'] = \PHPWS_Settings::get('nomination', 'sig_position');
 
 
         $list = array($reference->getId());
