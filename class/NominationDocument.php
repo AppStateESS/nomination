@@ -360,7 +360,7 @@ class NominationDocument {
 
         $tpl['ID']       = $form->id.'_'.$name;
         if(!is_null($doc))
-            $tpl['DOWNLOAD'] = $doc->getDownloadLink();
+            $tpl['DOWNLOAD'] = $doc->getDownloadLink($form->id);
 
         javascript('jquery_ui');
         javascriptMod('nomination', 'doc', array('PHPWS_SOURCE_HTTP' => PHPWS_SOURCE_HTTP));
@@ -389,7 +389,7 @@ class NominationDocument {
             return new FileDescription('No file', 'empty', '0b');
         }
 
-        $file = $doc->getFullPath();
+        $file = \PHPWS_Settings::get('nomination', 'file_dir') . $doc->getFilePath() . $doc->getFileName();
         $type = mime_content_type($file);
         $size = filesize($file);
         return new FileDescription('Letter', $type, $size);

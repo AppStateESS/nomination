@@ -12,6 +12,7 @@ use \nomination\Reference;
 use \nomination\Nomination;
 use \nomination\NominationDocument;
 use \nomination\FallthroughContext;
+use \nomination\DocumentFactory;
 
 \PHPWS_Core::initCoreClass('Captcha.php');
 \PHPWS_Core::initCoreClass('Form.php');
@@ -326,7 +327,16 @@ class NominationForm extends \nomination\View
                 $tpl['FILES_DIR'] = PHPWS_SOURCE_HTTP;
                 $tpl['STATEMENT'] = NominationDocument::getFileWidget(null, 'statement', $form);
             } else {
-                //TODO fix editing
+                //TODO fix editing <-- this is a nightmare
+                $tpl['FILES_DIR'] = PHPWS_SOURCE_HTTP;
+
+                $doc = new DocumentFactory();
+                $doc = $doc->getDocumentById($nomination->getId());
+
+                $tpl['STATEMENT'] = NominationDocument::getFileWidget($doc, 'statement', $form);
+
+
+                //$refArray['REFERENCE_DOWNLOAD'] = $doc->getDownloadLink($references[$i]->getDocId(), 'Download Statement');
                 //$omnom = new Nomination;
                 //$omnom->id = $nomination->getId();
             }

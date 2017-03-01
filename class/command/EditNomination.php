@@ -4,7 +4,7 @@ namespace nomination\command;
 use \nomination\Command;
 use \nomination\Context;
 use \nomination\NominationFieldVisibility;
-
+use \nomination\NominationFactory;
 /**
  * EditNomination
  *
@@ -38,7 +38,11 @@ class EditNomination extends Command
 				    'nominator_last_name',
 				    'nominator_email',
 				    'nominator_phone',
-				    'nominator_address');
+				    'nominator_address',
+            'reference_first_name',
+            'reference_last_name',
+            'reference_phone',
+            'reference_email');
 
     public function getRequestVars()
     {
@@ -84,7 +88,7 @@ class EditNomination extends Command
 
 
       // If anything was missing, redirect back to the form
-      if(!empty($missing) || !Captcha::verify()){
+      if(!empty($missing) || !\Captcha::verify()){
           // Notify the user that they must reselect their file
           $missing[] = 'statement';
 
