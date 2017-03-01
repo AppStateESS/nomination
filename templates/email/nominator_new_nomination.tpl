@@ -4,9 +4,13 @@ Dear {NOMINATOR_NAME}:
 
 Thank you for taking the time to submit the nomination of {NOMINEE_NAME} for the {AWARD_NAME}.
 
-The three references you gave will be contacted by our office and asked for a letter of recommendation.   Once we have received their letters the selection committee will be evaluating the nominations over the next few weeks and in accordance with its charge will make a recommendation to the Chancellor during the spring semester.  If accepted, this recommendation will then go before the Board of Trustees at their March meeting.  The Chancellor will then notify the individuals chosen.
+The three references you indicated will be contacted by our office and asked for a letter of recommendation. It is important that you upload your nomination and support information immediately. Your references will not be able to upload their support letter until your nomination and supporting materials have been uploaded.
 
-As is often the case, we have received many outstanding nominations this year. Appalachian has always been fortunate to have faculty and staff dedicated to serving our students.  Your time and effort in completing this nomination is greatly appreciated and it will be given the careful consideration it deserves.
+Once we have received your complete nomination and all three references’ letters, the nomination is considered complete. The selection committee will then evaluate the completed nominations and make a recommendation to the Vice Chancellor for Student Development. Those selected for Student Leadership and Legacy Awards will receive their award during the spring semester.
+
+Appalachian has always been fortunate to have faculty and staff dedicated to serving our students. Your time and effort in completing this nomination is greatly appreciated and it will be given the careful consideration it deserves.
+
+Click the link below to make any changes to your nomination.
 
 Click the link below to make any changes to your nomination.  After {END_DATE} you will not be able to make any more changes.
 
