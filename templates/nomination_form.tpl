@@ -68,7 +68,8 @@
             </label>
             <div class="input-group">
                 {NOMINEE_EMAIL}
-                {NOMINEE_ADD_ON}
+                <!--{NOMINEE_ADD_ON}-->
+                
             </div>
         </div>
 
@@ -408,7 +409,7 @@
             <label class="req">ASU E-Mail</label>
             <div class="input-group">
                 {NOMINATOR_EMAIL}
-                {NOMINATOR_ADD_ON}
+                <!--{NOMINATOR_ADD_ON}-->
             </div>
         </div>
         <!-- END NOMINATOR_EMAIL -->

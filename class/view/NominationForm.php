@@ -62,6 +62,12 @@ class NominationForm extends \nomination\View
         $c = new FallthroughContext(array());
         $c->addFallthrough($context);
 
+        if (isset($_SESSION['nomination_fields']))
+        {
+            $c = $_SESSION['nomination_fields'];
+            unset($_SESSION['nomination_fields']);
+        }
+
         /**
         * These forms are displayed if the Nominator is editing the nomination
         */
@@ -178,7 +184,7 @@ class NominationForm extends \nomination\View
 
         if($vis->isVisible('nominee_department_major')) {
             $form->addText('nominee_department_major',
-            isset($c['nominee_major']) ? $c['nominee_major'] : '');
+            isset($c['nominee_department_major']) ? $c['nominee_department_major'] : '');
             $form->addCssClass('nominee_department_major', 'form-control');
             $form->setLabel('nominee_department_major', 'Department/Major');
         }

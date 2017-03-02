@@ -65,8 +65,6 @@ class CreateNomination extends Command
         $entered = array();
         $numReferencesReq = Reference::getNumReferencesReq();
 
-
-
         // Figure out which fields are required
         $vis = new NominationFieldVisibility();
         $required = array();
@@ -93,14 +91,75 @@ class CreateNomination extends Command
          * Check  fields *
         *****************/
 
+        if (isset($_SESSION['redirect']) && $_SESSION['redirect'] == 'true')
+        {
+            \NQ::simple('nomination', NotificationView::NOMINATION_ERROR, 'Be sure to fill in all required fields.');
+            unset($_SESSION['redirect']);
+        }
+        
+
         // Check for missing required fields
         foreach($required as $key=>$value){
             if(!isset($context[$value]) || $context[$value] == ""){
                 $missing[] = $value;
+                $context['after'] = 'NominationForm';
+                $fields = array('nominee_banner_id'=>$context['nominee_banner_id'],
+                        'nominee_first_name'=>$context['nominee_first_name'],
+                        'nominee_middle_name'=>$context['nominee_middle_name'],
+                        'nominee_last_name'=>$context['nominee_last_name'],
+                        'nominee_asubox'=>$context['nominee_asubox'],
+                        'nominee_email'=>$context['nominee_email'],
+                        'nominee_position'=>$context['nominee_position'],
+                        'nominee_department_major'=>$context['nominee_department_major'],
+                        'nominee_years'=>$context['nominee_years'],
+                        'nominee_phone'=>$context['nominee_phone'],
+                        'nominee_gpa'=>$context['nominee_gpa'],
+                        'nominee_class'=>$context['nominee_class'],
+                        'nominee_responsibility'=>$context['nominee_responsibility'],
+                        'nominator_first_name'=>$context['nominator_first_name'],
+                        'nominator_middle_name'=>$context['nominator_middle_name'],
+                        'nominator_last_name'=>$context['nominator_last_name'],
+                        'nominator_address'=>$context['nominator_address'],
+                        'nominator_phone'=>$context['nominator_phone'],
+                        'nominator_email'=>$context['nominator_email'],
+                        'nominator_relationship'=>$context['nominator_relationship'],
+                        'category'=>$context['category'],
+                        'statement'=>array('name'=>$_FILES['statement']['name'],
+                                'type'=>$_FILES['statement']['type'],
+                                'tmp_name'=>$_FILES['statement']['tmp_name'],
+                                'error'=>$_FILES['statement']['error'],
+                                'size'=>$_FILES['statement']['size']),
+                        'reference_id'=>array('0'=>$context['reference_id_0'],
+                                '1'=>$context['reference_id_1'],
+                                '2'=>$context['reference_id_2']),
+                        'reference_first_name'=>array('0'=>$context['reference_first_name_0'],
+                                '1'=>$context['reference_first_name_1'],
+                                '2'=>$context['reference_first_name_2']),
+                        'reference_last_name'=>array('0'=>$context['reference_last_name_0'],
+                                '1'=>$context['reference_last_name_1'],
+                                '2'=>$context['reference_last_name_2']),
+                        'reference_department'=>array('0'=>$context['reference_department_0'],
+                                '1'=>$context['reference_department_1'],
+                                '2'=>$context['reference_department_2']),
+                        'reference_relationship'=>array('0'=>$context['reference_relationship_0'],
+                                '1'=>$context['reference_relationship_1'],
+                                '2'=>$context['reference_relationship_2']),
+                        'reference_phone'=>array('0'=>$context['reference_phone_0'],
+                                '1'=>$context['reference_phone_1'],
+                                '2'=>$context['reference_phone_2']),
+                        'reference_email'=>array('0'=>$context['reference_email_0'],
+                                '1'=>$context['reference_email_1'],
+                                '2'=>$context['reference_email_2']),
+                        'redirect'=>'true');
+                $_SESSION['nomination_fields'] = $fields;
+                $_SESSION['redirect'] = 'true';
+                return;
             } else {
                 $entered[$key] = $context[$value];
             }
         }
+
+
         // Check for a "statement" file upload, if required
         if($vis->isVisible('statement')) {
             if($_FILES['statement']['error'] !== 0){
@@ -115,12 +174,13 @@ class CreateNomination extends Command
                 }
                 $missing[] = 'statement';
                 $context['missing'] = $missing;// Add missing fields to context
-                throw new \nomination\exception\BadFormException($msg);
+                //throw new \nomination\exception\BadFormException($msg);
             }
         }
 
         // Verify the captcha
         //var_dump($_REQUEST['captcha']);
+        /*
         if(!\Captcha::verify()){
             $missing[] = 'captcha';
 
@@ -128,8 +188,8 @@ class CreateNomination extends Command
             $context['missing'] = $missing;// Add missing fields to context
             $context['form_fail'] = True;// Set form fail
 
-            throw new \nomination\exception\BadFormException('The Captcha words were incorrect.');
-        }
+            //throw new \nomination\exception\BadFormException('The Captcha words were incorrect.');
+        }*/
 
         // If anything was missing, redirect back to the form
         if(!empty($missing)){
@@ -140,7 +200,9 @@ class CreateNomination extends Command
 
             // Throw exception
             $missingFields = implode(', ', $missing);
-            throw new \nomination\exception\BadFormException('The following fields are missing: ' . $missingFields);
+
+            //exit;
+            //throw new \nomination\exception\BadFormException('The following fields are missing: ' . $missingFields);
         }
 
         //check for bad email
@@ -158,7 +220,7 @@ class CreateNomination extends Command
         $nomineeMiddleName  = $context['nominee_middle_name'];
         $nomineeLastName    = $context['nominee_last_name'];
         $nomineeAsubox      = $context['nominee_asubox'];
-        $nomineeEmail       = $context['nominee_email'] . '@appstate.edu';
+        $nomineeEmail       = $context['nominee_email'];
         $nomineePosition    = $context['nominee_position'];
         $nomineeDeptMajor   = $context['nominee_department_major'];
         $nomineeYears       = $context['nominee_years'];
@@ -176,7 +238,7 @@ class CreateNomination extends Command
         $nominatorLastName     = $context['nominator_last_name'];
         $nominatorAddress      = $context['nominator_address'];
         $nominatorPhone        = $context['nominator_phone'];
-        $nominatorEmail        = $context['nominator_email'] . '@appstate.edu';
+        $nominatorEmail        = $context['nominator_email'];
         $nominatorRelation     = $context['nominator_relationship'];
         $nominatorUniqueId     = Nomination::generateUniqueId($nomineeBannerId);
 
@@ -249,7 +311,7 @@ class CreateNomination extends Command
 
                 // Throw exception
                 $missingFields = implode(', ', $missing);
-                throw new \nomination\exception\BadFormException('The following fields are missing: ' . $missingFields);
+                //throw new \nomination\exception\BadFormException('The following fields are missing: ' . $missingFields);
             }
 
             // TODO: need to check reference emails; should be fully-qualified
@@ -268,13 +330,13 @@ class CreateNomination extends Command
         // Make sure the $_FILES array some info on the file we're looking for
         if(!isset($_FILES['statement']) || !is_uploaded_file($_FILES['statement']['tmp_name']))
         {
-            throw new \nomination\exception\BadFormException('Please select a document to upload.');
+            //throw new \nomination\exception\BadFormException('Please select a document to upload.');
         }
 
         // Sanity check on mime type for files the client may still have open
         if($_FILES['statement']['type'] == 'application/octet-stream')
         {
-            throw new \nomination\exception\IllegalFileException('Please save and close all word processors then re-submit file.');
+            //throw new \nomination\exception\IllegalFileException('Please save and close all word processors then re-submit file.');
         }
 
         $doc = new NominationDocument($nomination, 'nominator', 'statement', $_FILES['statement']);
@@ -296,6 +358,8 @@ class CreateNomination extends Command
         {
             NominatorEmail::newNomination($nomination);
         }
+
+        unset($_SESSION['nomination_fields']);
 
         \NQ::simple('Nomination', NotificationView::NOMINATION_SUCCESS, 'Form successfully submitted. Email sent.');
     }
