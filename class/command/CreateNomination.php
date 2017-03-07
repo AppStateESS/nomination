@@ -94,7 +94,10 @@ class CreateNomination extends Command
         if (isset($_SESSION['redirect']) && $_SESSION['redirect'] == 'true')
         {
             \NQ::simple('nomination', NotificationView::NOMINATION_ERROR, 'Be sure to fill in all required fields.');
+            \NQ::simple('nomination', NotificationView::NOMINATION_WARNING, 'Re-select your statement file before submitting.');
             unset($_SESSION['redirect']);
+            //$_FILES['statement'] = $_SESSION['statement'];
+            //unset($_SESSION['statement']);
         }
         
 
@@ -124,11 +127,6 @@ class CreateNomination extends Command
                         'nominator_email'=>$context['nominator_email'],
                         'nominator_relationship'=>$context['nominator_relationship'],
                         'category'=>$context['category'],
-                        'statement'=>array('name'=>$_FILES['statement']['name'],
-                                'type'=>$_FILES['statement']['type'],
-                                'tmp_name'=>$_FILES['statement']['tmp_name'],
-                                'error'=>$_FILES['statement']['error'],
-                                'size'=>$_FILES['statement']['size']),
                         'reference_id'=>array('0'=>$context['reference_id_0'],
                                 '1'=>$context['reference_id_1'],
                                 '2'=>$context['reference_id_2']),
@@ -153,6 +151,14 @@ class CreateNomination extends Command
                         'redirect'=>'true');
                 $_SESSION['nomination_fields'] = $fields;
                 $_SESSION['redirect'] = 'true';
+                /*$_SESSION['statement'] = array('name'=>$_FILES['statement']['name'],
+                                'type'=>$_FILES['statement']['type'],
+                                'tmp_name'=>$_FILES['statement']['tmp_name'],
+                                'error'=>$_FILES['statement']['error'],
+                                'size'=>$_FILES['statement']['size']);*/
+                /*var_dump($_SESSION);
+                var_dump($_FILES);
+                exit;*/
                 return;
             } else {
                 $entered[$key] = $context[$value];
