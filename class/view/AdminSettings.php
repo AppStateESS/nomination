@@ -42,6 +42,12 @@ class AdminSettings extends \nomination\View {
         $form->setSize('award_title', 30);
         $form->addCssClass('award_title', 'form-control');
 
+        // Award description
+        $form->addTextArea('award_description', \PHPWS_Settings::get('nomination', 'award_description'));
+        $form->setLabel('award_description', 'Award Description:');
+        $form->setSize('award_description', 30);
+        $form->addCssClass('award_description', 'form-control');
+
         // Number of references required
         $numRefs = \PHPWS_Settings::get('nomination', 'num_references_req');
         $form->addText('num_references_req', isset($numRefs)?$numRefs:1);  // Default to 1 required reference

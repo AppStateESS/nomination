@@ -29,6 +29,8 @@
 
         <h1>{AWARD_TITLE} Nomination</h1>
 
+        <p>{AWARD_DESCRIPTION}</p>
+
         <p>This nomination period will end on <strong>{PERIOD_END}</strong>.</p>
     </div>
 </div>

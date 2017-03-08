@@ -9,6 +9,11 @@
         </div>
 
         <div class="form-group">
+            <label>{AWARD_DESCRIPTION_LABEL}</label>
+            {AWARD_DESCRIPTION}
+        </div>
+
+        <div class="form-group">
             <label>{NUM_REFERENCES_REQ_LABEL}:</label>
             {NUM_REFERENCES_REQ}
         </div>

@@ -67,6 +67,13 @@ class UpdateSettings extends Command {
             }
 
             /*
+             * Update award description
+             */
+            if(!empty($context['award_description'])){
+                $settingsMap['award_description'] = $context['award_description'];
+            }
+
+            /*
              * Update References Required
              */
             if(!empty($context['num_references_req'])){
