@@ -24,3 +24,8 @@
 </tr>
 <!-- END EMPTY_MESSAGE -->
 </table>
+<div align="center">
+  <b>{PAGE_LABEL}</b><br />
+  {PAGES}<br />
+  {LIMITS}
+</div>
