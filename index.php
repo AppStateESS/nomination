@@ -1,23 +1,30 @@
 <?php
+namespace nomination\view;
+use \nomination\view\NotificationView;
+use \nomination\NominationModFactory;
 
 if (!defined('PHPWS_SOURCE_DIR')) {
     include '../../config/core/404.html';
     exit();
 }
 
-PHPWS_Core::requireInc('nomination', 'defines.php');
-PHPWS_Core::initModClass('notification', 'NQ.php');
+\PHPWS_Core::requireInc('nomination', 'defines.php');
+\PHPWS_Core::initModClass('notification', 'NQ.php');
 
+
+$nv = new NotificationView();
+            $nv->popNotifications();
+            \Layout::add($nv->show());
 
 if(NOMINATION_DEBUG){
-    $controller = nomination\NominationModFactory::getNomination();
+    $controller = NominationModFactory::getNomination();
     $controller->process();
 } else {
     try {
-        $controller = nomination\NominationModFactory::getNomination();
+        $controller = NominationModFactory::getNomination();
         $controller->process();
     } catch(\Exception $e) {
-        try {
+        /*try {
             $message = $this->formatException($e);
             \NQ::Simple('hms', nomination\NotificationView::ERROR, 'An internal error has occurred, and the authorities have been notified.  We apologize for the inconvenience.');
             $this->emailError($message);
@@ -30,6 +37,6 @@ if(NOMINATION_DEBUG){
             $message = "Something terrible has happened, and the exception catch-all threw an exception.\n\nThe first exception was:\n\n$message\n\nThe second exception was:\n\n$message2";
             mail('ess@appstate.edu', 'A Major HMS Error Has Occurred', $message);
             exit();
-        }
+        }*/
     }
 }
