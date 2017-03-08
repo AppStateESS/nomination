@@ -10,4 +10,7 @@ display: inline-block;
 vertical-align: 100%;
 }
 </style>
-<div><input name="{NAME}" type="file" id="{ID}" /><input type="button" id="clear-{ID}" value="Clear"></div>
+<div>
+  <input name="{NAME}" type="file" id="{ID}" />
+  <input type="button" id="clear-{ID}" value="Clear">
+</div>

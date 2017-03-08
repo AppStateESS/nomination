@@ -3,8 +3,19 @@ namespace nomination\command;
 
 use \nomination\Command;
 use \nomination\Context;
+use \nomination\Nomination;
+use \nomination\NominationFactory;
+use \nomination\view\NominationForm;
+use \nomination\NominationDocument;
+use \nomination\DocumentFactory;
+use \nomination\Reference;
+use \nomination\ReferenceFactory;
+use \nomination\NominationEmail;
+use \nomination\Period;
 use \nomination\NominationFieldVisibility;
-
+use \nomination\ReferenceEmail;
+use \nomination\NominatorEmail;
+use \nomination\view\NotificationView;
 /**
  * EditNomination
  *
@@ -38,7 +49,11 @@ class EditNomination extends Command
 				    'nominator_last_name',
 				    'nominator_email',
 				    'nominator_phone',
-				    'nominator_address');
+				    'nominator_address',
+            'reference_first_name',
+            'reference_last_name',
+            'reference_phone',
+            'reference_email');
 
     public function getRequestVars()
     {
@@ -55,6 +70,8 @@ class EditNomination extends Command
     {
       $missing = array();
       $entered = array();
+      $numReferencesReq = Reference::getNumReferencesReq();
+      $nomination = NominationFactory::getByNominatorUniqueId($context['unique_id']);
 
       // Figure out which fields are required
       \PHPWS_Core::initModClass('nomination', 'NominationFieldVisibility.php');
@@ -64,9 +81,22 @@ class EditNomination extends Command
       foreach(self::$requiredFields as $field) {
           if($vis->isVisible($field))
           {
-            $required[] = $field;
+            switch($field){
+              case "reference_first_name":
+              case "reference_last_name":
+              case "reference_phone":
+              case "reference_email":
+                for($i = 0; $i < $numReferencesReq; $i++)
+                {
+                  array_push($required, $field.'_'.$i);
+                }
+                break;
+              default:
+                $required[] = $field;
+            }
           }
       }
+
 
 
       /*****************
@@ -84,9 +114,8 @@ class EditNomination extends Command
 
 
       // If anything was missing, redirect back to the form
-      if(!empty($missing) || !Captcha::verify()){
+      if(!empty($missing)|| !\Captcha::verify()){
           // Notify the user that they must reselect their file
-          $missing[] = 'statement';
 
           $context['after'] = 'NominationForm';// Set after view to the form
           $context['missing'] = $missing;// Add missing fields to context
@@ -104,6 +133,22 @@ class EditNomination extends Command
 
       // TODO: Check nominee email.. Should only be username, with '@appstate.edu' *excluded*
       // TODO: Check nominator email (if provided).. Should only be username, with '@appstate.edu' *excluded*
+
+      $doc = new DocumentFactory();
+      $doc = $doc->getDocumentById($nomination->getId());
+      // Needed so that the document save function will update the file if needed.
+      $docId = $doc->getId();
+      if($doc == null || $_FILES['statement']['size'] > 0 || is_uploaded_file($_FILES['statement']['tmp_name'])){
+          // Sanity check on mime type for files the client may still have open
+          if($_FILES['statement']['type'] == 'application/octet-stream')
+          {
+              throw new \nomination\exception\IllegalFileException('Please save and close all word processors then re-submit file.');
+          }
+
+          $doc = new NominationDocument($nomination, 'nominator', 'statement', $_FILES['statement']);
+          $doc->setId($docId);
+          DocumentFactory::save($doc);
+      }
 
       /***********
        * Nominee *
@@ -211,7 +256,6 @@ class EditNomination extends Command
         }
 
       }
-
 
       /***************
        * Send Emails *

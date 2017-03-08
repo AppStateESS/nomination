@@ -355,9 +355,18 @@
         <p>
             {STATEMENT}
         </p>
-        <!-- END STATEMENT -->
+
+        <!-- BEGIN DOWNLOAD -->
+        <hr>
+        <p>
+            If you need to reupload a new statement, please use the choose file button above and resubmit the form. Otherwise the link below will allow you to see the document you've already uploaded.
+            <br>
+            {DOWNLOAD}
+        </p>
+        <!-- END DOWNLOAD -->
     </div>
 </div>
+<!-- END STATEMENT -->
 
 <!-- BEGIN NOMINATOR_OVERALL -->
 <div class="row">
