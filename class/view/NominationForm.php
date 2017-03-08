@@ -125,6 +125,7 @@ class NominationForm extends \nomination\View
 
 
         $tpl['AWARD_TITLE'] = \PHPWS_Settings::get('nomination', 'award_title');
+        $tpl['AWARD_DESCRIPTION'] = \PHPWS_Settings::get('nomination', 'award_description');
         $currPeriod = Period::getCurrentPeriod();
         $tpl['PERIOD_END'] = $currPeriod->getReadableEndDate();
         $tpl['NUM_REFS'] = \PHPWS_Settings::get('nomination', 'num_references_req');
