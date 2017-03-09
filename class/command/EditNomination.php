@@ -78,6 +78,7 @@ class EditNomination extends Command
       $vis = new NominationFieldVisibility();
 
       $required = array();
+
       foreach(self::$requiredFields as $field) {
           if($vis->isVisible($field))
           {
@@ -104,17 +105,20 @@ class EditNomination extends Command
       *****************/
 
       // Check for missing required fields
+      /*
+      // TODO: Fix this so that it doesn't complain about fields that the user can't fill in.
       foreach($required as $key=>$value){
           if(!isset($context[$value]) || $context[$value] == ""){
               $missing[] = $value;
           } else {
               $entered[$key] = $context[$value];
           }
-      }
+      }*/
 
 
       // If anything was missing, redirect back to the form
-      if(!empty($missing)|| !\Captcha::verify()){
+      // TODO: Fix this so that it shows a useful error notification if the user gets the CAPTCHA wrong
+      if(!empty($missing) || !Captcha::verify()){
           // Notify the user that they must reselect their file
 
           $context['after'] = 'NominationForm';// Set after view to the form
@@ -122,17 +126,11 @@ class EditNomination extends Command
           $context['form_fail'] = True;// Set form fail
           // Throw exception
           $missingFields = implode(', ', $missing);
-          throw new \nomination\exception\BadFormException('The following fields are missing: ' . $missingFields);
+          // TODO
+          //throw new \nomination\exception\BadFormException('The following fields are missing: ' . $missingFields);
       }
 
-      //check for bad email
-      //TODO: check nominator and nominee emails, should not contain '@'
-
       $oldNomination = NominationFactory::getByNominatorUniqueId($context['nominator_unique_id']);
-
-
-      // TODO: Check nominee email.. Should only be username, with '@appstate.edu' *excluded*
-      // TODO: Check nominator email (if provided).. Should only be username, with '@appstate.edu' *excluded*
 
       $doc = new DocumentFactory();
       $doc = $doc->getDocumentById($nomination->getId());
@@ -204,13 +202,15 @@ class EditNomination extends Command
       /**************
        * References *
        **************/
+       /*
+       // TODO Fix reference editing
       $numRefsReq = Reference::getNumReferencesReq();
       $updatedRefsNeedEmail = array();
 
       for($i = 0; $i < $numRefsReq; $i++)
       {
         $refId = $context['reference_id_'.$i];
-        $ref = ReferenceFactory::getReferenceById($refId);
+        $ref = ReferenceFactory::getReferenceById($refId); // TODO: The $refId is a database id (i.e. an integer), not a string, so this fails
         $changed = 0;
 
         if($ref->getFirstName() != $context['reference_first_name_'.$i])
@@ -256,16 +256,20 @@ class EditNomination extends Command
         }
 
       }
+      */
 
       /***************
        * Send Emails *
       ***************/
 
+      /*
+      // TODO: Bring this back when reference editing is fixed
       foreach($updatedRefsNeedEmail as $refId)
       {
           $ref = ReferenceFactory::getReferenceById($refId);
           ReferenceEmail::updateNomination($ref, $nomination);
       }
+      */
 
 
       \NQ::simple('Nomination', NotificationView::NOMINATION_SUCCESS, 'Form successfully submitted. Changes made.');
