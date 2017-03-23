@@ -31,6 +31,7 @@ use \nomination\view\NotificationView;
 \PHPWS_Core::initModClass('nomination', 'Context.php');
 \PHPWS_Core::initModClass('nomination', 'NominationDocument.php');
 \PHPWS_Core::initModClass('nomination', 'view/NominationForm.php');
+\PHPWS_Core::initCoreClass('Captcha.php');
 
 class EditNomination extends Command
 {
@@ -105,20 +106,18 @@ class EditNomination extends Command
       *****************/
 
       // Check for missing required fields
-      /*
-      // TODO: Fix this so that it doesn't complain about fields that the user can't fill in.
       foreach($required as $key=>$value){
           if(!isset($context[$value]) || $context[$value] == ""){
               $missing[] = $value;
           } else {
               $entered[$key] = $context[$value];
           }
-      }*/
+      }
 
 
       // If anything was missing, redirect back to the form
       // TODO: Fix this so that it shows a useful error notification if the user gets the CAPTCHA wrong
-      if(!empty($missing) || !Captcha::verify()){
+      if(!empty($missing) || !\Captcha::verify()){
           // Notify the user that they must reselect their file
 
           $context['after'] = 'NominationForm';// Set after view to the form
@@ -202,74 +201,58 @@ class EditNomination extends Command
       /**************
        * References *
        **************/
-       /*
-       // TODO Fix reference editing
       $numRefsReq = Reference::getNumReferencesReq();
       $updatedRefsNeedEmail = array();
 
       for($i = 0; $i < $numRefsReq; $i++)
       {
         $refId = $context['reference_id_'.$i];
-        $ref = ReferenceFactory::getReferenceById($refId); // TODO: The $refId is a database id (i.e. an integer), not a string, so this fails
-        $changed = 0;
+        $ref = ReferenceFactory::getReferenceById($refId);
 
-        if($ref->getFirstName() != $context['reference_first_name_'.$i])
+        if(!$vis->isVisible('reference_first_name_' . $i))
         {
           $ref->setFirstName($context['reference_first_name_'.$i]);
-          $changed = 1;
         }
 
-        if($ref->getLastName() != $context['reference_last_name_'.$i])
+        if(!$vis->isVisible('reference_last_name_'.$i))
         {
           $ref->setLastName($context['reference_last_name_'.$i]);
-          $changed = 1;
         }
 
-        if($ref->getDepartment() != $context['reference_department_'.$i])
+        if(!$vis->isVisible('reference_department_'.$i))
         {
           $ref->setDepartment($context['reference_department_'.$i]);
-          $changed = 1;
         }
 
-        if($ref->getPhone() != $context['reference_phone_'.$i])
+        if(!$vis->isVisible('reference_phone_'.$i))
         {
           $ref->setPhone($context['reference_phone_'.$i]);
-          $changed = 1;
         }
 
-        if($ref->getEmail() != $context['reference_email_'.$i])
+        if(!$vis->isVisible('reference_email_'.$i) && $ref->getEmail() != $context['reference_email_'.$i])
         {
           $ref->setEmail($context['reference_email_'.$i]);
           array_push($updatedRefsNeedEmail, $refId);
-          $changed = 1;
         }
 
-        if($ref->getRelationship() != $context['reference_relationship_'.$i])
+        if(!$vis->isVisible('reference_relationship_'.$i))
         {
           $ref->setRelationship($context['reference_relationship_'.$i]);
-          $changed = 1;
         }
 
-        if($changed)
-        {
-          ReferenceFactory::save($ref);
-        }
+        ReferenceFactory::save($ref);
 
       }
-      */
+
 
       /***************
        * Send Emails *
       ***************/
-
-      /*
-      // TODO: Bring this back when reference editing is fixed
       foreach($updatedRefsNeedEmail as $refId)
       {
           $ref = ReferenceFactory::getReferenceById($refId);
           ReferenceEmail::updateNomination($ref, $nomination);
       }
-      */
 
 
       \NQ::simple('Nomination', NotificationView::NOMINATION_SUCCESS, 'Form successfully submitted. Changes made.');

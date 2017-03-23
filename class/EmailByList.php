@@ -27,7 +27,7 @@ class EmailByList extends NominationEmail
 
         foreach ($list as $id)
         {
-            if($this->messageType === 'NEWREF' || $this->messageType === 'REFDEL')
+            if($this->messageType === 'NEWREF' || $this->messageType === 'REFDEL' || $this->messageType === 'UPDNOM')
             {
                 $ref = ReferenceFactory::getReferenceById($id);
 
