@@ -43,8 +43,12 @@ class AdminSettings extends \nomination\View {
         $form->addCssClass('award_title', 'form-control');
 
         // Award description
+<<<<<<< HEAD
         $edited_description = str_replace("<br />", "\n", \PHPWS_Settings::get('nomination', 'award_description'));
         $form->addTextArea('award_description', $edited_description);
+=======
+        $form->addTextArea('award_description', \PHPWS_Settings::get('nomination', 'award_description'));
+>>>>>>> b9c495d97292775c12979715ced5ce2963a7c9c4
         $form->setLabel('award_description', 'Award Description:');
         $form->setSize('award_description', 30);
         $form->addCssClass('award_description', 'form-control');

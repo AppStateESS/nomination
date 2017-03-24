@@ -2,7 +2,7 @@
 <h2>Admin Settings</h2>
 
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-10">
         <div class="form-group">
             <label>{AWARD_TITLE_LABEL}</label>
             {AWARD_TITLE}
