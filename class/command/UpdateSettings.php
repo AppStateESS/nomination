@@ -67,6 +67,14 @@ class UpdateSettings extends Command {
             }
 
             /*
+             * Update award description
+             */
+            if(!empty($context['award_description'])){
+                $edited_description = str_replace(array("\r\n", "\r", "\n"), "<br />", $context['award_description']);
+                $settingsMap['award_description'] = $edited_description;
+            }
+
+            /*
              * Update References Required
              */
             if(!empty($context['num_references_req'])){
