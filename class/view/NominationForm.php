@@ -89,7 +89,7 @@ class NominationForm extends \nomination\View
             {
                 $c->restoreNominationForm($nomination);
             }
-            
+
 
             $edit = true;
 
@@ -159,10 +159,12 @@ class NominationForm extends \nomination\View
         $form->addCssClass('nominee_first_name', 'form-control');
         $form->setLabel('nominee_first_name', 'First name');
 
-        $form->addText('nominee_middle_name',
-        isset($c['nominee_middle_name']) ? $c['nominee_middle_name'] : '');
-        $form->addCssClass('nominee_middle_name', 'form-control');
-        $form->setLabel('nominee_middle_name', 'Middle name');
+        if($vis->isVisible('nominee_middle_name')) {
+          $form->addText('nominee_middle_name',
+          isset($c['nominee_middle_name']) ? $c['nominee_middle_name'] : '');
+          $form->addCssClass('nominee_middle_name', 'form-control');
+          $form->setLabel('nominee_middle_name', 'Middle name');
+        }
 
         $form->addText('nominee_last_name',
         isset($c['nominee_last_name']) ? $c['nominee_last_name'] : '');

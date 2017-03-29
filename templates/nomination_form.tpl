@@ -52,10 +52,12 @@
             {NOMINEE_FIRST_NAME}
         </div>
 
+        <!-- BEGIN NOMINEE_MIDDLE_NAME -->
         <div class="form-group">
             <label>{NOMINEE_MIDDLE_NAME_LABEL}</label>
             {NOMINEE_MIDDLE_NAME}
         </div>
+        <!-- END NOMINEE_MIDDLE_NAME -->
 
         <div class="form-group">
             <label class="req">{NOMINEE_LAST_NAME_LABEL}</label>
@@ -69,7 +71,7 @@
             <div class="input-group">
                 {NOMINEE_EMAIL}
                 <!--{NOMINEE_ADD_ON}-->
-                
+
             </div>
         </div>
 
