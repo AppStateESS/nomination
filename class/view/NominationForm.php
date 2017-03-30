@@ -239,7 +239,7 @@ class NominationForm extends \nomination\View
             $form->setLabel('nominee_gpa', 'GPA');
         }
         if($vis->isVisible('nominee_class')) {
-            $form->addDropBox('nominee_class', array(-1=>'Select', 'fr'=>'Freshmen', 'so'=>'Sophomore', 'jr'=>'Junior', 'sr'=>'Senior', 'grad'=>'Graduate'));
+            $form->addDropBox('nominee_class', array(-1=>'Select', 'fr'=>'Freshmen', 'so'=>'Sophomore', 'jr'=>'Junior', 'sr'=>'Senior', 'grad'=>'Graduate', 'emp'=>'Faculty/Staff'));
             $form->setMatch('nominee_class', isset($c['nominee_class']) ? $c['nominee_class'] : -1);
             $form->setLabel('nominee_class', 'Class');
             $form->addCssClass('nominee_class', 'form-control');
