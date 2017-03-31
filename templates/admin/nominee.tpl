@@ -1,9 +1,7 @@
 <h1>{NAME}</h1><h2>{EMAIL}</h2>
 <span id="winner-tag">{WINNER}</span>
 
-<!-- BEGIN MAJOR -->
 <div><b>Major:</b> {MAJOR}</div>
-<!-- END MAJOR -->
 <div><b>Class:</b> {CLASS}</div>
 <div><b>Years:</b> {YEARS}</div>
 
