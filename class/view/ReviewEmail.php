@@ -87,8 +87,11 @@ class ReviewEmail extends \nomination\View {
         $forwardTemplate = $forward->getTemplate();
 
         // TODO: Fix this to use actual buttons for 'Edit' and 'Send'. Make the buttons pretty and lay them out properly
-        $data['BACK']    = implode('', array($backTemplate['START_FORM'], $backTemplate['SUBMIT'], $backTemplate['END_FORM']));
-        $data['FORWARD'] = implode('', array($forwardTemplate['START_FORM'], $forwardTemplate['SUBMIT'], $forwardTemplate['END_FORM']));
+        $data['BACK_START'] = $backTemplate['START_FORM'];
+        $data['BACK_END'] = $backTemplate['END_FORM'];
+
+        $data['FORWARD_START'] = $forwardTemplate['START_FORM'];
+        $data['FORWARD_END'] = $forwardTemplate['END_FORM'];
 
         unset($_SESSION['review']);
 
