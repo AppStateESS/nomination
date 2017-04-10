@@ -105,5 +105,10 @@ class FallthroughContext extends Context {
       $this->addFallthrough($nom);
     }
 
+    public function restoreFromSession()
+    {
+      $this->addFallThrough($_SESSION['nomination_fields']);
+    }
+
 
 }

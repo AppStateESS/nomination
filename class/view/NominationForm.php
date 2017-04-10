@@ -63,7 +63,7 @@ class NominationForm extends \nomination\View
         $c = new FallthroughContext(array());
         $c->addFallthrough($context);
 
-        if (isset($_SESSION['nomination_fields']))
+        if (isset($_SESSION['nomination_fields']) && !isset($context['unique_id']))
         {
             $c = $_SESSION['nomination_fields'];
             unset($_SESSION['nomination_fields']);
@@ -80,7 +80,16 @@ class NominationForm extends \nomination\View
                 throw new \nomination\exception\NominationException('The given nomination is null, unique_id = ' . $context['unique_id']);
             }
 
-            $c->restoreNominationForm($nomination);
+            if (isset($_SESSION['nomination_fields']))
+            {
+                $c->restoreFromSession();
+                unset($_SESSION['nomination_fields']);
+            }
+            else
+            {
+                $c->restoreNominationForm($nomination);
+            }
+            
 
             $edit = true;
 
