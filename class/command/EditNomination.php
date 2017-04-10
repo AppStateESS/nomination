@@ -111,56 +111,59 @@ class EditNomination extends Command
             \NQ::simple('nomination', NotificationView::NOMINATION_ERROR, 'Be sure to fill in all required fields.');
             unset($_SESSION['redirect']);
         }
-      
+
       // TODO: Fix this so that it doesn't complain about fields that the user can't fill in.
 
       foreach($required as $key=>$value){
           if(!isset($context[$value]) || $context[$value] == ""){
               $missing[] = $value;
               $context['after'] = 'NominationForm&unique_id=' . $context['unique_id'];
-                $fields = array('nominee_banner_id'=>$context['nominee_banner_id'],
-                        'nominee_first_name'=>$context['nominee_first_name'],
-                        'nominee_middle_name'=>$context['nominee_middle_name'],
-                        'nominee_last_name'=>$context['nominee_last_name'],
-                        'nominee_asubox'=>$context['nominee_asubox'],
-                        'nominee_email'=>$context['nominee_email'],
-                        'nominee_position'=>$context['nominee_position'],
-                        'nominee_department_major'=>$context['nominee_department_major'],
-                        'nominee_years'=>$context['nominee_years'],
-                        'nominee_phone'=>$context['nominee_phone'],
-                        'nominee_gpa'=>$context['nominee_gpa'],
-                        'nominee_class'=>$context['nominee_class'],
-                        'nominee_responsibility'=>$context['nominee_responsibility'],
-                        'nominator_first_name'=>$context['nominator_first_name'],
-                        'nominator_middle_name'=>$context['nominator_middle_name'],
-                        'nominator_last_name'=>$context['nominator_last_name'],
-                        'nominator_address'=>$context['nominator_address'],
-                        'nominator_phone'=>$context['nominator_phone'],
-                        'nominator_email'=>$context['nominator_email'],
-                        'nominator_relationship'=>$context['nominator_relationship'],
-                        'category'=>$context['category'],
-                        'reference_id'=>array('0'=>$context['reference_id_0'],
-                                '1'=>$context['reference_id_1'],
-                                '2'=>$context['reference_id_2']),
-                        'reference_first_name'=>array('0'=>$context['reference_first_name_0'],
-                                '1'=>$context['reference_first_name_1'],
-                                '2'=>$context['reference_first_name_2']),
-                        'reference_last_name'=>array('0'=>$context['reference_last_name_0'],
-                                '1'=>$context['reference_last_name_1'],
-                                '2'=>$context['reference_last_name_2']),
-                        'reference_department'=>array('0'=>$context['reference_department_0'],
-                                '1'=>$context['reference_department_1'],
-                                '2'=>$context['reference_department_2']),
-                        'reference_relationship'=>array('0'=>$context['reference_relationship_0'],
-                                '1'=>$context['reference_relationship_1'],
-                                '2'=>$context['reference_relationship_2']),
-                        'reference_phone'=>array('0'=>$context['reference_phone_0'],
-                                '1'=>$context['reference_phone_1'],
-                                '2'=>$context['reference_phone_2']),
-                        'reference_email'=>array('0'=>$context['reference_email_0'],
-                                '1'=>$context['reference_email_1'],
-                                '2'=>$context['reference_email_2']),
-                        'redirect'=>'true');
+              $ref_id = array();
+              $ref_fname = array();
+              $ref_lname = array();
+              $ref_dept = array();
+              $ref_relationship = array();
+              $ref_phone = array();
+              $ref_email = array();
+              for($i = 0; $i < $numReferencesReq; $i++)
+              {
+                $ref_id[] = $context['reference_id_' . $i];
+                $ref_fname[] = $context['reference_first_name_' . $i];
+                $ref_lname[] = $context['reference_last_name_' . $i];
+                $ref_dept[] = $context['reference_department_' . $i];
+                $ref_relationship[] = $context['reference_relationship_' . $i];
+                $ref_phone[] = $context['reference_phone_' . $i];
+                $ref_email[] = $context['reference_email_' . $i];
+              }
+              $fields = array('nominee_banner_id'=>$context['nominee_banner_id'],
+                      'nominee_first_name'=>$context['nominee_first_name'],
+                      'nominee_middle_name'=>$context['nominee_middle_name'],
+                      'nominee_last_name'=>$context['nominee_last_name'],
+                      'nominee_asubox'=>$context['nominee_asubox'],
+                      'nominee_email'=>$context['nominee_email'],
+                      'nominee_position'=>$context['nominee_position'],
+                      'nominee_department_major'=>$context['nominee_department_major'],
+                      'nominee_years'=>$context['nominee_years'],
+                      'nominee_phone'=>$context['nominee_phone'],
+                      'nominee_gpa'=>$context['nominee_gpa'],
+                      'nominee_class'=>$context['nominee_class'],
+                      'nominee_responsibility'=>$context['nominee_responsibility'],
+                      'nominator_first_name'=>$context['nominator_first_name'],
+                      'nominator_middle_name'=>$context['nominator_middle_name'],
+                      'nominator_last_name'=>$context['nominator_last_name'],
+                      'nominator_address'=>$context['nominator_address'],
+                      'nominator_phone'=>$context['nominator_phone'],
+                      'nominator_email'=>$context['nominator_email'],
+                      'nominator_relationship'=>$context['nominator_relationship'],
+                      'category'=>$context['category'],
+                      'reference_id'=>$ref_id,
+                      'reference_first_name'=>$ref_fname,
+                      'reference_last_name'=>$ref_lname,
+                      'reference_department'=>$ref_dept,
+                      'reference_relationship'=>$ref_relationship,
+                      'reference_phone'=>$ref_phone,
+                      'reference_email'=>$ref_email,
+                      'redirect'=>'true');
                 $_SESSION['nomination_fields'] = $fields;
                 $_SESSION['redirect'] = 'true';
                 return;

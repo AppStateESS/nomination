@@ -160,10 +160,12 @@ class NominationForm extends \nomination\View
         $form->addCssClass('nominee_first_name', 'form-control');
         $form->setLabel('nominee_first_name', 'First name');
 
-        $form->addText('nominee_middle_name',
-        isset($c['nominee_middle_name']) ? $c['nominee_middle_name'] : '');
-        $form->addCssClass('nominee_middle_name', 'form-control');
-        $form->setLabel('nominee_middle_name', 'Middle name');
+        if($vis->isVisible('nominee_middle_name')) {
+          $form->addText('nominee_middle_name',
+          isset($c['nominee_middle_name']) ? $c['nominee_middle_name'] : '');
+          $form->addCssClass('nominee_middle_name', 'form-control');
+          $form->setLabel('nominee_middle_name', 'Middle name');
+        }
 
         $form->addText('nominee_last_name',
         isset($c['nominee_last_name']) ? $c['nominee_last_name'] : '');
@@ -229,7 +231,7 @@ class NominationForm extends \nomination\View
             $form->setLabel('nominee_gpa', 'GPA');
         }
         if($vis->isVisible('nominee_class')) {
-            $form->addDropBox('nominee_class', array(-1=>'Select', 'fr'=>'Freshmen', 'so'=>'Sophomore', 'jr'=>'Junior', 'sr'=>'Senior', 'grad'=>'Graduate'));
+            $form->addDropBox('nominee_class', array(-1=>'Select', 'fr'=>'Freshmen', 'so'=>'Sophomore', 'jr'=>'Junior', 'sr'=>'Senior', 'grad'=>'Graduate', 'emp'=>'Faculty/Staff'));
             $form->setMatch('nominee_class', isset($c['nominee_class']) ? $c['nominee_class'] : -1);
             $form->setLabel('nominee_class', 'Class');
             $form->addCssClass('nominee_class', 'form-control');

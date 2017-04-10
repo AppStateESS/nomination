@@ -48,6 +48,7 @@ class NominationFieldVisibility
     {
         return array('nominee_asubox',
         			 'nominee_first_name',
+               'nominee_middle_name',
         			 'nominee_last_name',
         			 'nominee_email',
                      'nominee_position',
