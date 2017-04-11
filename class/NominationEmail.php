@@ -200,6 +200,7 @@ abstract class NominationEmail {
         $lists['NOMINE'] = NOMINE;
         $lists['NEWNOM'] = NEWNOM;
         $lists['NEWREF'] = NEWREF;
+        $lists['UPDNOM'] = UPDNOM;
 
         return $lists;
     }

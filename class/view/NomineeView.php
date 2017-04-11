@@ -34,6 +34,7 @@ class NomineeView extends \nomination\View {
         $tpl['MAJOR']       = $nominee->getDeptMajor();
         $tpl['YEARS']       = $nominee->getYearsAtASU();
         $tpl['EMAIL']       = $nominee->getEmailLink();
+        $tpl['CLASS']       = $nominee->getClass();
 
 
         $num = 0;

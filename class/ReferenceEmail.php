@@ -97,9 +97,12 @@ class ReferenceEmail
         $period = Period::getCurrentPeriod();
         $vars['END_DATE'] = $period->getReadableEndDate();
         $vars['REF_EDIT_LINK'] = $reference->getEditLink();
+        $vars['AWARD_TITLE'] = \PHPWS_Settings::get('nomination', 'award_title');
+        $vars['SIGNATURE'] = \PHPWS_Settings::get('nomination', 'signature');
+        $vars['SIG_POSITION'] = \PHPWS_Settings::get('nomination', 'sig_position');
 
-        $list = array($reference);
-        $subject = \PHPWS_Settings::get('nomination', 'award_title');
+        $list = array($reference->getId());
+        $subject = 'Reference Request: ' . \PHPWS_Settings::get('nomination', 'award_title');
         $msg = \PHPWS_Template::process($vars, 'nomination', 'email/reference_new_nomination.tpl');
         $msgType = 'UPDNOM';
 

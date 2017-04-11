@@ -26,7 +26,8 @@ class UpdateSettings extends Command {
         return array('nominee_asubox',
                      'nominee_position',
                      'nominee_first_name',
-				     'nominee_last_name',
+                     'nominee_middle_name',
+				             'nominee_last_name',
                      'nominee_department_major',
                      'nominee_years',
                      'nominee_responsibility',
@@ -64,6 +65,14 @@ class UpdateSettings extends Command {
              */
             if(!empty($context['award_title'])){
                 $settingsMap['award_title'] = $context['award_title'];
+            }
+
+            /*
+             * Update award description
+             */
+            if(!empty($context['award_description'])){
+                $edited_description = str_replace(array("\r\n", "\r", "\n"), "<br />", $context['award_description']);
+                $settingsMap['award_description'] = $edited_description;
             }
 
             /*

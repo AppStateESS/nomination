@@ -2,7 +2,9 @@
 <span id="winner-tag">{WINNER}</span>
 
 <div><b>Major:</b> {MAJOR}</div>
+<div><b>Class:</b> {CLASS}</div>
 <div><b>Years:</b> {YEARS}</div>
+
   <div id="nomination-list">
       <!-- BEGIN nominations -->
       <div class="nom-toggle-header" >
