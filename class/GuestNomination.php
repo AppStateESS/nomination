@@ -1,5 +1,6 @@
 <?php
 namespace nomination;
+use \nomination\view\NotificationView;
 
 class GuestNomination extends NominationMod
 {
@@ -12,7 +13,11 @@ class GuestNomination extends NominationMod
 
     public function process()
     {
-        parent::process();
+        try{
+            parent::process();
+        }catch(\nomination\exception\PermissionException $e){
+            \PHPWS_Core::reroute('http:' . PHPWS_SOURCE_HTTP . 'index.php?module=nomination');
+        }
 
         $vFactory = new ViewFactory();
         $view = $vFactory->get('UserView');
