@@ -9,7 +9,9 @@
                    function(data){
                        if(data){
                            // TODO: Test in IE.
-                           window.location.reload();
+                           console.log(data);
+                           //window.location.reload();
+                           //alert('Email resent.');
                        }else{
                            alert('Email failed to resend.');
                        }

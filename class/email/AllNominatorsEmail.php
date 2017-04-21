@@ -10,7 +10,7 @@ use \nomination\view\NotificationView;
 * @package nomination
 */
 
-class AllNominatorsEmail extends NominationEmail{
+class AllNominatorsEmail extends GenericEmail{
     const friendlyName = "All nominators";
 
     public function getMembers()

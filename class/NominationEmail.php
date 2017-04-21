@@ -1,7 +1,6 @@
 <?php
 namespace nomination;
-use exception\DaatabaseException;
-
+use exception\DatabaseException;
 /**
  * NominationEmail
  *
@@ -80,7 +79,8 @@ abstract class NominationEmail {
             case SHORT_Reference:
                 \PHPWS_Core::initModClass('nomination', 'Reference.php');
                 $db = new \PHPWS_DB('nomination_reference');
-                $obj = new Reference();
+                $factory = new ReferenceFactory();
+                $obj = $factory->getReferenceById($msg->nominee_id);
                 break;
             case SHORT_Nominator:
                 \PHPWS_Core::initModClass('nomination', 'Nominator.php');
@@ -98,10 +98,7 @@ abstract class NominationEmail {
         $db->addWhere('id', $msg->receiver_id);
         $result = $db->loadObject($obj);
 
-        if(\PHPWS_Error::logIfError($result)){
-            \PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
-            throw new DatabaseException($result->toString());
-        }
+
         $obj = array($obj);
         $nominationEmail = new NominationEmail($obj, $msg->subject, $msg->message, $msg->message_type);
         $nominationEmail->send();
