@@ -6,7 +6,7 @@ Hello {REF_NAME},
 
 Please use the link below to submit a letter of recommendation for {NOMINEE_NAME}.
 
-Please visit http://studentdev.appstate.edu/student-awards and select the “click here” for the award mentioned above. This link will provide you with the requirements for the award and what you should include in your letter of support for this nominee.
+{AWARD_DESCRIPTION}
 
 Click the link below to submit your document.  Submissions will no longer be accepted after {END_DATE}.
 

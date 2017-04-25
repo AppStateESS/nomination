@@ -35,6 +35,7 @@ class ReferenceEmail
         $vars['AWARD_TITLE'] = \PHPWS_Settings::get('nomination', 'award_title');
         $vars['SIGNATURE'] = \PHPWS_Settings::get('nomination', 'signature');
         $vars['SIG_POSITION'] = \PHPWS_Settings::get('nomination', 'sig_position');
+        $vars['AWARD_DESCRIPTION'] = \PHPWS_Settings::get('nomination', 'award_description');
 
 
         $list = array($reference->getId());
