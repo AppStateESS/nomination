@@ -67,4 +67,13 @@ class NominationSettings {
         return $result;
     }
 
+    public function getEmailFromAddress()
+    {
+       $result = \PHPWS_Settings::get('nomination', 'email_from_address');
+
+       if (!isset($result) || is_null($result)) {
+           throw new \InvalidArgumentException('Missing configuration for Email From Address.');
+       }
+    }
+
 }

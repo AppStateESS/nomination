@@ -11,7 +11,7 @@ use \nomination\view\NotificationView;
 * @package nomination
 */
 
-class IncompleteNomEmail extends NominationEmail
+class IncompleteNomEmail extends GenericEmail
 {
     const friendlyName = "Nominators with incomplete nomination";
 
@@ -33,6 +33,7 @@ class IncompleteNomEmail extends NominationEmail
         return $results;
     }
 
+/*
     public function send()
     {
         $list = $this->getMembers();
@@ -53,5 +54,5 @@ class IncompleteNomEmail extends NominationEmail
             $this->logEmail($nomination, $nomination->getNominatorEmail(), $id, NOMINATOR);
         }
     }
-
+  */
 }

@@ -11,10 +11,8 @@ use \nomination\view\NotificationView;
 * @package nomination
 */
 
-class RefNeedUploadEmail extends NominationEmail
+class RefNeedUploadEmail extends GenericEmail
 {
-    const friendlyName = "References that need to upload";
-
     public function getMembers()
     {
         $period = Period::getCurrentPeriod();
@@ -35,6 +33,7 @@ class RefNeedUploadEmail extends NominationEmail
         return $results;
     }
 
+/*
     public function send()
     {
         $list = $this->getMembers();
@@ -64,5 +63,5 @@ class RefNeedUploadEmail extends NominationEmail
             $this->logEmail($nomination, $reference->getEmail(), $id, REFERENCE);
         }
     }
-
+*/
 }

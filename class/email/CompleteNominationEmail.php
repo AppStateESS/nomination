@@ -12,7 +12,7 @@ use \nomination\view\NotificationView;
 * @author Chris Detsch
 * @package nomination
 */
-class CompleteNominationEmail extends NominationEmail
+class CompleteNominationEmail extends GenericEmail
 {
     const friendlyName = "Nominators with complete nomination";
 
@@ -33,6 +33,7 @@ class CompleteNominationEmail extends NominationEmail
         return $results;
     }
 
+/*
     public function send()
     {
         $list = $this->getMembers();
@@ -55,5 +56,5 @@ class CompleteNominationEmail extends NominationEmail
             $this->logEmail($nomination, $nomination->getNominatorEmail(), $id, NOMINATOR);
         }
     }
-
+  */
 }
