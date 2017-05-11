@@ -74,6 +74,8 @@ class NominationSettings {
        if (!isset($result) || is_null($result)) {
            throw new \InvalidArgumentException('Missing configuration for Email From Address.');
        }
+
+       return $result;
     }
 
 }

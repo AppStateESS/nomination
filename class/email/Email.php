@@ -3,6 +3,9 @@
 namespace nomination\email;
 
 use \nomination\NominationSettings;
+use \nomination\EmailLog;
+use \nomination\EmailLogFactory;
+
 // Setup autoloader for Composer to load SwiftMail via autoload
 require_once PHPWS_SOURCE_DIR . 'mod/nomination/vendor/autoload.php';
 /**
@@ -43,11 +46,13 @@ abstract class Email {
         $this->emailSettings = $settings;
         // Set a default from address and name, based on system settings
         // Child classes can overwrite these values
-        $this->fromName = $this->emailSettings->getSystemName();
+        //$this->fromName = $this->emailSettings->getSystemName();
         $this->fromAddress = $this->emailSettings->getEmailFromAddress();
     }
     protected abstract function buildMessage();
     protected abstract function getTemplateFileName();
+    protected abstract function logNomEmail();
+
     public function send()
     {
         // Build the message template and to/cc/from fields
@@ -61,7 +66,7 @@ abstract class Email {
     }
     protected function buildMessageBody($templateFileName)
     {
-        $bodyContent = \PHPWS_Template::process($this->tpl, 'intern', $templateFileName);
+        $bodyContent = \PHPWS_Template::process($this->tpl, 'nomination', $templateFileName);
         return $bodyContent;
     }
     /**
@@ -84,9 +89,11 @@ abstract class Email {
         if(!isset($fromAddress) || $fromAddress === null){
             throw new \InvalidArgumentException('\"From Address\" not set.');
         }
+        /*
         if(!isset($fromName) || $fromName === null){
             throw new \InvalidArgumentException('\"From Name\" not set.');
         }
+        */
         if(!isset($subject) || $subject === null){
             throw new \InvalidArgumentException('\"Subject\" not set.');
         }
@@ -107,7 +114,7 @@ abstract class Email {
         }
         return $message;
     }
-    protected static function sendSwiftMessage(\Swift_Message $message)
+    protected function sendSwiftMessage(\Swift_Message $message)
     {
         //Set up Swift Mailer delivery
         $transport = \Swift_SmtpTransport::newInstance('localhost');
@@ -115,8 +122,10 @@ abstract class Email {
         // If we're not in test mode, actually send the message
         if(!EMAIL_TEST_FLAG){
             $mailer->send($message); // send() returns the number of successful recipients. Can be 0, which indicates failure
+            $this->logNomEmail();
         }
         self::logEmail($message);
+        $this->logNomEmail();
         return true;
     }
     /**

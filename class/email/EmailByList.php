@@ -8,7 +8,7 @@ namespace nomination;
 * @author Chris Detsch
 * @package nomination
 */
-class EmailByList extends GenericEmail
+class EmailByList extends Email
 {
 
     public function __construct($list, $subject, $message, $msgType)

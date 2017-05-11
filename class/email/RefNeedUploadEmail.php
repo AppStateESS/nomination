@@ -1,6 +1,9 @@
 <?php
-namespace nomination;
+namespace nomination\email;
 use \nomination\view\NotificationView;
+use \nomination\email\GenericEmail;
+use \nomination\Period;
+use \nomination\ReferenceFactory;
 /**
 * RefNeedUploadEmail
 *
@@ -30,9 +33,29 @@ class RefNeedUploadEmail extends GenericEmail
             throw new exception\DatabaseException('Could not retrieve requested mailing list');
         }
 
-        return $results;
+        $list = $this->format($results);
+
+        return $list;
     }
 
+    public function format($list)
+    {
+      $nomList = array();
+
+      foreach ($list as $id)
+      {
+          $reference = ReferenceFactory::getReferenceById($id);
+
+          if(!isset($reference))
+          {
+              throw new NominationException('The given reference is null, id = ' . $id);
+          }
+
+          $nomList[] = $reference->getEmail();
+      }
+
+      return $nomList;
+    }
 /*
     public function send()
     {

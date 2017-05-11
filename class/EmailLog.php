@@ -126,6 +126,10 @@ class EmailLog
         $nomination    = NominationFactory::getNominationbyId($this->getNomineeId());
         $tpl['NOMINEE'] = $nomination->getNomineeLink();
         $tpl['MESSAGE'] = $this->getMessage();
+
+        // TODO This needs to change so it is not using NomationEmail
+        // that function is relied upon in SendEmail.php dropdown and
+        // displaying message types in Email Log
         $msgTypeList = NominationEmail::getLists();
         $tpl['MESSAGE_TYPE'] = $msgTypeList[$this->getMessageType()];
         $tpl['SUBJECT'] = $this->getSubject();

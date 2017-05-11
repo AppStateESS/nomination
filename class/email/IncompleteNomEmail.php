@@ -30,29 +30,32 @@ class IncompleteNomEmail extends GenericEmail
             throw new exception\DatabaseException('Could not retrieve requested mailing list');
         }
 
-        return $results;
+        $list = $this->format($results);
+
+        return $list;
     }
 
-/*
-    public function send()
+    public function format($list)
     {
-        $list = $this->getMembers();
+      $nomList = array();
 
-        if($list === null){
-            \NQ::simple('nomination', NotificationView::NOMINATION_WARNING, 'There was no one in that email list.');
-            return;
+      if($list === null){
+          \NQ::simple('nomination', NotificationView::NOMINATION_WARNING, 'There was no one in that email list.');
+          return;
+      }
+
+      foreach ($list as $id)
+      {
+        $nomination = NominationFactory::getNominationbyId($id);
+
+        if(!isset($nomination)) {
+            throw new exception\NominationException('The given nomination is null, id = ' . $id);
         }
 
-        foreach ($list as $id) {
-            $nomination = NominationFactory::getNominationbyId($id);
+          $nomList[] = $nomination->getNominatorEmail();
+      }
 
-            if(!isset($nomination)) {
-                throw new exception\NominationException('The given nomination is null, id = ' . $id);
-            }
-
-            $this->sendTo($nomination->getNominatorEmail());
-            $this->logEmail($nomination, $nomination->getNominatorEmail(), $id, NOMINATOR);
-        }
+      return $nomList;
     }
-  */
+
 }

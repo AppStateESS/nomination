@@ -1,6 +1,7 @@
 <?php
 
 namespace nomination\email;
+use \nomination\NominationSettings;
 
 abstract class GenericEmail extends Email
 {
@@ -21,6 +22,8 @@ abstract class GenericEmail extends Email
       $this->fromName    = $this->emailSettings->getSignatureForEmail();
   }
 
+//$this->logEmail($nomination, $reference->getEmail(), $id, REFERENCE);
+
   protected abstract function getMembers();
 
   //Override email send()
@@ -29,23 +32,23 @@ abstract class GenericEmail extends Email
       // Build the message template and to/cc/from fields
       $this->buildMessage();
 
-      // Get the body of the message by processing the template tag array into a template file
-      //$bodyContent = $this->buildMessageBody($this->getTemplateFileName());
-      // ALREADY MADE FORM $message
+      // The body is already made with generic emails. Look in $this->message
 
       foreach ($this->list as $emailTo) {
+
         // Build a SwiftMessage object from member variables, settings, and body content
         $message = $this->buildSwiftMessage($emailTo, $this->fromAddress,
-            $this->fromName, $this->subject, $message, $this->cc, $this->bcc);
+            $this->fromName, $this->subject, $this->message, $this->cc, $this->bcc);
         // Send the SwiftMail message
         $this->sendSwiftMessage($message);
+        
       }
   }
 
   public function buildMessage()
   {
     // Who to send emails to
-    $this->list = getMembers();
+    $this->list = $this->getMembers();
   }
 
   public function getTemplateFileName()

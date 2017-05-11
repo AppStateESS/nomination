@@ -28,13 +28,14 @@ class CompleteNomineeEmail extends GenericEmail
             throw new exception\DatabaseException('Could not retrieve requested mailing list');
         }
 
-        return $results;
+        $list = $this->format($results);
+
+        return $list;
     }
 
-/*
-    public function send()
+    public function format($list)
     {
-        $list = $this->getMembers();
+        $nomList = array();
 
         if($list === null){
             \NQ::simple('nomination', NotificationView::NOMINATION_WARNING, 'There was no one in that email list.');
@@ -48,10 +49,8 @@ class CompleteNomineeEmail extends GenericEmail
                 throw new NominationException('The given reference is null, unique id = ' . $id);
             }
 
-            $this->sendTo($nomination->getEmail());
-            $this->logEmail($nomination, $nomination->getEmail(), $id, NOMINEE);
+            $nomList[] = $nomination->getEmail();
         }
+        return $nomList;
     }
-    */
-
 }

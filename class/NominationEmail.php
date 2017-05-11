@@ -195,6 +195,9 @@ abstract class NominationEmail {
         $lists['NOMINC'] = NOMINC;
         $lists['REFNON'] = REFNON;
         $lists['NOMINE'] = NOMINE;
+
+        // These must be here for EmailLog to properly work
+        // These later become unset in the SendEmail class.
         $lists['NEWNOM'] = NEWNOM;
         $lists['NEWREF'] = NEWREF;
 
