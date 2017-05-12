@@ -4,6 +4,9 @@ use \nomination\view\NotificationView;
 use \nomination\email\GenericEmail;
 use \nomination\Period;
 use \nomination\ReferenceFactory;
+use \nomination\NominationFactory;
+use \nomination\EmailLog;
+use \nomination\EmailLogFactory;
 /**
 * RefNeedUploadEmail
 *
@@ -33,58 +36,33 @@ class RefNeedUploadEmail extends GenericEmail
             throw new exception\DatabaseException('Could not retrieve requested mailing list');
         }
 
-        $list = $this->format($results);
-
-        return $list;
+        return $results;
     }
 
-    public function format($list)
+    public function getEmailFromID($id)
     {
-      $nomList = array();
+        $reference = ReferenceFactory::getReferenceById($id);
 
-      foreach ($list as $id)
-      {
-          $reference = ReferenceFactory::getReferenceById($id);
-
-          if(!isset($reference))
-          {
-              throw new NominationException('The given reference is null, id = ' . $id);
-          }
-
-          $nomList[] = $reference->getEmail();
-      }
-
-      return $nomList;
-    }
-/*
-    public function send()
-    {
-        $list = $this->getMembers();
-
-        if($list === null){
-            \NQ::simple('nomination', NotificationView::NOMINATION_WARNING, 'There was no one in that email list.');
-            return;
-        }
-
-        foreach ($list as $id)
+        if(!isset($reference))
         {
-            $reference = ReferenceFactory::getReferenceById($id);
-
-            if(!isset($reference))
-            {
-                throw new NominationException('The given reference is null, id = ' . $id);
-            }
-
-            $nomination = NominationFactory::getNominationbyId($reference->getNominationId());
-
-            if(!isset($nomination))
-            {
-                throw new NominationException('The given nomination is null, id = ' . $reference->getNominationId());
-            }
-
-            $this->sendTo($reference->getEmail());
-            $this->logEmail($nomination, $reference->getEmail(), $id, REFERENCE);
+            throw new NominationException('The given reference is null, id = ' . $id);
         }
+
+        return $reference->getEmail();
     }
-*/
+
+    public function logNomEmail($id = null)
+    {
+      $reference = ReferenceFactory::getReferenceById($id);
+      $nomination = NominationFactory::getNominationbyId($reference->getNominationId());
+
+      $message = $this->buildSwiftMessage($this->getEmailFromID($id), $this->fromAddress,
+          $this->fromName, $this->subject, $this->message, $this->cc, $this->bcc);
+
+
+      // Used for the email log within the website
+      $messageLog = new EmailLog($nomination->getId(), $message->getBody(),
+      $this->messageType, $this->subject, $id, REFERENCE, time());
+      EmailLogFactory::save($messageLog);
+    }
 }

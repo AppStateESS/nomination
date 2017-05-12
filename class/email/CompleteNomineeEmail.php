@@ -1,6 +1,11 @@
 <?php
-namespace nomination;
+namespace nomination\email;
 use \nomination\view\NotificationView;
+use \nomination\email\GenericEmail;
+use \nomination\Period;
+use \nomination\NominationFactory;
+use \nomination\EmailLog;
+use \nomination\EmailLogFactory;
 /**
 * CompleteNomineeEmail
 *
@@ -28,29 +33,31 @@ class CompleteNomineeEmail extends GenericEmail
             throw new exception\DatabaseException('Could not retrieve requested mailing list');
         }
 
-        $list = $this->format($results);
-
-        return $list;
+        return $results;
     }
 
-    public function format($list)
+    public function getEmailFromID($id)
     {
-        $nomList = array();
+        $nomination = NominationFactory::getNominationbyId($id);
 
-        if($list === null){
-            \NQ::simple('nomination', NotificationView::NOMINATION_WARNING, 'There was no one in that email list.');
-            return;
+        if(!isset($nomination)) {
+            //throw new NominationException('The given reference is null, unique id = ' . $id);
         }
 
-        foreach ($list as $id) {
-            $nomination = NominationFactory::getNominationbyId($id);
+        return $nomination->getEmail();
+    }
 
-            if(!isset($nomination)) {
-                throw new NominationException('The given reference is null, unique id = ' . $id);
-            }
+    public function logNomEmail($id)
+    {
+      $nomination = NominationFactory::getNominationbyId($id);
 
-            $nomList[] = $nomination->getEmail();
-        }
-        return $nomList;
+      $message = $this->buildSwiftMessage($this->getEmailFromID($id), $this->fromAddress,
+          $this->fromName, $this->subject, $this->message, $this->cc, $this->bcc);
+
+
+      // Used for the email log within the website
+      $messageLog = new EmailLog($nomination->getId(), $message->getBody(),
+      $this->messageType, $this->subject, $id, NOMINEE, time());
+      EmailLogFactory::save($messageLog);
     }
 }

@@ -50,13 +50,13 @@ use nomination\EmailLogFactory;
         return 'email/nominator_new_nomination.tpl';
     }
 
-    public function logNomEmail()
+    public function logNomEmail($id = null)
     {
         $bodyContent = $this->buildMessageBody($this->getTemplateFileName());
         $message = $this->buildSwiftMessage($this->to, $this->fromAddress, $this->fromName, $this->subject, $bodyContent, $this->cc, $this->bcc);
 
         // Used for the email log within the website
-        $messageLog = new EmailLog($this->nomination->getId(), $message,
+        $messageLog = new EmailLog($this->nomination->getId(), $message->getBody(),
         $this->msgType, $this->subject, $this->nomination->getId(), "NTR", time());
         EmailLogFactory::save($messageLog);
     }

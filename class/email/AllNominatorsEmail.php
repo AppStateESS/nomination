@@ -1,6 +1,12 @@
 <?php
-namespace nomination;
+namespace nomination\email;
 use \nomination\view\NotificationView;
+use \nomination\email\GenericEmail;
+use \nomination\Period;
+use \nomination\NominationFactory;
+use \nomination\EmailLog;
+use \nomination\EmailLogFactory;
+
 /**
 * AllNominatorsEmail
 *
@@ -22,7 +28,6 @@ class AllNominatorsEmail extends GenericEmail{
         $db->addWhere('period', $period_id);
         $results = $db->select('col');
 
-
         if(\PHPWS_Error::logIfError($results)) {
             throw new exception\DatabaseException('Could not retrieve requested mailing list');
         }
@@ -31,24 +36,31 @@ class AllNominatorsEmail extends GenericEmail{
 
     }
 
-    public function send() {
-        $list = $this->getMembers();
+    public function getEmailFromID($id)
+    {
 
-        if($list === null){
-            \NQ::simple('nomination', NotificationView::NOMINATION_WARNING, 'There was no one in that email list.');
-            return;
+        $nomination = NominationFactory::getNominationbyId($id);
+
+        if(!isset($nomination))
+        {
+            //throw new NominationException('The given reference is null, unique id = ' . $id);
         }
 
-        foreach ($list as $id) {
-            $nomination = NominationFactory::getNominationbyId($id);
+        return $nomination->getNominatorEmail();
+    }
 
-            if(!isset($nomination)) {
-                throw new NominationException('The given nomination is null, id = ' . $id);
-            }
+    public function logNomEmail($id)
+    {
+        $nomination = NominationFactory::getNominationbyId($id);
 
-            $this->sendTo($nomination->getNominatorEmail());
-            $this->logEmail($nomination, $nomination->getNominatorEmail(), $nomination->getId(), NOMINATOR);
-        }
+        $message = $this->buildSwiftMessage($this->getEmailFromID($id), $this->fromAddress,
+            $this->fromName, $this->subject, $this->message, $this->cc, $this->bcc);
+
+
+        // Used for the email log within the website
+        $messageLog = new EmailLog($nomination->getId(), $message->getBody(),
+        $this->messageType, $this->subject, $id, NOMINATOR, time());
+        EmailLogFactory::save($messageLog);
     }
 
 }

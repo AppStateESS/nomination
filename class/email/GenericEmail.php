@@ -9,7 +9,9 @@ abstract class GenericEmail extends Email
   public $subject;
   public $message;
   public $messageType;
-  public $list;
+  public $listOfIDs;
+
+  protected $emailTo;
 
   public function __construct($subject, $message, $msgType, NominationSettings $settings)
   {
@@ -25,6 +27,7 @@ abstract class GenericEmail extends Email
 //$this->logEmail($nomination, $reference->getEmail(), $id, REFERENCE);
 
   protected abstract function getMembers();
+  protected abstract function getEmailFromID($id);
 
   //Override email send()
   public function send()
@@ -33,22 +36,28 @@ abstract class GenericEmail extends Email
       $this->buildMessage();
 
       // The body is already made with generic emails. Look in $this->message
+      if($this->listOfIDs != null){
+        foreach ($this->listOfIDs as $id) {
 
-      foreach ($this->list as $emailTo) {
+          // Build a SwiftMessage object from member variables, settings, and body content
+          $message = $this->buildSwiftMessage($this->getEmailFromID($id), $this->fromAddress,
+              $this->fromName, $this->subject, $this->message, $this->cc, $this->bcc);
 
-        // Build a SwiftMessage object from member variables, settings, and body content
-        $message = $this->buildSwiftMessage($emailTo, $this->fromAddress,
-            $this->fromName, $this->subject, $this->message, $this->cc, $this->bcc);
-        // Send the SwiftMail message
-        $this->sendSwiftMessage($message);
-        
+          // Send the SwiftMail message. Calls logNomEmail in the Email Class
+          $this->sendSwiftMessage($message);
+          // Log email into Nomination Database
+          $this->logNomEmail($id);
+        }
+      } else {
+        // TODO: Nothing sent, show message
       }
   }
+
 
   public function buildMessage()
   {
     // Who to send emails to
-    $this->list = $this->getMembers();
+    $this->listOfIDs = $this->getMembers();
   }
 
   public function getTemplateFileName()

@@ -51,7 +51,7 @@ abstract class Email {
     }
     protected abstract function buildMessage();
     protected abstract function getTemplateFileName();
-    protected abstract function logNomEmail();
+    protected abstract function logNomEmail($id);
 
     public function send()
     {
@@ -63,6 +63,8 @@ abstract class Email {
         $message = $this->buildSwiftMessage($this->to, $this->fromAddress, $this->fromName, $this->subject, $bodyContent, $this->cc, $this->bcc);
         // Send the SwiftMail message
         $this->sendSwiftMessage($message);
+        // Log email into Nomination Database
+        $this->logNomEmail();
     }
     protected function buildMessageBody($templateFileName)
     {
@@ -89,11 +91,6 @@ abstract class Email {
         if(!isset($fromAddress) || $fromAddress === null){
             throw new \InvalidArgumentException('\"From Address\" not set.');
         }
-        /*
-        if(!isset($fromName) || $fromName === null){
-            throw new \InvalidArgumentException('\"From Name\" not set.');
-        }
-        */
         if(!isset($subject) || $subject === null){
             throw new \InvalidArgumentException('\"Subject\" not set.');
         }
@@ -114,7 +111,7 @@ abstract class Email {
         }
         return $message;
     }
-    protected function sendSwiftMessage(\Swift_Message $message)
+    protected static function sendSwiftMessage(\Swift_Message $message)
     {
         //Set up Swift Mailer delivery
         $transport = \Swift_SmtpTransport::newInstance('localhost');
@@ -122,10 +119,8 @@ abstract class Email {
         // If we're not in test mode, actually send the message
         if(!EMAIL_TEST_FLAG){
             $mailer->send($message); // send() returns the number of successful recipients. Can be 0, which indicates failure
-            $this->logNomEmail();
         }
         self::logEmail($message);
-        $this->logNomEmail();
         return true;
     }
     /**

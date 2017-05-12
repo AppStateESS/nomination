@@ -17,11 +17,11 @@ namespace nomination\command;
  use \nomination\UserStatus;
  use \nomination\view\NotificationView;
 
- use \nomination\AllNominatorsEmail;
- use \nomination\CompleteNominationEmail;
- use \nomination\IncompleteNomEmail;
+ use \nomination\email\AllNominatorsEmail;
+ use \nomination\email\CompleteNominationEmail;
+ use \nomination\email\IncompleteNomEmail;
  use \nomination\email\RefNeedUploadEmail;
- use \nomination\CompleteNomineeEmail;
+ use \nomination\email\CompleteNomineeEmail;
 
  use \nomination\NominationSettings;
 
