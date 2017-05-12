@@ -11,7 +11,7 @@ use nomination\EmailLogFactory;
   *
   * A class for handling the nomination references on the creation of a new nomination.
   *
-  * @author Chris Detsch
+  * @author Chris Detsch, Eric Cambel
   * @package nomination
   */
   class NewNominatorEmail extends Email

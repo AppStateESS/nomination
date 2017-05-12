@@ -130,7 +130,7 @@ class EmailLog
         // TODO This needs to change so it is not using NomationEmail
         // that function is relied upon in SendEmail.php dropdown and
         // displaying message types in Email Log
-        $msgTypeList = NominationEmail::getLists();
+        $msgTypeList = Email::getLists();
         $tpl['MESSAGE_TYPE'] = $msgTypeList[$this->getMessageType()];
         $tpl['SUBJECT'] = $this->getSubject();
         if($this->getReceiverType() === 'REF')

@@ -10,7 +10,6 @@ use \nomination\NominationDocument;
 use \nomination\DocumentFactory;
 use \nomination\Reference;
 use \nomination\ReferenceFactory;
-use \nomination\NominationEmail;
 use \nomination\Period;
 use \nomination\NominationFieldVisibility;
 use \nomination\ReferenceEmail;

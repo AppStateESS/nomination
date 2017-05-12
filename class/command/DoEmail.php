@@ -13,7 +13,6 @@ namespace nomination\command;
 
  use \nomination\Command;
  use \nomination\Context;
- use \nomination\NominationEmail;
  use \nomination\UserStatus;
  use \nomination\view\NotificationView;
 

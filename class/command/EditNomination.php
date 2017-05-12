@@ -10,7 +10,6 @@ use \nomination\NominationDocument;
 use \nomination\DocumentFactory;
 use \nomination\Reference;
 use \nomination\ReferenceFactory;
-use \nomination\NominationEmail;
 use \nomination\Period;
 use \nomination\NominationFieldVisibility;
 use \nomination\ReferenceEmail;
@@ -110,7 +109,7 @@ class EditNomination extends Command
             \NQ::simple('nomination', NotificationView::NOMINATION_ERROR, 'Be sure to fill in all required fields.');
             unset($_SESSION['redirect']);
         }
-      
+
       // TODO: Fix this so that it doesn't complain about fields that the user can't fill in.
       foreach($required as $key=>$value){
           if(!isset($context[$value]) || $context[$value] == ""){

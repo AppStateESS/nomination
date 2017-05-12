@@ -35,7 +35,7 @@ class SendEmail extends \nomination\View {
         $form = new \PHPWS_Form('email');
         $cmd->initForm($form);
 
-        $list = NominationEmail::getLists();
+        $list = Email::getLists();
         // Quick hack to make EmailLog.php works
         // Send email drop down should NOT populate NewRef and NewNom
         unset($list["NEWREF"]);

@@ -149,4 +149,26 @@ abstract class Email {
         fprintf($fd, "%s\n\n", $message->getBody());
         fclose($fd);
     }
+
+    // Allows EmailLog and SendEmail to grab a list of
+    // message types.
+    public static function getLists()
+    {
+        //if you change anything about this array update the below function
+        //yes it's hackish but we're "sure" that there will only be 5 lists...
+        $lists = array();
+
+        $lists['ALLNOM'] = ALLNOM;
+        $lists['NOMCPL'] = NOMCPL;
+        $lists['NOMINC'] = NOMINC;
+        $lists['REFNON'] = REFNON;
+        $lists['NOMINE'] = NOMINE;
+
+        // These must be here for EmailLog to properly work
+        // These later become unset in the SendEmail class.
+        $lists['NEWNOM'] = NEWNOM;
+        $lists['NEWREF'] = NEWREF;
+
+        return $lists;
+    }
 }

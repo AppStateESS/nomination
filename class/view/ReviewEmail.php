@@ -5,7 +5,6 @@ use \nomination\Context;
 use \nomination\ViewFactory;
 use \nomination\CommandFactory;
 use \nomination\UserStatus;
-use \nomination\NominationEmail;
 
 /**
  * ReviewEmail
@@ -77,7 +76,7 @@ class ReviewEmail extends \nomination\View {
         $submitCmd->initForm($forward);
         $forward->addSubmit('Send');
 
-        $lists = NominationEmail::getLists();
+        $lists = Email::getLists();
         $_SESSION['review']['list'] = $lists[$_SESSION['review']['list']];
         $data = array_change_key_case($_SESSION['review'], CASE_UPPER);
 

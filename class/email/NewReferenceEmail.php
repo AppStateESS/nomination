@@ -13,7 +13,7 @@ use nomination\EmailLogFactory;
 *
 * A class for handling the nomination reference emails on the creation of a new nomination.
 *
-* @author Chris Detsch
+* @author Chris Detsch, Eric Cambel
 * @package nomination
 */
 class NewReferenceEmail extends Email
