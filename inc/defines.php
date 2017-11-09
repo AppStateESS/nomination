@@ -12,7 +12,7 @@ define('NOMINATION_FACULTY_MEMBER',       2);
 define('NOMINATION_EMPLOYEE',             3);
 
 define('NOMINATION_STUDENT_LEADER_TEXT', 'Student Leader');
-define('NOMINATION_STUDENT_EDUCATOR_TEXT', 'Student Development Educator');
+define('NOMINATION_STUDENT_EDUCATOR_TEXT', 'Student Affairs Educator');
 define('NOMINATION_FACULTY_MEMBER_TEXT', 'Faculty Member');
 define('NOMINATION_EMPLOYEE_TEXT', 'Employee of ASU');
 

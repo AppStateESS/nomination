@@ -65,8 +65,8 @@
               provided distinguished leadership above that of other
               student leaders
             </li>
-            <li>{CATEGORY_2}<b>Student Development Educator
-                within the Division of Student Development</b>- for
+            <li>{CATEGORY_2}<b>Student Affairs Educator
+                within the Division of Student Affairs</b>- for
               meritorious leadership in his or her work to enrich the
               quality of student life and learning.
             </li>
