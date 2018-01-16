@@ -1,6 +1,7 @@
 <?php
 namespace nomination;
 
+use nomination\email\Email;
 /**
 * EmailLog
 *
