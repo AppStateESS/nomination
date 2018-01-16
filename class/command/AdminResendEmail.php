@@ -1,6 +1,11 @@
 <?php
 namespace nomination\command;
 
+use \nomination\Command;
+use \nomination\Context;
+use \nomination\UserStatus;
+use \nomination\EmailMessage;
+use \nomination\NominationEmail;
   /**
    * AdminResendEmail
    *
@@ -48,6 +53,7 @@ class AdminResendEmail extends Command
             throw new DatabaseException('Error occured loading email message from database.');
         }
 
+
         NominationEmail::sendMessageObj($message);
 
 
@@ -55,7 +61,9 @@ class AdminResendEmail extends Command
             $context['after'] = new AjaxMessageView();
             $context['after']->setMessage(true);
         }
-
-        \NQ::simple('nomination', NotificationView::NOMINATION_SUCCESS, 'Email sent.');
+var_dump("I MADE IT");
+exit;
+        \NQ::simple('nomination', \Intern\UI\NotifyUI::SUCCESS, 'Email sent.');
+        \NQ::close();
     }
 }

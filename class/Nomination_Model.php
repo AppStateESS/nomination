@@ -14,7 +14,7 @@ abstract class Nomination_Model
 {
     public $id;
 
-    public abstract function getDb();
+    //public abstract function getDb();
 
     public function __construct($id = 0)
     {
