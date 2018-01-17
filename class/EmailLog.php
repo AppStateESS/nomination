@@ -1,6 +1,7 @@
 <?php
 namespace nomination;
 
+use nomination\email\Email;
 /**
 * EmailLog
 *
@@ -126,7 +127,11 @@ class EmailLog
         $nomination    = NominationFactory::getNominationbyId($this->getNomineeId());
         $tpl['NOMINEE'] = $nomination->getNomineeLink();
         $tpl['MESSAGE'] = $this->getMessage();
-        $msgTypeList = NominationEmail::getLists();
+
+        // TODO This needs to change so it is not using NomationEmail
+        // that function is relied upon in SendEmail.php dropdown and
+        // displaying message types in Email Log
+        $msgTypeList = Email::getLists();
         $tpl['MESSAGE_TYPE'] = $msgTypeList[$this->getMessageType()];
         $tpl['SUBJECT'] = $this->getSubject();
         if($this->getReceiverType() === 'REF')

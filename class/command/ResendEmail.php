@@ -28,7 +28,6 @@ class ResendEmail extends Command
             throw new ContextException('Unique ID not given.');
         }
 
-        \PHPWS_Core::initModClass('nomination', 'NominationEmail.php');
         \PHPWS_Core::initModClass('nomination', 'Nomination.php');
 
         // Get the nomination.

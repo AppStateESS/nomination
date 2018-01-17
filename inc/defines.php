@@ -1,6 +1,9 @@
 <?php
-
-require_once(PHPWS_SOURCE_DIR . 'inc/nomination_defines.php');
+if (is_file(PHPWS_SOURCE_DIR . 'inc/nomination_defines.php')) {
+    require_once(PHPWS_SOURCE_DIR . 'inc/nomination_defines.php');
+} else {
+    define('NOMINATION_DEBUG', false);
+}
 
   /*************************
    * Nomination categories *
@@ -17,7 +20,7 @@ define('NOMINATION_FACULTY_MEMBER_TEXT', 'Faculty Member');
 define('NOMINATION_EMPLOYEE_TEXT', 'Employee of ASU');
 
 define('NOMINATION_EMAIL_DOMAIN', 'appstate.edu');
-define('EMAIL_TEST_FLAG', FALSE);
+//define('EMAIL_TEST_FLAG', FALSE);
 
 define('NOMINATOR', 'NTR');
 define('REFERENCE', 'REF');

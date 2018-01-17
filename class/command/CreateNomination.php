@@ -10,12 +10,14 @@ use \nomination\NominationDocument;
 use \nomination\DocumentFactory;
 use \nomination\Reference;
 use \nomination\ReferenceFactory;
-use \nomination\NominationEmail;
 use \nomination\Period;
 use \nomination\NominationFieldVisibility;
 use \nomination\ReferenceEmail;
 use \nomination\NominatorEmail;
 use \nomination\view\NotificationView;
+use \nomination\NominationSettings;
+use \nomination\email\NewNominatorEmail;
+use \nomination\email\NewReferenceEmail;
 
 \PHPWS_Core::initCoreClass('Captcha.php');
 
@@ -63,6 +65,7 @@ class CreateNomination extends Command
     {
         $missing = array();
         $entered = array();
+        $emailSettings = NominationSettings::getInstance();
         $numReferencesReq = Reference::getNumReferencesReq();
 
         // Figure out which fields are required
@@ -324,7 +327,7 @@ class CreateNomination extends Command
             $references[] = $reference;
         }
 
-        /******************************
+        /******************************$references
          * Statement / Document Upload *
          ******************************/
 
@@ -350,14 +353,16 @@ class CreateNomination extends Command
 
         foreach($references as $ref)
         {
-            ReferenceEmail::newNomination($ref, $nomination);
+            $email = new NewReferenceEmail($nomination, $ref, $emailSettings);
+            $email->send();
         }
 
-        // Send email to nominator, only if the nominator fields are turned on
+        // Send emailNewNominatorEmail to nominator, only if the nominator fields are turned on
         $vis = new NominationFieldVisibility();
         if($vis->isVisible('nominator_email'))
         {
-            NominatorEmail::newNomination($nomination);
+            $email = new NewNominatorEmail($nomination, $emailSettings);
+            $email->send();
         }
 
         unset($_SESSION['nomination_fields']);

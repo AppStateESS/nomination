@@ -5,7 +5,6 @@ use \nomination\Command;
 use \nomination\UserStatus;
 use \nomination\Context;
 use \nomination\Nomination;
-use \nomination\NominationEmail;
 use \nomination\Period;
 use \nomination\EmailMessage;
 use \nomination\view\NotificationView;

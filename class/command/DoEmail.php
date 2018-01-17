@@ -13,15 +13,16 @@ namespace nomination\command;
 
  use \nomination\Command;
  use \nomination\Context;
- use \nomination\NominationEmail;
  use \nomination\UserStatus;
  use \nomination\view\NotificationView;
 
- use \nomination\AllNominatorsEmail;
- use \nomination\CompleteNominationEmail;
- use \nomination\IncompleteNomEmail;
- use \nomination\RefNeedUploadEmail;
- use \nomination\CompleteNomineeEmail;
+ use \nomination\email\AllNominatorsEmail;
+ use \nomination\email\CompleteNominationEmail;
+ use \nomination\email\IncompleteNomEmail;
+ use \nomination\email\RefNeedUploadEmail;
+ use \nomination\email\CompleteNomineeEmail;
+
+ use \nomination\NominationSettings;
 
 class DoEmail extends Command {
 
@@ -29,6 +30,7 @@ class DoEmail extends Command {
     public $list;
     public $subject;
     public $message;
+    public $settings;
 
     public function getRequestVars()
     {
@@ -57,32 +59,34 @@ class DoEmail extends Command {
             throw new PermissionException('You are not allowed to do this!');
         }
 
+        $settings = NominationSettings::getInstance();
+
         try{
             $msgType = $context['list'];
 
             if($msgType === 'ALLNOM')
             {
-              $mail = new AllNominatorsEmail($context['subject'], $context['message'], $msgType);
+              $mail = new AllNominatorsEmail($context['subject'], $context['message'], $msgType, $settings);
               $mail->send();
             }
             else if($msgType === 'NOMCPL')
             {
-              $mail = new CompleteNominationEmail($context['subject'], $context['message'], $msgType);
+              $mail = new CompleteNominationEmail($context['subject'], $context['message'], $msgType, $settings);
               $mail->send();
             }
             else if($msgType === 'NOMINC')
             {
-              $mail = new IncompleteNomEmail($context['subject'], $context['message'], $msgType);
+              $mail = new IncompleteNomEmail($context['subject'], $context['message'], $msgType, $settings);
               $mail->send();
             }
             else if($msgType === 'REFNON')
             {
-              $mail = new RefNeedUploadEmail($context['subject'], $context['message'], $msgType);
+              $mail = new RefNeedUploadEmail($context['subject'], $context['message'], $msgType, $settings);
               $mail->send();
             }
             else if($msgType === 'NOMINE')
             {
-              $mail = new CompleteNomineeEmail($context['subject'], $context['message'], $msgType);
+              $mail = new CompleteNomineeEmail($context['subject'], $context['message'], $msgType, $settings);
               $mail->send();
             }
             \NQ::simple('nomination', NotificationView::NOMINATION_SUCCESS, 'Emails sent');
