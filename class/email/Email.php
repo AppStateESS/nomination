@@ -6,7 +6,9 @@ use \nomination\NominationSettings;
 use \nomination\EmailLog;
 use \nomination\EmailLogFactory;
 
+
 // Setup autoloader for Composer to load SwiftMail via autoload
+require_once PHPWS_SOURCE_DIR . 'mod/nomination/inc/defines.php';
 require_once PHPWS_SOURCE_DIR . 'mod/nomination/vendor/autoload.php';
 /**
  * Abstract class for representing an email to be sent. Provides a
@@ -158,16 +160,16 @@ abstract class Email {
         //yes it's hackish but we're "sure" that there will only be 5 lists...
         $lists = array();
 
-        $lists['ALLNOM'] = ALLNOM;
-        $lists['NOMCPL'] = NOMCPL;
-        $lists['NOMINC'] = NOMINC;
-        $lists['REFNON'] = REFNON;
-        $lists['NOMINE'] = NOMINE;
+        $lists['ALLNOM'] = 'ALLNOM';
+        $lists['NOMCPL'] = 'NOMCPL';
+        $lists['NOMINC'] = 'Nomination incomplete';
+        $lists['REFNON'] = 'Reference upload required';
+        $lists['NOMINE'] = 'NOMINE';
 
         // These must be here for EmailLog to properly work
         // These later become unset in the SendEmail class.
-        $lists['NEWNOM'] = NEWNOM;
-        $lists['NEWREF'] = NEWREF;
+        $lists['NEWNOM'] = 'Nominator';
+        $lists['NEWREF'] = 'Reference';
 
         return $lists;
     }
