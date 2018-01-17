@@ -1,6 +1,9 @@
 <?php
-
-require_once(PHPWS_SOURCE_DIR . 'inc/nomination_defines.php');
+if (is_file(PHPWS_SOURCE_DIR . 'inc/nomination_defines.php')) {
+    require_once(PHPWS_SOURCE_DIR . 'inc/nomination_defines.php');
+} else {
+    define('NOMINATION_DEBUG', false);
+}
 
   /*************************
    * Nomination categories *
