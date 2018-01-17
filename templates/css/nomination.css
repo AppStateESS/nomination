@@ -100,14 +100,10 @@ th {
 
 .view-email {
     cursor: pointer;
-    width: 25px;
-    heigth: 25px;
 }
 
 .resend-email {
     cursor: pointer;
-    width: 25px;
-    heigth: 25px;
 }
 
 #pending-removal #nomination-view {
