@@ -1,10 +1,11 @@
 <?php
 namespace nomination\view;
 
-use \nomination\Context;
-use \nomination\NominationEmail;
-use \nomination\CommandFactory;
-use \nomination\UserStatus;
+use nomination\Context;
+use nomination\NominationEmail;
+use nomination\CommandFactory;
+use nomination\UserStatus;
+use nomination\email\Email;
 
 /**
  * SendEmail
