@@ -18,4 +18,5 @@
       <div class="nomination" id="{NUM}">{CONTENT}
       </div>
       <!-- END nominations -->
+      {NO_NOMINATIONS}
   </div>
