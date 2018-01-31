@@ -1,4 +1,5 @@
 <?php
+
 namespace nomination;
 
 /**
@@ -11,37 +12,29 @@ namespace nomination;
  * @author Jeremy Booker
  * @package nomination
  */
-
-class NominationDocument {
+class NominationDocument
+{
 
     private $id;
-
     private $nomination;
-
     private $uploadedBy; // Who uploaded it, 'nominator', or 'reference'
     private $description; // A descriptive name ('statement', 'reference')
     private $filePath; // Partial path from the 'doc' root (see Settings) to this file
     private $fileName; // Our name for this file, to avoid possible conflicts.
     private $origFileName; // The name of the file when it was uploaded
     private $mimeType; // Mime type
-
     private $fileUploadInfo; // Info from the $_FILES array on uploaded. Only used on initial creation; not populated when loaded from DB
-
     private $allowedTypes;
-
-
-    private static $fileNames = array('txt'=>'Text Files',
-                                      'doc'=>'Word 97/2000/XP (.doc)',
-                                      'docx'=>'Word 2007 (.docx)',
-                                      'odt'=>'Open Document Files',
-                                      'pdf'=>'PDF Documents');
-
-    private static $mimeTypes = array('txt'=>'text/plain',
-                                      'odt'=>'application/vnd.oasis.opendocument.text',
-                                      'docx'=>'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                                      'doc'=>'application/msword',
-                                      'pdf'=>'application/pdf');
-
+    private static $fileNames = array('txt' => 'Text Files',
+        'doc' => 'Word 97/2000/XP (.doc)',
+        'docx' => 'Word 2007 (.docx)',
+        'odt' => 'Open Document Files',
+        'pdf' => 'PDF Documents');
+    private static $mimeTypes = array('txt' => 'text/plain',
+        'odt' => 'application/vnd.oasis.opendocument.text',
+        'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'doc' => 'application/msword',
+        'pdf' => 'application/pdf');
 
     /**
      * Creates a new Nomination Document from a file upload.
@@ -50,21 +43,23 @@ class NominationDocument {
      * @param unknown $description
      * @param array $fileUploadInfo
      */
-    public function __construct(Nomination $nom, $uploadedBy, $description, Array $fileUploadInfo)
+    public function __construct(Nomination $nom, $uploadedBy, $description,
+            Array $fileUploadInfo)
     {
-        $this->nomination     = $nom;
-        $this->uploadedBy     = $uploadedBy;
-        $this->description    = $description;
+        $this->nomination = $nom;
+        $this->uploadedBy = $uploadedBy;
+        $this->description = $description;
         $this->fileUploadInfo = $fileUploadInfo;
 
         $this->filePath = "";
 
         $this->origFileName = $fileUploadInfo['name'];
-        $this->mimeType     = $fileUploadInfo['type'];
+        $this->mimeType = $fileUploadInfo['type'];
 
 
         // Get the allowed types from Settings
-        $this->allowedTypes = \PHPWS_Settings::get('nomination', 'allowed_file_types');
+        $this->allowedTypes = \PHPWS_Settings::get('nomination',
+                        'allowed_file_types');
 
         // Grab the actual file data and put it in the correct location
         $this->receiveFile();
@@ -77,13 +72,13 @@ class NominationDocument {
     {
 
         // Check that the file's mime type matches an acceptable type
-        if(!$this->isAllowedType()){
+        if (!$this->isAllowedType()) {
             throw new exception\IllegalFileException('Invalid file type: ' . $this->mimeType);
         }
 
         // Check the file extension
-        $fileExt  = self::getFileExtension($this->origFileName);
-        if(is_null($fileExt)){
+        $fileExt = self::getFileExtension($this->origFileName);
+        if (is_null($fileExt)) {
             throw new exception\IllegalFileException('File has an invalid extension');
         }
 
@@ -92,17 +87,15 @@ class NominationDocument {
         // Clean up the email address, just in case
         $nomineeEmail = preg_replace('/[^\w+]/', '', $nomineeEmail); // Remove any whitespace
         $nomineeEmail = preg_replace('/[^a-z0-9]/i', '', $nomineeEmail); // Remove anything other than letters & numbers
-
-
         // Generate the path to save the file at, creating a directory for this nomination, if necessary
         // Generate the full path to this file using the file_dir setting
         $basePath = self::getBasePath();
         $this->filePath = self::getLocalPath();
 
-        $fileDir  =  $basePath.$this->filePath;
+        $fileDir = $basePath . $this->filePath;
 
         // Make sure the path we've created exists, create it if needed
-        if(!is_dir($fileDir)){
+        if (!is_dir($fileDir)) {
             $old = umask(0);
             mkdir($fileDir, 0775, true); //recursively creates directories as needed, file name has no part in this for this reason
             umask($old);
@@ -112,10 +105,10 @@ class NominationDocument {
         $this->fileName = self::getUniqueFileName();
 
         // Put together the full path
-        $fullPath = $fileDir.$this->fileName;
+        $fullPath = $fileDir . $this->fileName;
 
         // Move the file from it's tmp location to it's final resting place
-        if(!move_uploaded_file($this->fileUploadInfo['tmp_name'], $fullPath)){
+        if (!move_uploaded_file($this->fileUploadInfo['tmp_name'], $fullPath)) {
             throw new exception\FileException('Could not save file!');
         }
     }
@@ -126,7 +119,8 @@ class NominationDocument {
      */
     private function isAllowedType()
     {
-        if(!in_array($this->mimeType, array_values(self::getSupportedMimeTypes()))){
+        if (!in_array($this->mimeType,
+                        array_values(self::getSupportedMimeTypes()))) {
             return false;
         }
 
@@ -156,74 +150,90 @@ class NominationDocument {
         return $email . '-' . $this->nomination->getId() . '/';
     }
 
-
-    /*********************
+    /*     * *******************
      * Getter & Setter Methods
      */
-    public function getId() {
+
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function setId($id) {
+    public function setId($id)
+    {
         $this->id = $id;
     }
 
-    public function getNomination() {
+    public function getNomination()
+    {
         return $this->nomination;
     }
 
-    public function setNominationById($id) {
+    public function setNominationById($id)
+    {
         $nom = new NominationFactory();
         $this->nomination = $nom->getNominationbyId($id);
     }
 
-    public function getUploadedBy() {
+    public function getUploadedBy()
+    {
         return $this->uploadedBy;
     }
 
-    public function setUploadedBy($uploader) {
+    public function setUploadedBy($uploader)
+    {
         if ($uploader == 'nominator' || $uploader == 'reference') {
             $this->uploadedBy = $uploader;
         }
     }
 
-    public function getDescription() {
+    public function getDescription()
+    {
         return $this->description;
     }
 
-    public function setDescription($descrip) {
+    public function setDescription($descrip)
+    {
         $this->description = $descrip;
     }
 
-    public function getFilePath() {
+    public function getFilePath()
+    {
         return $this->filePath;
     }
 
-    public function setFilePath($path) {
+    public function setFilePath($path)
+    {
         $this->filePath = $path;
     }
 
-    public function getFileName() {
+    public function getFileName()
+    {
         return $this->fileName;
     }
 
-    public function setFileName($name) {
+    public function setFileName($name)
+    {
         $this->fileName = $name;
     }
 
-    public function getOrigFileName() {
+    public function getOrigFileName()
+    {
         return $this->origFileName;
     }
 
-    public function setOrigFileName($name) {
+    public function setOrigFileName($name)
+    {
         $this->origFileName = $name;
     }
 
-    public function getMimeType() {
+    public function getMimeType()
+    {
         return $this->mimeType;
     }
 
-    public function setMimeType($mime) {
+    public function setMimeType($mime)
+    {
         $oldMime = $this->mimeType; // save the old mimeType in case the new one is disallowed
         $this->mimeType = $mime;
         if (!$this->isAllowedType()) {
@@ -231,10 +241,9 @@ class NominationDocument {
         }
     }
 
-    /**************************
+    /*     * ************************
      * Static Utility Methods *
      */
-
 
     /**
      * Returns the configured file path for saving files.
@@ -243,7 +252,7 @@ class NominationDocument {
      */
     public static function getBasePath()
     {
-        return  \PHPWS_Settings::get('nomination', 'file_dir');
+        return \PHPWS_Settings::get('nomination', 'file_dir');
     }
 
     /**
@@ -272,12 +281,13 @@ class NominationDocument {
     {
         $matches = array();
         $result = preg_match('/.*\.(?P<ext>\w+)$/', $fileName, $matches);
-        if($result == 0 || $result == FALSE){
+        if ($result == 0 || $result == FALSE) {
+            
         }
 
-        if($matches['ext'] == ''){
+        if ($matches['ext'] == '') {
             return null;
-        }else{
+        } else {
             return $matches['ext'];
         }
     }
@@ -287,7 +297,8 @@ class NominationDocument {
      *
      * @param $id doc_id from nomination_reference table in DB
      */
-    public function newSendFile($id) {
+    public function newSendFile($id)
+    {
         if (!isset($id)) {
             throw new \Exception('No such file!');
         }
@@ -307,12 +318,9 @@ class NominationDocument {
         exit;
     }
 
-
-    /*******************
+    /*     * *****************
      * OLD STUFF BELOW *
-     *******************/
-
-
+     * ***************** */
 
     public function sendFile($unique_id)
     {
@@ -320,7 +328,7 @@ class NominationDocument {
 
         $person = $omnom->getMember($unique_id);
 
-        if(is_null($person->doc_id)){
+        if (is_null($person->doc_id)) {
             throw new \Exception('No such file!');
         }
 
@@ -328,15 +336,15 @@ class NominationDocument {
         $db->addWhere('id', $person->doc_id);
         $result = $db->select('row');
 
-        if(\PHPWS_Error::logIfError($result)){
+        if (\PHPWS_Error::logIfError($result)) {
             throw new exception\DatabaseException($result->toString());
         }
 
         $title = explode('/', $result['name']);
         $title = array_pop($title);
         $sploded = explode('.', $title);
-        $mimetype = self::$mimeTypes[$sploded[sizeof($sploded)-1]];
-        header('Content-type: '.$mimetype);
+        $mimetype = self::$mimeTypes[$sploded[sizeof($sploded) - 1]];
+        header('Content-type: ' . $mimetype);
         header('Content-Disposition: attachment; filename="' . $result['name'] . '"');
         readfile($result['name']);
         exit;
@@ -345,47 +353,51 @@ class NominationDocument {
     /**
      * @param $doc NomincationDocument
      */
-    public static function getFileWidget($doc=NULL, $name="choose_file", $form)
+    public static function getFileWidget($doc = NULL, $name = "choose_file",
+            $form)
     {
         $form->setEncode(true);
         $file_desc = self::getFileDesc($doc);
 
         $tpl = array();
-        $tpl['NAME']      = $name;
-        $tpl['TITLE']     = $file_desc->getTitle();
+        $tpl['NAME'] = $name;
+        $tpl['TITLE'] = $file_desc->getTitle();
         $tpl['NEW_TITLE'] = 'Letter';
-        $tpl['TYPE']      = $file_desc->getType();
-        $tpl['SIZE']      = $file_desc->getSize();
-        $tpl['IMG']       = "mod/nomination/img/tango/mimetypes/x-office-document.png";
+        $tpl['TYPE'] = $file_desc->getType();
+        $tpl['SIZE'] = $file_desc->getSize();
+        $tpl['IMG'] = "mod/nomination/img/tango/mimetypes/x-office-document.png";
 
-        $tpl['ID']       = $form->id.'_'.$name;
-        if(!is_null($doc))
+        $tpl['ID'] = $form->id . '_' . $name;
+        if (!is_null($doc))
             $tpl['DOWNLOAD'] = $doc->getDownloadLink($form->id);
 
         javascript('jquery_ui');
-        javascriptMod('nomination', 'doc', array('PHPWS_SOURCE_HTTP' => PHPWS_SOURCE_HTTP));
+        javascriptMod('nomination', 'doc',
+                array('PHPWS_SOURCE_HTTP' => PHPWS_SOURCE_HTTP));
 
-        return \PHPWS_Template::processTemplate($tpl, 'nomination', 'nomination_doc.tpl');
+        return \PHPWS_Template::processTemplate($tpl, 'nomination',
+                        'nomination_doc.tpl');
     }
 
-    public function getDownloadLink($unique_id=NULL, $text='Download')
+    public function getDownloadLink($unique_id = NULL, $text = 'Download')
     {
-        if(is_null($unique_id)){
+        if (is_null($unique_id)) {
             return "";
         }
 
         //$this->nomination->getMember($unique_id); // I don't even..... getMember() doesn't exist anywhere! What would it do if it did?
         $factory = new ViewFactory();
         $view = $factory->get('DownloadFile');
-        $view->unique_id  = $unique_id;
+        $view->unique_id = $unique_id;
         $view->nomination = $this->nomination->id;
 
         return $view->getLink($text);
     }
 
-    public static function getFileDesc(NominationDocument $doc = null, $emptyTitle='None')
+    public static function getFileDesc(NominationDocument $doc = null,
+            $emptyTitle = 'None')
     {
-        if(is_null($doc)){
+        if (is_null($doc)) {
             return new FileDescription('No file', 'empty', '0b');
         }
 
@@ -395,7 +407,8 @@ class NominationDocument {
         return new FileDescription('Letter', $type, $size);
     }
 
-    public static function getFileNames(){
+    public static function getFileNames()
+    {
         return self::$fileNames;
     }
 
@@ -410,7 +423,7 @@ class NominationDocument {
         $supported = \PHPWS_Settings::get('nomination', 'allowed_file_types');
         $supported = unserialize($supported);
         $types = array();
-        foreach($supported as $fileType){
+        foreach ($supported as $fileType) {
             $types[$fileType] = $fileNames[$fileType];
         }
 
@@ -423,21 +436,23 @@ class NominationDocument {
         $supported = self::getSupportedFileTypes();
 
         $types = array();
-        foreach($supported as $file=>$longName){
+        foreach ($supported as $file => $longName) {
             $types[] = $mimes[$file];
         }
         return $types;
     }
 
-    public static function delete($unique_id){
+    public static function delete($unique_id)
+    {
         $person = Nomination::getMember($unique_id);
 
         $db = new \PHPWS_DB('nomination_document');
         $db->addWhere('id', $person->doc_id);
         $result = $db->select('row');
 
-        if(\PHPWS_Error::logIfError($result)){
-            \PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
+        if (\PHPWS_Error::logIfError($result)) {
+            \PHPWS_Core::initModClass('nomination',
+                    'exception/DatabaseException.php');
             throw new exception\DatabaseException($result->toString());
         }
 
@@ -449,9 +464,11 @@ class NominationDocument {
         $db->addWhere('id', $result['id']);
         $db->delete();
     }
+
 }
 
-class FileDescription {
+class FileDescription
+{
 
     private $title;
     private $type;
@@ -460,8 +477,8 @@ class FileDescription {
     public function __construct($title, $type, $size)
     {
         $this->title = $title;
-        $this->type  = $type;
-        $this->size  = $size;
+        $this->type = $type;
+        $this->size = $size;
     }
 
     public function getTitle()
@@ -478,4 +495,5 @@ class FileDescription {
     {
         return $this->size;
     }
+
 }
