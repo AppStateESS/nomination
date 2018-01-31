@@ -436,15 +436,7 @@
     </div>
 </div>
 <!-- END NOMINATOR_OVERALL -->
+<button type="submit" class="btn btn-lg btn-success">Submit Nomination</button>
 
-<div class="row">
-    <div class="col-md-8">
-
-        {CAPTCHA_IMAGE}
-
-        <button type="submit" class="btn btn-lg btn-success">Submit Nomination</button>
-
-    </div>
-</div>
 
 {END_FORM}
