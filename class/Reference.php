@@ -1,4 +1,5 @@
 <?php
+
 namespace nomination;
 
 use nomination\view\ReferenceView;
@@ -12,13 +13,11 @@ use nomination\view\ReferenceView;
  * @author Jeremy Booker
  * @package nomination
  */
-
 class Reference
 {
+
     private $id;
-
     private $nominationId; // Foreign key to the nomination table
-
     private $firstName;
     private $lastName;
     private $email; // Fully-qualified email address
@@ -28,17 +27,18 @@ class Reference
     private $uniqueId;
     private $docId;
 
-    public function __construct(Nomination $nomination, $first_name, $last_name, $email,
-                    $phone, $department, $relationship){
+    public function __construct(Nomination $nomination, $first_name, $last_name,
+            $email, $phone, $department, $relationship)
+    {
 
-        $this->nominationId = $nomination->getId();
+        $this->setNominationId($nomination->getId());
 
-        $this->firstName = $first_name;
-        $this->lastName = $last_name;
-        $this->email = $email;
-        $this->phone = $phone;
-        $this->department = $department;
-        $this->relationship = $relationship;
+        $this->setFirstName($first_name);
+        $this->setLastName($last_name);
+        $this->setEmail($email);
+        $this->setPhone($phone);
+        $this->setDepartment($department);
+        $this->setRelationship($relationship);
 
         $emailParts = explode('@', $email);
         $this->uniqueId = self::generateUniqueId($emailParts[0]);
@@ -53,19 +53,18 @@ class Reference
     public function getEditLink()
     {
         //TODO: Use a command?
-        $link = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'].'?module=nomination&view=ReferenceForm&unique_id=' . $this->getUniqueId();
+        $link = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'] . '?module=nomination&view=ReferenceForm&unique_id=' . $this->getUniqueId();
 
         return $link;
     }
 
-
-    /***************************
+    /*     * *************************
      * Getter & Setter Methods *
-     ***************************/
+     * ************************* */
 
     public static function getDb()
     {
-      return new \PHPWS_DB('nomination_reference');
+        return new \PHPWS_DB('nomination_reference');
     }
 
     public function getId()
@@ -73,46 +72,55 @@ class Reference
         return $this->id;
     }
 
-    public function getFirstName(){
+    public function getFirstName()
+    {
         return $this->firstName;
     }
 
-    public function getLastName(){
+    public function getLastName()
+    {
         return $this->lastName;
     }
 
-    public function getFullName() {
+    public function getFullName()
+    {
         return $this->getFirstName() . ' ' . $this->getLastName();
     }
 
-    public function getEmail(){
+    public function getEmail()
+    {
         return $this->email;
     }
 
-    public function getDepartment(){
+    public function getDepartment()
+    {
         return $this->department;
     }
 
-    public function getRelationship(){
+    public function getRelationship()
+    {
         return $this->relationship;
     }
 
-    public function getUniqueId(){
+    public function getUniqueId()
+    {
         return $this->uniqueId;
     }
 
-    public function getDocId(){
+    public function getDocId()
+    {
         return $this->docId;
     }
 
-    public function getNominationId(){
+    public function getNominationId()
+    {
         return $this->nominationId;
     }
 
-    public function getPhone(){
+    public function getPhone()
+    {
         return $this->phone;
     }
-
 
     /**
      * Setters...
@@ -122,44 +130,54 @@ class Reference
         $this->id = $id;
     }
 
-    public function setFirstName($firstName){
-        $this->firstName = $firstName;
+    public function setFirstName($name)
+    {
+        $this->firstName = substr($name, 0, 64);
     }
 
-    public function setLastName($lastName){
-        $this->lastName = $lastName;
+    public function setLastName($name)
+    {
+        $this->lastName = substr($name, 0, 64);
     }
 
-    public function setEmail($email){
+    public function setEmail($email)
+    {
         $this->email = $email;
     }
 
-    public function setPhone($phone){
-        $this->phone = $phone;
+    public function setPhone($phone)
+    {
+        $this->phone = substr(preg_replace('/\D/', '', $phone), 0, 32);
     }
 
-    public function setDepartment($department){
-        $this->department = $department;
+    public function setDepartment($department)
+    {
+        $this->department = substr($department, 0, 64);
     }
 
-    public function setRelationship($relationship){
+    public function setRelationship($relationship)
+    {
         $this->relationship = $relationship;
     }
 
-    public function setUniqueId($id){
+    public function setUniqueId($id)
+    {
         $this->uniqueId = $id;
     }
 
-    public function setDocId($doc_id){
+    public function setDocId($doc_id)
+    {
         $this->docId = $doc_id;
     }
 
-    public function setNominationId($id){
+    public function setNominationId($id)
+    {
         $this->nominationId = $id;
     }
 
     //gets a link to the nominee
-    public function getReferenceLink(){
+    public function getReferenceLink()
+    {
         $view = new ReferenceView();
         //we need this so we can see the id later
 
