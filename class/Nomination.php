@@ -58,37 +58,37 @@ class Nomination
                     $nominatorFirstName, $nominatorMiddleName, $nominatorLastName, $nominatorAddress, $nominatorPhone, $nominatorEmail, $nominatorRelation, $nominatorUniqueId,
                     $category, $period){
 
-        $this->banner_id        = $bannerId;
-        $this->first_name       = $firstName;
-        $this->middle_name      = $middleName;
-        $this->last_name        = $lastName;
-        $this->email            = $email;
-        $this->position         = $position;
-        $this->department_major = $department;
-        $this->years_at_asu     = $yearsAtASU;
-        $this->phone            = $phone;
-        $this->gpa              = $gpa;
-        $this->class            = $class;
-        $this->asubox           = $asubox;
-        $this->responsibility   = $responsibility; // just to make you cringe buddy!
+        $this->setBannerId($bannerId);
+        $this->setFirstName($firstName);
+        $this->setMiddleName($middleName);
+        $this->setLastName($lastName);
+        $this->setEmail($email);
+        $this->setPosition($position);
+        $this->setDeptMajor($department);
+        $this->setYearsAtASU($yearsAtASU);
+        $this->setPhone($phone);
+        $this->setGpa($gpa);
+        $this->setClass($class);
+        $this->setAsubox($asubox);
+        $this->setResponsibility($responsibility);
 
-        $this->nominator_first_name  = $nominatorFirstName;
-        $this->nominator_middle_name = $nominatorMiddleName;
-        $this->nominator_last_name   = $nominatorLastName;
-        $this->nominator_address     = $nominatorAddress;
-        $this->nominator_phone       = $nominatorPhone;
-        $this->nominator_email       = $nominatorEmail;
-        $this->nominator_relation    = $nominatorRelation;
-        $this->nominatorUniqueId     = $nominatorUniqueId;
+        $this->setNominatorFirstName($nominatorFirstName);
+        $this->setNominatorMiddleName($nominatorMiddleName);
+        $this->setNominatorLastName($nominatorLastName);
+        $this->setNominatorAddress($nominatorAddress);
+        $this->setNominatorPhone($nominatorPhone);
+        $this->setNominatorEmail($nominatorEmail);
+        $this->setNominatorRelation($nominatorRelation);
+        $this->setNominatorUniqueId($nominatorUniqueId);
 
-        $this->category = $category;
-        $this->period   = $period;
+        $this->setCategory($category);
+        $this->setPeriod($period);
 
-        $this->complete = 0;
-        $this->winner = 0;
+        $this->setComplete(0);
+        $this->setWinner(0);
         $currTime = time();
-        $this->added_on = $currTime;
-        $this->updated_on = $currTime;
+        $this->setAddedOn($currTime);
+        $this->setUpdatedOn($currTime);
     }
 
     /**
@@ -111,7 +111,7 @@ class Nomination
     }
 
     public function setBannerId($id){
-        $this->banner_id = $id;
+        $this->banner_id = (int)$id;
     }
 
     public function getFirstName(){
@@ -119,7 +119,7 @@ class Nomination
     }
 
     public function setFirstName($name){
-        $this->first_name = $name;
+        $this->first_name = substr($name, 0, 64);
     }
 
     public function getMiddleName(){
@@ -127,7 +127,7 @@ class Nomination
     }
 
     public function setMiddleName($name){
-        $this->middle_name = $name;
+        $this->middle_name = substr($name, 0, 64);
     }
 
     public function getLastName(){
@@ -135,7 +135,7 @@ class Nomination
     }
 
     public function setLastName($name){
-        $this->last_name = $name;
+        $this->last_name = substr($name, 0, 64);
     }
 
     public function getFullName() {
@@ -147,7 +147,7 @@ class Nomination
     }
 
     public function setAsubox($asubox) {
-        $this->asubox = $asubox;
+        $this->asubox = substr($asubox, 0, 10);
     }
 
     public function getEmail(){
@@ -178,7 +178,7 @@ class Nomination
     }
 
     public function setDeptMajor($dept){
-        $this->department_major = $dept;
+        $this->department_major = substr($dept, 0, 64);
     }
 
     public function getYearsAtASU(){
@@ -194,7 +194,7 @@ class Nomination
     }
 
     public function setPhone($phone){
-        $this->phone = $phone;
+        $this->phone = substr(preg_replace('/\D/', '', $phone), 0, 16);
     }
 
     public function getGpa(){
@@ -202,7 +202,7 @@ class Nomination
     }
 
     public function setGpa($gpa){
-        $this->gpa = $gpa;
+        $this->gpa = substr($gpa, 0, 8);
     }
 
     public function getClass(){
@@ -262,7 +262,7 @@ class Nomination
     }
 
     public function setNominatorPhone($phone){
-        $this->nominator_phone = $phone;
+        $this->nominator_phone = substr(preg_replace('/\D/', '', $phone), 0, 32);
     }
 
     public function getNominatorEmail(){
@@ -374,7 +374,7 @@ class Nomination
 
     public function setNominatorUniqueId($uniqueId)
     {
-      $this->nominatorUniqueId = $uniqueId;
+      $this->nominatorUniqueId = substr($uniqueId, 0, 32);
     }
 
     /**
