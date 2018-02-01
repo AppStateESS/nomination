@@ -30,7 +30,6 @@ use \nomination\view\NotificationView;
 \PHPWS_Core::initModClass('nomination', 'Context.php');
 \PHPWS_Core::initModClass('nomination', 'NominationDocument.php');
 \PHPWS_Core::initModClass('nomination', 'view/NominationForm.php');
-\PHPWS_Core::initCoreClass('Captcha.php');
 
 class EditNomination extends Command
 {
@@ -173,9 +172,8 @@ class EditNomination extends Command
 
 
       // If anything was missing, redirect back to the form
-      // TODO: Fix this so that it shows a useful error notification if the user gets the CAPTCHA wrong
 
-     if(!empty($missing) || !\Captcha::verify()){
+     if(!empty($missing)){
 
           // Notify the user that they must reselect their file
 

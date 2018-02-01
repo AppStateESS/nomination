@@ -14,7 +14,6 @@ use \nomination\NominationDocument;
 use \nomination\FallthroughContext;
 use \nomination\DocumentFactory;
 
-\PHPWS_Core::initCoreClass('Captcha.php');
 \PHPWS_Core::initCoreClass('Form.php');
 
 /**
@@ -371,12 +370,6 @@ class NominationForm extends \nomination\View
             $form->setLabel('nominator_relationship', 'Relation to Nominee: ');
             $form->addCssClass('nominator_relationship', 'form-control');
         }
-
-        /***********
-        * Captcha *
-        ***********/
-
-        $tpl['CAPTCHA_IMAGE'] = \Captcha::get();
 
         // Check if we were redirected back to this
         // form because some fields were not entered

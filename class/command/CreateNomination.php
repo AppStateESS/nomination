@@ -20,8 +20,6 @@ use \nomination\NominationSettings;
 use \nomination\email\NewNominatorEmail;
 use \nomination\email\NewReferenceEmail;
 
-\PHPWS_Core::initCoreClass('Captcha.php');
-
 /**
  * CreateNominationForm
  *
