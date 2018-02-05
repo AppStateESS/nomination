@@ -9,14 +9,15 @@ namespace nomination\command;
    * @package nomination
    */
 
-use \nomination\Command;
-use \nomination\Context;
-use \nomination\NominationFactory;
-use \nomination\NominationDocument;
-use \nomination\DocumentFactory;
-use \nomination\ReferenceFactory;
-use \nomination\view\NotificationView;
-use \nomination\ReferenceEmail;
+use nomination\Command;
+use nomination\Context;
+use nomination\NominationFactory;
+use nomination\NominationDocument;
+use nomination\DocumentFactory;
+use nomination\ReferenceFactory;
+use nomination\view\NotificationView;
+use nomination\NominationSettings;
+use nomination\email\NewReferenceEmail;
 
 class SubmitRecommendation extends Command {
 
@@ -81,8 +82,9 @@ class SubmitRecommendation extends Command {
         }
 
         // Send notification email
-        $ref = ReferenceFactory::getByUniqueId($context['unique_id']); // Why are we doing this again? $ref is already loaded
-        ReferenceEmail::uploadDocument($ref);
+        $settings = NominationSettings::getInstance();
+        $referenceEmail = new NewReferenceEmail($nomination, $ref, $settings);
+        $referenceEmail->send();
 
 
         \NQ::simple('nomination', NotificationView::NOMINATION_SUCCESS, 'Thank you!');
