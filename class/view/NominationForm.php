@@ -261,7 +261,9 @@ class NominationForm extends \nomination\View
             $refForm = new \PHPWS_Form('nomination_form'); // NB: Must have the same form name
 
             if($vis->isVisible('reference_first_name')) {
-                $form->addHidden('reference_id_' . $i, $c['reference_id'][$i]);
+                if (isset($c['reference_id'][$i])) {
+                    $form->addHidden('reference_id_' . $i, $c['reference_id'][$i]);
+                }
                 $form->addText('reference_first_name_' . $i,
                 isset($c['reference_first_name'][$i]) ? $c['reference_first_name'][$i] : '');
                 $form->addCssClass('reference_first_name_' . $i, 'form-control');
