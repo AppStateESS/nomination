@@ -13,7 +13,6 @@ use \nomination\Reference;
 use \nomination\ReferenceFactory;
 use \nomination\Period;
 use \nomination\NominationFieldVisibility;
-use \nomination\ReferenceEmail;
 use \nomination\NominatorEmail;
 use \nomination\view\NotificationView;
 use \nomination\NominationSettings;
@@ -90,7 +89,6 @@ class CreateNomination extends Command
         /**
          * Check  fields
          */
-
         if (isset($_SESSION['redirect']) && $_SESSION['redirect'] == 'true') {
             \NQ::simple('nomination', NotificationView::NOMINATION_ERROR,
                     'Be sure to fill in all required fields.');
@@ -156,10 +154,24 @@ class CreateNomination extends Command
                 $_SESSION['redirect'] = 'true';
                 return;
             } else {
-                $entered[$key] = $context[$value];
             }
         }
 
+        $container = $context->getContainer();
+        $skip = array('action', 'after', 'authkey', 'module');
+        foreach ($container as $key => $value) {
+            if (in_array($key, $skip)) {
+                continue;
+            }
+            if (preg_match('/^reference_/', $key)) {
+                $refNameArray = explode('_', $key);
+                $keyValue = array_pop($refNameArray);
+                $refName = implode('_', $refNameArray);
+                $_SESSION['nomination_fields'][$refName][$keyValue] = $value;
+            } else {
+                $_SESSION['nomination_fields'][$key] = $value;
+            }
+        }
 
         // Check for a "statement" file upload, if required
         if ($vis->isVisible('statement')) {
@@ -180,12 +192,11 @@ class CreateNomination extends Command
 
         // If anything was missing, redirect back to the form
         if (!empty($missing)) {
-
             $context['after'] = 'NominationForm'; // Set after view to the form
             $context['missing'] = $missing; // Add missing fields to context
             $context['form_fail'] = True; // Set form fail
             $missingFields = implode(', ', $missing);
-            $_SESSION['redirect'] == 'true';
+            $_SESSION['redirect'] = 'true';
             return;
         }
 
