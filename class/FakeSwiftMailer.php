@@ -128,6 +128,7 @@ class Swift_Mailer
         $template->setModuleTemplate('properties', 'FakeSwift.html');
         $content = $template->get();
         file_put_contents($save_path, $content);
+        return true;
     }
 
 }
