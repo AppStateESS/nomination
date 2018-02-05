@@ -8,6 +8,10 @@ use nomination\UserStatus;
 use nomination\EmailMessage;
 use nomination\NominationSettings;
 
+if (defined('EMAIL_TEST_FLAG') && EMAIL_TEST_FLAG) {
+    require_once PHPWS_SOURCE_DIR . 'mod/nomination/class/FakeSwiftMailer.php';
+}
+
 // For testing email. Leave commented out.
 //require_once PHPWS_SOURCE_DIR . 'mod/nomination/class/FakeSwiftMailer.php';
 
@@ -80,8 +84,12 @@ class AdminResendEmail extends Command
         $swift->setTo($to_address);
         $swift->setBody($message->message);
         $mailer = \Swift_Mailer::newInstance($transport);
-        $mailer->send($swift);
-        echo 'true';
+        $result = $mailer->send($swift);
+        if (!$result) {
+            echo 'false';
+        } else {
+            echo 'true';
+        }
         exit();
     }
 
