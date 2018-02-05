@@ -9,6 +9,11 @@ use \nomination\EmailLogFactory;
 if (!defined('EMAIL_TEST_FLAG')) {
     define('EMAIL_TEST_FLAG', false);
 }
+
+if (EMAIL_TEST_FLAG) {
+    require_once PHPWS_SOURCE_DIR . 'mod/nomination/class/FakeSwiftMailer.php';
+}
+
 // Setup autoloader for Composer to load SwiftMail via autoload
 require_once PHPWS_SOURCE_DIR . 'mod/nomination/inc/defines.php';
 require_once PHPWS_SOURCE_DIR . 'mod/nomination/vendor/autoload.php';
@@ -116,12 +121,13 @@ abstract class Email
         if (!isset($content) || $content === null) {
             throw new \InvalidArgumentException('\"Content\" not set.');
         }
+        $message = \Swift_Message::newInstance();
+
         // Set up Swift Mailer message
-        $message = \Swift_Message::newInstance()
-                ->setSubject($subject)
-                ->setFrom(array($fromAddress => $fromName))
-                ->setTo($to, $to)
-                ->setBody($content);
+        $message->setSubject($subject);
+        $message->setFrom(array($fromAddress => $fromName));
+        $message->setTo($to);
+        $message->setBody($content);
         if (isset($cc)) {
             $message->setCc($cc);
         }
@@ -137,9 +143,7 @@ abstract class Email
         $transport = \Swift_SmtpTransport::newInstance('localhost');
         $mailer = \Swift_Mailer::newInstance($transport);
         // If we're not in test mode, actually send the message
-        if (!EMAIL_TEST_FLAG) {
-            $mailer->send($message); // send() returns the number of successful recipients. Can be 0, which indicates failure
-        }
+        $mailer->send($message); // send() returns the number of successful recipients. Can be 0, which indicates failure
         self::logEmail($message);
         return true;
     }
