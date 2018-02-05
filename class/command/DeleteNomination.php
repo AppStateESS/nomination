@@ -46,7 +46,6 @@ class DeleteNomination extends Command
 
         // Send an email
         NominatorEmail::removeNomination($nomination);
-        ReferenceEmail::removeNomination($nomination);
 
         //TODO Delete all relevant nomination data
 
