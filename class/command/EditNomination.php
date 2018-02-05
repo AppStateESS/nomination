@@ -12,7 +12,7 @@ use \nomination\Reference;
 use \nomination\ReferenceFactory;
 use \nomination\Period;
 use \nomination\NominationFieldVisibility;
-use \nomination\ReferenceEmail;
+use \nomination\NewReferenceEmail;
 use \nomination\NominatorEmail;
 use \nomination\view\NotificationView;
 /**
@@ -308,7 +308,9 @@ class EditNomination extends Command
       foreach($updatedRefsNeedEmail as $refId)
       {
           $ref = ReferenceFactory::getReferenceById($refId);
-          ReferenceEmail::updateNomination($ref, $nomination);
+          $settings = \nomination\NominationSettings::getInstance();
+          $refemail = new \nomination\email\NewReferenceEmail($nomination, $ref, $settings);
+          $refemail->send();
       }
 
 
