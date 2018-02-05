@@ -33,10 +33,42 @@ class Swift_Message
     public $from;
     public $to;
     public $body;
+    public $cc;
+    public $bcc;
 
     public static function newInstance()
     {
         return new Swift_Message;
+    }
+
+    public function getSubject()
+    {
+        return $this->subject;
+    }
+
+    public function getFrom()
+    {
+        return $this->from;
+    }
+
+    public function getTo()
+    {
+        return $this->to;
+    }
+
+    public function getCc()
+    {
+        return $this->cc;
+    }
+
+    public function getBody()
+    {
+        return $this->body;
+    }
+
+    public function getBcc()
+    {
+        return $this->bcc;
     }
 
     public function setSubject($subject)
@@ -54,11 +86,21 @@ class Swift_Message
         $this->to = $to;
     }
 
+    public function setCc($cc)
+    {
+        $this->cc = $cc;
+    }
+
+    public function setBcc($bcc)
+    {
+        $this->bcc = $bcc;
+    }
+
     public function setBody($body)
     {
         $this->body = $body;
     }
-    
+
     public function get()
     {
         return get_object_vars($this);
@@ -77,11 +119,11 @@ class Swift_Mailer
     public function send($message)
     {
         $file = str_replace(' ', '-', $message->subject) . '-' . time() . '.html';
-        
+
         $save_path = 'files/' . $file;
-        
+
         $message_array = $message->get();
-        
+
         $template = new \phpws2\Template($message_array);
         $template->setModuleTemplate('properties', 'FakeSwift.html');
         $content = $template->get();
