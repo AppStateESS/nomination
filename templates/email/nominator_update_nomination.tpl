@@ -6,7 +6,7 @@ Reminder:
 Each reference has until {END_DATE} to submit a letter for the nomination.  You also have until {END_DATE} to
 edit your nomination form.  Follow this link to edit the nomination: 
 
-    {EDIT_LINK}
+{EDIT_LINK}
 
 Sincerely,
 

@@ -14,7 +14,7 @@ Click the link below to make any changes to your nomination.
 
 Click the link below to make any changes to your nomination.  After {END_DATE} you will not be able to make any more changes.
 
-    {EDIT_LINK}
+{EDIT_LINK}
 
 Please don't hesitate to contact me if you have any questions.
 

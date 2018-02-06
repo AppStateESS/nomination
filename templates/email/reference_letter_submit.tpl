@@ -6,7 +6,7 @@ Thank you for submitting a letter of reference on behalf of the nomination of {N
 
 You have until {END_DATE} to resubmit your document.  Your previous document will be deleted when you upload another document. Click the link below to make any changes to your reference letter.
 
-    {EDIT_LINK}
+{EDIT_LINK}
 
 Sincerely,
 
