@@ -138,13 +138,15 @@ class ReferenceFactory {
         $db->addWhere('id', $Id);
 
         $results = $db->select();
-
         if(\PHPWS_Error::logIfError($results)){
             \PHPWS_Core::initModClass('nomination', 'exception/DatabaseException.php');
             throw new exception\DatabaseException($results->toString());
         }
-
-
+        if (empty($results)) {
+            $ref = new DBReference();
+            $ref->setFirstName('Broken email - account deleted');
+            return $ref;
+        }
         $objs = array();
 
         foreach ($results as $result){
