@@ -312,12 +312,10 @@ class NominationForm extends \nomination\View
                 $tpl['STATEMENT'] = NominationDocument::getFileWidget(null, 'statement', $form);
             } else {
                 $tpl['FILES_DIR'] = PHPWS_SOURCE_HTTP;
-
                 $doc = new DocumentFactory();
-                $doc = $doc->getDocumentById($nomination->getId());
-
+                $doc = $doc->getNominatorDocument($nomination->getId());
                 $tpl['STATEMENT'] = NominationDocument::getFileWidget(null, 'statement', $form);
-                $tpl['DOWNLOAD'] = $doc->getDownloadLink($nomination->getId(), 'Download Statement');
+                $tpl['DOWNLOAD'] = $doc->getDownloadLink($c['unique_id'], 'Download Statement');
             }
         }
 
