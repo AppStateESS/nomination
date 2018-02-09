@@ -32,13 +32,13 @@ class CancelNomination extends Command {
 
     public function execute(Context $context)
     {
-        $nom = NominationFactory::getByNominatorUniqueId($context['unique_id']);
+        $nom = \nomination\NominationFactory::getByNominatorUniqueId($context['unique_id']);
 
         if(!isset($nom))
         {
-          throw new NominationException('The given nomination is null, id = ' . $context['unique_id']);
+          throw new \nomination\Exception\NominationException('The given nomination is null, id = ' . $context['unique_id']);
         }
 
-        CancelQueue::add($nom);
+        \nomination\CancelQueue::add($nom);
     }
 }
