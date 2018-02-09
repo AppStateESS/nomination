@@ -118,7 +118,7 @@ class Swift_Mailer
 
     public function send($message)
     {
-        $file = str_replace(' ', '-', $message->subject) . '-' . time() . '.html';
+        $file = str_replace(' ', '-', $message->subject) . '-' . microtime() . '.html';
 
         $save_path = 'files/' . $file;
 
