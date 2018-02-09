@@ -50,6 +50,31 @@ class DocumentFactory {
         return $doc;
     }
 
+    
+    public static function getNominatorDocument($nominationId)
+    {
+        $db = \phpws2\Database::getDB();
+        $tbl = $db->addTable('nomination_document');
+        $tbl->addFieldConditional('nomination_id', $nominationId);
+        $tbl->addFieldConditional('uploaded_by', 'nominator');
+        $result = $db->selectOneRow();
+        if (empty($result)) {
+            return null;
+        }
+        extract($result);
+        $doc = new DBNominationDocument();
+        $doc->setId($id);
+        $doc->setNominationById($result['nomination_id']);
+        $doc->setUploadedBy($result['uploaded_by']);
+        $doc->setDescription($result['description']);
+        $doc->setFilePath($result['file_path']);
+        $doc->setFileName($result['file_name']);
+        $doc->setOrigFileName($result['orig_file_name']);
+        $doc->setMimeType($result['mime_type']);
+
+        return $doc;
+    }
+    
     public static function save(NominationDocument $doc)
     {
         $db = new \PHPWS_DB('nomination_document');
