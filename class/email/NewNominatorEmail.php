@@ -1,4 +1,5 @@
 <?php
+
 namespace nomination\email;
 
 use nomination\Nomination;
@@ -8,23 +9,24 @@ use nomination\EmailLog;
 use nomination\EmailLogFactory;
 
 /**
-  *
-  * A class for handling the nomination references on the creation of a new nomination.
-  *
-  * @author Chris Detsch, Eric Cambel
-  * @package nomination
-  */
-  class NewNominatorEmail extends Email
-  {
+ *
+ * A class for handling the nomination references on the creation of a new nomination.
+ *
+ * @author Chris Detsch, Eric Cambel
+ * @package nomination
+ */
+class NewNominatorEmail extends Email
+{
+
     private $nomination;
     private $msgType;
 
-    public function __construct(Nomination $nom, NominationSettings $emailSettings)
+    public function __construct(Nomination $nom,
+            NominationSettings $emailSettings)
     {
         parent::__construct($emailSettings);
         $this->nomination = $nom;
     }
-
 
     public function buildMessage()
     {
@@ -36,12 +38,11 @@ use nomination\EmailLogFactory;
         $this->tpl['EDIT_LINK'] = $this->nomination->getEditLink(); //TODO nominator editing
         $this->tpl['SIGNATURE'] = $this->emailSettings->getSignatureForEmail();
         $this->tpl['SIG_POSITION'] = $this->emailSettings->getSigPositionEmail();
-
+        $this->tpl['AWARD_TITLE'] = $this->emailSettings->getAwardTitleForEmail();
         $this->subject = $this->emailSettings->getAwardTitleForEmail();
         $this->to[] = $this->nomination->getNominatorEmail();
 
         $this->msgType = 'NEWNOM';
-
     }
 
     public function getTemplateFileName()
@@ -53,12 +54,15 @@ use nomination\EmailLogFactory;
     public function logNomEmail($id = null)
     {
         $bodyContent = $this->buildMessageBody($this->getTemplateFileName());
-        $message = $this->buildSwiftMessage($this->to, $this->fromAddress, $this->fromName, $this->subject, $bodyContent, $this->cc, $this->bcc);
+        $message = $this->buildSwiftMessage($this->to, $this->fromAddress,
+                $this->fromName, $this->subject, $bodyContent, $this->cc,
+                $this->bcc);
 
         // Used for the email log within the website
-        $messageLog = new EmailLog($this->nomination->getId(), $message->getBody(),
-        $this->msgType, $this->subject, $this->nomination->getId(), "NTR", time());
+        $messageLog = new EmailLog($this->nomination->getId(),
+                $message->getBody(), $this->msgType, $this->subject,
+                $this->nomination->getId(), "NTR", time());
         EmailLogFactory::save($messageLog);
     }
 
-  }
+}

@@ -2,7 +2,7 @@
 
 Dear {NOMINATOR_NAME}:
 
-Thank you for taking the time to submit the nomination of {NOMINEE_NAME} for the {AWARD_NAME}.
+Thank you for taking the time to submit the nomination of {NOMINEE_NAME} for the {AWARD_TITLE}.
 
 The three references you indicated will be contacted by our office and asked for a letter of recommendation. It is important that you upload your nomination and support information immediately. Your references will not be able to upload their support letter until your nomination and supporting materials have been uploaded.
 
