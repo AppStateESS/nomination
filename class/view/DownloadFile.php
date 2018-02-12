@@ -34,11 +34,19 @@ class DownloadFile extends \nomination\View
 
     public function display(\nomination\Context $context)
     {
-        $omnom = new \nomination\NominationFactory();
-        $omnom = $omnom->getNominationbyId($context['nomination']);
+        if (isset($context['reference'])) {
+            $doc = new \nomination\DocumentFactory;
+            $document = $doc->getReferenceDocument($context['reference']);
+            
+        } elseif (isset($context['nomination'])) {
+            $nominationFactory = new \nomination\NominationFactory();
+            $nominationFactory = $nominationFactory->getNominationbyId($context['nomination']);
+            $doc = new \nomination\DocumentFactory();
+            $document = $doc->getNominatorDocument($context['nomination']);
+        } else {
+            throw new \Exception('Unknown document type');
+        }
 
-        $doc = new \nomination\DocumentFactory();
-        $document = $doc->getNominatorDocument($context['nomination']);
         $fileDirectory = \PHPWS_Settings::get('nomination', 'file_dir');
 
         $documentPath = $fileDirectory . $document->getFilePath() . $document->getFileName();
