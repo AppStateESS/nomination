@@ -44,13 +44,13 @@ class NominationView extends \nomination\View
         $tpl['NOMINEE'] = $nomination->getNomineeLink();
         $tpl['NOMINATOR'] = $nomination->getNominatorLink();
         $tpl['NOMINATOR_RELATION'] = ($nomination->getNominatorRelation() == null ? "No relation given" : $nomination->getNominatorRelation());
-        // TODO: ZOMG, use a factory
-        // Get the download link for the nominator statement
-        $db = new \PHPWS_DB('nomination_document');
-        $db->addColumn('id');
-        $db->addWhere('nomination_id', $context['id']);
-        $db->addWhere('description', 'statement');
-        $nominatorDocId = $db->select('row');
+
+        $db = \phpws2\Database::getDB();
+        $tbl = $db->addTable('nomination_document');
+        $tbl->addFieldConditional('nomination_id', $context['id']);
+        $tbl->addFieldConditional('description', 'statement');
+        $nominatorDocId = $db->selectColumn();
+
         if ($nominatorDocId == false) {
             return;
         }
@@ -61,20 +61,14 @@ class NominationView extends \nomination\View
 
         $doc = new DocumentFactory();
         $doc = $doc->getDocumentById($nominatorDocId);
-        $tpl['NOMINATOR_STATEMENT'] = $doc->getDownloadLink($nominatorDocId,
+        $tpl['NOMINATOR_STATEMENT'] = $doc->getDownloadLink($nomination->getUniqueId(),
                 'Download Statement');
 
-        // Get the references from the DB
-        // TODO: ZOMG, use a factory
         $references = array();
-        $db->reset();   // we recycle 'round here
-        $db->setTable('nomination_reference');
-        $db->addWhere('nomination_id', $nomination->id);
+        $db = \phpws2\Database::getDB();
+        $tbl = $db->addTable('nomination_reference');
+        $tbl->addFieldConditional('nomination_id', $nomination->id);
         $result = $db->select();
-
-        if (\PHPWS_Error::logIfError($result) || sizeof($result) == 0) {
-            throw new \nomination\exception\DatabaseException('Database is broken, please try again');
-        }
 
         // Fill the references array with references
         $numRefs = \PHPWS_Settings::get('nomination', 'num_references_req');
@@ -99,10 +93,11 @@ class NominationView extends \nomination\View
             if (is_null($references[$i]->getDocId())) {
                 $refArray['REFERENCE_DOWNLOAD'] = 'No file uploaded';
             } else {
-                $doc = new DocumentFactory();
-                $doc = $doc->getDocumentById($references[$i]->getDocId());
-                $refArray['REFERENCE_DOWNLOAD'] = $doc->getDownloadLink($references[$i]->getDocId(),
-                        'Download Statement');
+                $uniqueId = $references[$i]->getUniqueId();
+                $referenceId = $references[$i]->getId();
+                $refArray['REFERENCE_DOWNLOAD'] = <<<EOF
+<a href="index.php?module=nomination&amp;view=DownloadFile&amp;unique_id={$uniqueId}&amp;reference=$referenceId">Download Reference</a>
+EOF;
             }
 
             $tpl['references'][] = $refArray;
