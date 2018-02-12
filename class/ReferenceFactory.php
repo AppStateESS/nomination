@@ -129,7 +129,7 @@ class ReferenceFactory {
      * no matching reference is found.
      *
      * @param string $Id - The Reference's nomination ID.
-     * @return Reference Reference object, or null if no matching id found
+     * @return nomination\Reference Reference object, or null if no matching id found
      */
     public static function getReferenceById($Id){
 
