@@ -379,13 +379,9 @@ class NominationDocument
                         'nomination_doc.tpl');
     }
 
-    public function getDownloadLink($unique_id = NULL, $text = 'Download')
+    public function getDownloadLink($unique_id, $text = 'Download')
     {
-        if (is_null($unique_id)) {
-            return "";
-        }
 
-        //$this->nomination->getMember($unique_id); // I don't even..... getMember() doesn't exist anywhere! What would it do if it did?
         $factory = new ViewFactory();
         $view = $factory->get('DownloadFile');
         $view->unique_id = $unique_id;
