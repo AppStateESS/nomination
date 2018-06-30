@@ -7,6 +7,7 @@ use \nomination\Context;
 use \nomination\NominationFactory;
 use \nomination\ReferenceFactory;
 use \nomination\ViewFactory;
+use \nomination\DocumentFactory;
 
 /**
  * ReferenceForm
@@ -60,6 +61,16 @@ class ReferenceForm extends \nomination\View {
         $form->addHidden('unique_id', $context['unique_id']);
 
         $tpl = array();
+
+        $doc = new DocumentFactory();
+        $docID = $ref->getDocId();
+
+        if($docID)
+        {
+          $doc = $doc->getDocumentById($ref->getDocId());
+          $tpl['DOWNLOAD'] = $doc->getDownloadLink($ref->getDocId(), 'Download Statement');
+        }
+
         $tpl['RECOMMENDATION'] = NominationDocument::getFileWidget(null, 'recommendation', $form);
         $tpl['STUDENT'] = $nom->getFullName();
 
