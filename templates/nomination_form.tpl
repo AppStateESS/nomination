@@ -160,7 +160,7 @@
             </div>
             <div class="radio">
                 <label>
-                    {CATEGORY_2} <strong>Student Development Educator within the Division of Student Development</strong> For meritorious leadership in his or her work to enrich the quality of student life and learning.
+                    {CATEGORY_2} <strong>Student Affairs Educator within the Division of Student Affairs</strong> For meritorious leadership in his or her work to enrich the quality of student life and learning.
                 </label>
             </div>
             <div class="radio">
