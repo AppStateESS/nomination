@@ -1,0 +1,1 @@
+ALTER TABLE nomination_nomination ADD COLUMN alternate_award VARCHAR(50) DEFAULT NULL;

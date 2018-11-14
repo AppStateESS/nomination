@@ -165,7 +165,16 @@ function nomination_update($content, $currentVersion)
                 return $result;
             }
         case version_compare($currentVersion, '0.0.24', '<'):
-            $content  .= 'Fixed admin email log resend';
+            $content[] = 'Fixed admin email log resend';
+
+        case version_compare($currentVersion, '0.1.0', '<'):
+            $db = new PHPWS_DB;
+            $result = $db->importFile(PHPWS_SOURCE_DIR .
+                    'mod/nomination/boost/updates/update_0_1_0.sql');
+            if (PHPWS_Error::logIfError($result)) {
+                return $result;
+            }
+            $content[] = 'Added alternate award prompt.';
     }
     return TRUE;
 }

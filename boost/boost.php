@@ -2,10 +2,11 @@
   /**
    * boost.php
    *
-   * @author Robert Bost <bostrt at tux dot appstate dot edu>
+   * @author Robert Bost
+   * @author Matt McNaney
    */
 $proper_name = 'Nomination Module';
-$version     = '0.0.24';
+$version     = '0.1.0';
 $register     = FALSE;
 $unregister   = FALSE;
 $import_sql   = TRUE;

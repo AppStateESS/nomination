@@ -29,6 +29,7 @@ CREATE TABLE nomination_nomination (
        period                   SMALLINT NOT NULL,
        added_on                 INT NOT NULL,
        updated_on               INT NOT NULL,
+       alternate_award          VARCHAR(200) DEFAULT NULL,
        winner                   SMALLINT DEFAULT NULL,
        PRIMARY KEY (id)
 );
