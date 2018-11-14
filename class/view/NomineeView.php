@@ -61,16 +61,15 @@ class NomineeView extends \nomination\View
             $award_icon = 'images/icons/blank.png';
         }
         $nomContent = $nominationView->display($context);
-        
+
         if (empty($nomContent)) {
             $tpl['NO_NOMINATIONS'] = '<div class="alert alert-warning alert-block">No nomination documents found.</div>';
         } else {
             $tpl['nominations'][] = array('CONTENT' => $nomContent,
-            'NUM' => $num,
-            'ICON' => PHPWS_SOURCE_HTTP . $icon,
-            'AWARD_ICON' => PHPWS_SOURCE_HTTP . $award_icon,
-            'DOWN_PNG_HACK' => PHPWS_SOURCE_HTTP . "mod/nomination/img/arrow_down.png");
-
+                'NUM' => $num,
+                'ICON' => PHPWS_SOURCE_HTTP . $icon,
+                'AWARD_ICON' => PHPWS_SOURCE_HTTP . $award_icon,
+                'DOWN_PNG_HACK' => PHPWS_SOURCE_HTTP . "mod/nomination/img/arrow_down.png");
         }
 
         // pass this to javascript
@@ -96,8 +95,9 @@ class NomineeView extends \nomination\View
                 'PHPWS_SOURCE_HTTP' => PHPWS_SOURCE_HTTP));
             // If nomination is winner then set the winner flag beside the
             // nominee's name in big letters
-            if ($nomIsWinner)
+            if ($nomIsWinner) {
                 $tpl['WINNER'] = '(Winner)';
+            }
 
             return \PHPWS_Template::process($tpl, 'nomination',
                             'admin/nominee.tpl');

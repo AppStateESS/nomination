@@ -1,4 +1,5 @@
 <?php
+
 namespace nomination\command;
 
 use \nomination\Command;
@@ -15,80 +16,84 @@ use \nomination\NominationFieldVisibility;
  * @author Jeremy Booker
  * @package nomination
  */
-class UpdateSettings extends Command {
+class UpdateSettings extends Command
+{
 
-    public function getRequestVars(){
+    public function getRequestVars()
+    {
         return array('action' => 'UpdateSettings', 'after' => 'AdminSettings');
     }
 
     public function getNominationFields()
     {
         return array('nominee_asubox',
-                     'nominee_position',
-                     'nominee_first_name',
-                     'nominee_middle_name',
-				             'nominee_last_name',
-                     'nominee_department_major',
-                     'nominee_years',
-                     'nominee_responsibility',
-                     'nominee_banner_id',
-                     'nominee_phone',
-                     'nominee_gpa',
-                     'nominee_class',
-                     'category',
-                     'reference_department',
-                     'reference_email',
-                     'reference_phone',
-                     'reference_relationship',
-                     'statement',
-                     'nominator_first_name',
-                     'nominator_middle_name',
-                     'nominator_last_name',
-                     'nominator_address',
-                     'nominator_phone',
-                     'nominator_email',
-                     'nominator_relationship');
+            'nominee_position',
+            'nominee_first_name',
+            'nominee_middle_name',
+            'nominee_last_name',
+            'nominee_department_major',
+            'nominee_years',
+            'nominee_responsibility',
+            'nominee_banner_id',
+            'nominee_phone',
+            'nominee_gpa',
+            'nominee_class',
+            'category',
+            'reference_department',
+            'reference_email',
+            'reference_phone',
+            'reference_relationship',
+            'statement',
+            'nominator_first_name',
+            'nominator_middle_name',
+            'nominator_last_name',
+            'nominator_address',
+            'nominator_phone',
+            'nominator_email',
+            'nominator_relationship',
+            'alternate_award');
     }
 
     public function execute(Context $context)
     {
-        if(!UserStatus::isAdmin()){
+        if (!UserStatus::isAdmin()) {
             throw new \nomination\exception\PermissionException('You are not allowed to see this!');
         }
 
-        try{
+        try {
             // Store settings in a map
             $settingsMap = array();
 
             /*
              * Update award title
              */
-            if(!empty($context['award_title'])){
+            if (!empty($context['award_title'])) {
                 $settingsMap['award_title'] = $context['award_title'];
             }
 
             /*
              * Update award description
              */
-            if(!empty($context['award_description'])){
-                $edited_description = str_replace(array("\r\n", "\r", "\n"), "<br />", $context['award_description']);
+            if (!empty($context['award_description'])) {
+                $edited_description = str_replace(array("\r\n", "\r", "\n"),
+                        "<br />", $context['award_description']);
                 $settingsMap['award_description'] = $edited_description;
             }
 
             /*
              * Update References Required
              */
-            if(!empty($context['num_references_req'])){
+            if (!empty($context['num_references_req'])) {
                 $settingsMap['num_references_req'] = $context['num_references_req'];
             }
 
             /*
              * Update file storage path
              */
-            if(!empty($context['file_dir'])){
+            if (!empty($context['file_dir'])) {
                 // Check for trailing '/'
                 $file_dir = $context['file_dir'];
-                if($file_dir[strlen($file_dir)-1] != '/'){
+                if ($file_dir[strlen($file_dir) - 1] != '/') {
                     // Append '/' if it does not exist
                     $file_dir .= "/";
                 }
@@ -98,7 +103,7 @@ class UpdateSettings extends Command {
             /**
              * Update allowed file types for upload
              */
-            if(!empty($context['allowed_file_types'])){
+            if (!empty($context['allowed_file_types'])) {
                 $settingsMap['allowed_file_types'] = $context['allowed_file_types'];
             } else {
                 throw new \nomination\exception\InvalidSettingsException('At least one file type must be set.');
@@ -109,14 +114,14 @@ class UpdateSettings extends Command {
             /**
              * Update Signature
              */
-            if(!empty($context['signature_title'])){
+            if (!empty($context['signature_title'])) {
                 $settingsMap['signature'] = $context['signature_title'];
             }
 
-           /**
-            * Update Signature Position
-            */
-            if(!empty($context['sig_position'])){
+            /**
+             * Update Signature Position
+             */
+            if (!empty($context['sig_position'])) {
                 $settingsMap['sig_position'] = $context['sig_position'];
             }
 
@@ -127,21 +132,23 @@ class UpdateSettings extends Command {
              * Actually perform updates now
              * PHPWS_Settings::save() returns null on success
              */
-            foreach($settingsMap as $key=>$value){
+            foreach ($settingsMap as $key => $value) {
                 \PHPWS_Settings::set('nomination', $key, $value);
             }
             $result = \PHPWS_Settings::save('nomination');
 
-            if(!is_null($result)){
+            if (!is_null($result)) {
                 throw new \Exception('Something bad happened when settings were being saved.');
             }
-        } catch (\Exception $e){
-            \NQ::simple('nomination', NotificationView::NOMINATION_ERROR, $e->getMessage());
+        } catch (\Exception $e) {
+            \NQ::simple('nomination', NotificationView::NOMINATION_ERROR,
+                    $e->getMessage());
             return;
         }
 
 
-        \NQ::simple('nomination', NotificationView::NOMINATION_SUCCESS, 'Settings saved.');
+        \NQ::simple('nomination', NotificationView::NOMINATION_SUCCESS,
+                'Settings saved.');
     }
 
 }

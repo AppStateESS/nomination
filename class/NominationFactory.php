@@ -32,7 +32,7 @@ class NominationFactory {
             throw new exception\DatabaseException($result->toString());
         }
 
-        if(count($result) == 0){
+        if(empty($result)){
             return null;
         }
 
@@ -60,6 +60,7 @@ class NominationFactory {
         $nom->setNominatorAddress($result['nominator_address']);
         $nom->setNominatorUniqueId($result['nominator_unique_id']);
         $nom->setNominatorRelation($result['nominator_relation']);
+        $nom->alternate_award = $result['alternate_award'];
         $nom->setComplete($result['complete']);
         $nom->setPeriod($result['period']);
         $nom->setAddedOn($result['added_on']);
@@ -96,6 +97,7 @@ class NominationFactory {
         $db->addValue('nominator_email', $nom->getNominatorEmail());
         $db->addValue('nominator_relation', $nom->getNominatorRelation());
         $db->addValue('nominator_unique_id', $nom->getUniqueId());
+        $db->addValue('alternate_award', $nom->alternate_award);
 
         $db->addValue('category', $nom->getCategory());
         $db->addValue('period', $nom->getPeriod());
@@ -147,7 +149,7 @@ class NominationFactory {
           throw new exception\DatabaseException($result->toString());
       }
 
-      if(count($result) == 0){
+      if(empty($result)){
           return null;
       }
 
@@ -175,6 +177,7 @@ class NominationFactory {
       $nom->setNominatorAddress($result['nominator_address']);
       $nom->setNominatorUniqueId($result['nominator_unique_id']);
       $nom->setNominatorRelation($result['nominator_relation']);
+      $nom->alternate_award = $result['alternate_award'];
       $nom->setComplete($result['complete']);
       $nom->setPeriod($result['period']);
       $nom->setAddedOn($result['added_on']);

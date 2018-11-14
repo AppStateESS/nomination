@@ -86,6 +86,11 @@ class CreateNomination extends Command
             }
         }
 
+        if ($vis->isVisible('alternate_award') && !empty($context['alternate_award'])) {
+            $context['alternate_award'] = implode(',',
+                    $context['alternate_award']);
+        }
+
         /**
          * Check  fields
          */
@@ -140,6 +145,7 @@ class CreateNomination extends Command
                     'nominator_address' => $context['nominator_address'],
                     'nominator_phone' => $context['nominator_phone'],
                     'nominator_email' => $context['nominator_email'],
+                    'alternate_award' => $context['alternate_award'],
                     'nominator_relationship' => $context['nominator_relationship'],
                     'category' => $context['category'],
                     'reference_id' => $ref_id,
@@ -153,7 +159,6 @@ class CreateNomination extends Command
                 $_SESSION['nomination_fields'] = $fields;
                 $_SESSION['redirect'] = 'true';
                 return;
-            } else {
             }
         }
 
@@ -229,6 +234,7 @@ class CreateNomination extends Command
         $nominatorPhone = $context['nominator_phone'];
         $nominatorEmail = $context['nominator_email'];
         $nominatorRelation = $context['nominator_relationship'];
+        $alternateAward = $context['alternate_award'];
         $nominatorUniqueId = Nomination::generateUniqueId($nomineeBannerId);
 
 
@@ -246,7 +252,7 @@ class CreateNomination extends Command
                 $nomineeResponsibility, $nominatorFirstName,
                 $nominatorMiddleName, $nominatorLastName, $nominatorAddress,
                 $nominatorPhone, $nominatorEmail, $nominatorRelation,
-                $nominatorUniqueId, $category, $period_id);
+                $nominatorUniqueId, $category, $period_id, $alternateAward);
         // Save the nomination to the db; If this works,
         // the factory will populate the $nomination with its database id.
         NominationFactory::save($nomination);

@@ -42,6 +42,7 @@ class NominationView extends \nomination\View
         $nomination = $factory::getNominationById($context['id']);
 
         $tpl['NOMINEE'] = $nomination->getNomineeLink();
+        $tpl['NOMINATOR_ID'] = $nomination->id;
         $tpl['NOMINATOR'] = $nomination->getNominatorLink();
         $tpl['NOMINATOR_RELATION'] = ($nomination->getNominatorRelation() == null ? "No relation given" : $nomination->getNominatorRelation());
 

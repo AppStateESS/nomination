@@ -100,7 +100,7 @@ class FallthroughContext extends Context {
       $nom['nominator_phone'] = $nomination->getNominatorPhone();
       $nom['nominator_email'] = preg_replace('/(.*)@.*appstate.edu/', '$1', $nomination->getNominatorEmail());
       $nom['nominator_relationship'] = $nomination->getNominatorRelation();
-
+      $nom['alternate_award'] = $nomination->alternate_award;
 
       $this->addFallthrough($nom);
     }
