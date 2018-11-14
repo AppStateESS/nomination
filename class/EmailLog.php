@@ -1,17 +1,20 @@
 <?php
+
 namespace nomination;
 
 use nomination\email\Email;
+
 /**
-* EmailLog
-*
-* Model class for representing an EmailLog.
-*
-* @author Chris Detsch
-* @package nomination
-*/
+ * EmailLog
+ *
+ * Model class for representing an EmailLog.
+ *
+ * @author Chris Detsch
+ * @package nomination
+ */
 class EmailLog
 {
+
     public $id;
     public $nominee_id;
     public $message;
@@ -22,7 +25,7 @@ class EmailLog
     public $sent_on;
 
     public function __construct($nominee_id, $message, $message_type, $subject,
-                                $receiver_id, $receiver_type, $sent_on)
+            $receiver_id, $receiver_type, $sent_on)
     {
         //$this->id = $id;
         $this->nominee_id = $nominee_id;
@@ -35,8 +38,8 @@ class EmailLog
     }
 
     /**
-    * Getters
-    */
+     * Getters
+     */
     public function getId()
     {
         return $this->id;
@@ -78,8 +81,8 @@ class EmailLog
     }
 
     /**
-    * Setters
-    */
+     * Setters
+     */
     public function setId($id)
     {
         $this->id = $id;
@@ -121,11 +124,17 @@ class EmailLog
     }
 
     // Row tags for DBPager
-    public function rowTags() {
-        $tpl             = array();
-        $tpl['ID']     = $this->getId();
-        $nomination    = NominationFactory::getNominationbyId($this->getNomineeId());
-        $tpl['NOMINEE'] = $nomination->getNomineeLink();
+    public function rowTags()
+    {
+        $tpl = array();
+        $tpl['ID'] = $this->getId();
+        $nomineeId = $this->getNomineeId();
+        $nomination = NominationFactory::getNominationbyId($nomineeId);
+        if (empty($nomination)) {
+            $tpl['NOMINEE'] = "Nomination for nominee $nomineeId missing";
+        } else {
+            $tpl['NOMINEE'] = $nomination->getNomineeLink();
+        }
         $tpl['MESSAGE'] = $this->getMessage();
 
         // TODO This needs to change so it is not using NomationEmail
@@ -134,26 +143,30 @@ class EmailLog
         $msgTypeList = Email::getLists();
         $tpl['MESSAGE_TYPE'] = $msgTypeList[$this->getMessageType()];
         $tpl['SUBJECT'] = $this->getSubject();
-        if($this->getReceiverType() === 'REF')
-        {
+        if ($this->getReceiverType() === 'REF') {
             $ref = ReferenceFactory::getReferenceById($this->getReceiverId());
             $tpl['RECEIVER'] = $ref->getReferenceLink();
             $tpl['RECEIVER_TYPE'] = 'Reference';
-        }
-        else if($this->getReceiverType() === 'NTR')
-        {
+        } else if ($this->getReceiverType() === 'NTR') {
             $nomination = NominationFactory::getNominationbyId($this->getReceiverId());
-            $tpl['RECEIVER'] = $nomination->getNominatorLink();
+            if (empty($nomination)) {
+                $tpl['RECEIVER'] = 'Nomination missing';
+            } else {
+                $tpl['RECEIVER'] = $nomination->getNominatorLink();
+            }
             $tpl['RECEIVER_TYPE'] = 'Nominator';
-        }
-        else if($this->getReceiverType() === 'NEE')
-        {
+        } else if ($this->getReceiverType() === 'NEE') {
             $nomination = NominationFactory::getNominationbyId($this->getReceiverId());
-            $tpl['RECEIVER'] = $nomination->getNomineeLink();
+            if (empty($nomination)) {
+                $tpl['RECEIVER'] = 'Nomination missing';
+            } else {
+                $tpl['RECEIVER'] = $nomination->getNomineeLink();
+            }
             $tpl['RECEIVER_TYPE'] = 'Nominee';
         }
 
-        $tpl['SENT_ON'] = date("m/d/Y h:i a",$this->getSentOn());
+        $tpl['SENT_ON'] = date("m/d/Y h:i a", $this->getSentOn());
         return $tpl;
     }
+
 }
