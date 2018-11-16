@@ -375,8 +375,7 @@
 </div>
 <div class="form-group">
   <p>
-    Should your nominee not win, we can nominate them to other awards on your
-    behalf. Please review award conditions and check the awards you would like for consideration.
+    In the event the nominee is unsuccessful in the Plemmons process, you can use the below application to "opt in" to other award nomination processes. Each award is housed in the Division of Student Affairs. Your nominee must meet the minimum award qualifications (e.g., a student employee for the Dunnigan award, a current Graduate Student for the Blimling award, etc.). Please select all awards for which you wish the nominee to be considered. Be sure to click the "Details" link for award requirements before "opting in." 
   </p>
   <div>
     <label><input type="checkbox" name="alternate_award[]" value="brooks" {brooks}/> Ronny L. Brooks Award</label>
