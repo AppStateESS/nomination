@@ -190,7 +190,8 @@ class EditNomination extends Command
         $oldNomination = NominationFactory::getByNominatorUniqueId($context['nominator_unique_id']);
 
         $doc = new DocumentFactory();
-        $doc = $doc->getDocumentById($nomination->getId());
+        $doc = $doc->getNominatorDocument($nomination->getId());
+
         // Needed so that the document save function will update the file if needed.
         $docId = $doc->getId();
         if ($doc == null || $_FILES['statement']['size'] > 0 || is_uploaded_file($_FILES['statement']['tmp_name'])) {
