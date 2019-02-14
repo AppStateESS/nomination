@@ -369,10 +369,9 @@
     {NOMINATOR_RELATIONSHIP}
   </div>
   <!-- END NOMINATOR_RELATIONSHIP -->
-  <!-- BEGIN alternate -->
-  {alternate_award}
-  <!-- END alternate -->
 </div>
+<!-- BEGIN alternate -->
+{alternate_award}
 <div class="form-group">
   <p>
     In the event the nominee is unsuccessful in the Plemmons process, you can use the below application to "opt in" to other award nomination processes. Each award is housed in the Division of Student Affairs. Your nominee must meet the minimum award qualifications (e.g., a student employee for the Dunnigan award, a current Graduate Student for the Blimling award, etc.). Please select all awards for which you wish the nominee to be considered. Be sure to click the "Details" link for award requirements before "opting in." 
@@ -389,11 +388,8 @@
     <label><input type="checkbox" name="alternate_award[]" value="blimling" {blimling}/> Gregory S. Blimling Award for Outstanding Graduate Student in Student Affairs</label>
     <a href="https://studentaffairs.appstate.edu/outstandinggs/" target="_blank">Details</a>
   </div>
-  <div>
-    <label><input type="checkbox" name="alternate_award[]" value="dibernardi" {dibernardi}/> Berardino DiBernardi Student Award for Leadership and Legacy</label>
-    <a href="https://studentaffairs.appstate.edu/leadershiplegacy/" target="_blank">Details</a>
-  </div>
 </div>
+<!-- END alternate -->
 <!-- END NOMINATOR_OVERALL -->
 <button type="submit" class="btn btn-lg btn-success">Submit Nomination</button>
 {END_FORM}
